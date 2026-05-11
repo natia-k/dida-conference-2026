@@ -1859,6 +1859,126 @@ nav{height:86px;background:rgba(250,247,242,.92);box-shadow:0 12px 38px rgba(15,
   .about-head .section-lead{font-size:17px;}
 }
 
+
+
+/* ─────────────────────────────────────────────
+   SAFE FINAL PATCH — workshop note removed + mobile room clarity
+   Does NOT change the overall design. Only fixes the unnecessary
+   explanatory text and makes Room 1 / Room 2 obvious on mobile.
+───────────────────────────────────────────── */
+.parallel-head > p{
+  display:none !important;
+}
+.parallel-head{
+  grid-template-columns:1fr !important;
+  gap:0 !important;
+  margin-bottom:30px !important;
+}
+.parallel-head h3{
+  max-width:none !important;
+}
+.workshop-room{
+  font-size:12px !important;
+  letter-spacing:.20em !important;
+  color:rgba(0,215,215,.9) !important;
+}
+.workshop-cell h4{
+  text-wrap:balance;
+}
+
+@media(max-width:760px){
+  .parallel-workshops{
+    margin-top:64px !important;
+    padding-top:38px !important;
+  }
+  .parallel-head{
+    margin-bottom:22px !important;
+  }
+  .parallel-head h3{
+    font-size:clamp(38px,10vw,52px) !important;
+    line-height:.96 !important;
+    letter-spacing:-.068em !important;
+  }
+  .workshop-table{
+    border:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    display:grid !important;
+    gap:18px !important;
+  }
+  .workshop-header{
+    display:none !important;
+  }
+  .workshop-row{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    overflow:hidden !important;
+    border:1px solid rgba(234,228,216,.12) !important;
+    border-radius:22px !important;
+    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018)) !important;
+    box-shadow:inset 0 1px rgba(255,255,255,.055),0 18px 56px rgba(0,0,0,.16) !important;
+  }
+  .workshop-row + .workshop-row{
+    margin-top:0 !important;
+  }
+  .workshop-time{
+    border:0 !important;
+    border-bottom:1px solid rgba(234,228,216,.09) !important;
+    padding:18px 22px 14px !important;
+    background:rgba(255,255,255,.035) !important;
+    font-size:14px !important;
+    line-height:1.35 !important;
+    color:rgba(245,239,228,.74) !important;
+  }
+  .workshop-cell{
+    position:relative !important;
+    display:block !important;
+    min-height:auto !important;
+    border:0 !important;
+    border-top:1px solid rgba(234,228,216,.075) !important;
+    padding:42px 22px 24px !important;
+  }
+  .workshop-cell:nth-of-type(2)::before,
+  .workshop-cell:nth-of-type(3)::before{
+    position:absolute;
+    top:18px;
+    left:22px;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.20em;
+    text-transform:uppercase;
+    color:rgba(0,215,215,.9);
+  }
+  .workshop-cell:nth-of-type(2)::before{
+    content:'Workshop Room 1';
+  }
+  .workshop-cell:nth-of-type(3)::before{
+    content:'Workshop Room 2';
+  }
+  .workshop-cell span{
+    font-size:11.5px !important;
+    line-height:1.45 !important;
+    margin-bottom:10px !important;
+    color:rgba(0,215,215,.82) !important;
+  }
+  .workshop-cell h4{
+    max-width:none !important;
+    font-size:23px !important;
+    line-height:1.14 !important;
+    letter-spacing:-.05em !important;
+  }
+  .workshop-muted h4{
+    color:rgba(234,228,216,.58) !important;
+  }
+  .workshop-break{
+    background:rgba(0,146,146,.055) !important;
+  }
+  .workshop-break .workshop-cell{
+    padding:42px 22px 22px !important;
+  }
+}
+
 </style>
 </head>
 <body>
