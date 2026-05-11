@@ -1862,120 +1862,116 @@ nav{height:86px;background:rgba(250,247,242,.92);box-shadow:0 12px 38px rgba(15,
 
 
 /* ─────────────────────────────────────────────
-   SAFE FINAL PATCH — workshop note removed + mobile room clarity
-   Does NOT change the overall design. Only fixes the unnecessary
-   explanatory text and makes Room 1 / Room 2 obvious on mobile.
+   FINAL SMALL FIX — workshop mobile clarity + speed safety
+   Does not change desktop design.
 ───────────────────────────────────────────── */
-.parallel-head > p{
+.parallel-head p[data-i18n="workshop_note"]{
   display:none !important;
 }
-.parallel-head{
-  grid-template-columns:1fr !important;
-  gap:0 !important;
-  margin-bottom:30px !important;
-}
-.parallel-head h3{
-  max-width:none !important;
-}
-.workshop-room{
-  font-size:12px !important;
-  letter-spacing:.20em !important;
-  color:rgba(0,215,215,.9) !important;
-}
-.workshop-cell h4{
-  text-wrap:balance;
-}
 
-@media(max-width:760px){
+@media (max-width:760px){
+  /* remove the weird empty header block showing Time / Room 1 / Room 2 */
+  .workshop-table > .workshop-row.workshop-header,
+  .workshop-table > .workshop-header{
+    display:none !important;
+  }
+
   .parallel-workshops{
-    margin-top:64px !important;
-    padding-top:38px !important;
+    margin-top:56px !important;
+    padding-top:34px !important;
   }
+
   .parallel-head{
-    margin-bottom:22px !important;
+    display:block !important;
+    margin-bottom:24px !important;
   }
+
   .parallel-head h3{
-    font-size:clamp(38px,10vw,52px) !important;
+    max-width:none !important;
+    font-size:clamp(38px,11vw,54px) !important;
     line-height:.96 !important;
-    letter-spacing:-.068em !important;
+    letter-spacing:-.07em !important;
   }
+
   .workshop-table{
+    display:grid !important;
+    gap:18px !important;
     border:0 !important;
     border-radius:0 !important;
     background:transparent !important;
     box-shadow:none !important;
-    display:grid !important;
-    gap:18px !important;
+    overflow:visible !important;
   }
-  .workshop-header{
-    display:none !important;
-  }
-  .workshop-row{
-    display:grid !important;
-    grid-template-columns:1fr !important;
-    overflow:hidden !important;
-    border:1px solid rgba(234,228,216,.12) !important;
-    border-radius:22px !important;
-    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018)) !important;
-    box-shadow:inset 0 1px rgba(255,255,255,.055),0 18px 56px rgba(0,0,0,.16) !important;
-  }
-  .workshop-row + .workshop-row{
-    margin-top:0 !important;
-  }
-  .workshop-time{
-    border:0 !important;
-    border-bottom:1px solid rgba(234,228,216,.09) !important;
-    padding:18px 22px 14px !important;
-    background:rgba(255,255,255,.035) !important;
-    font-size:14px !important;
-    line-height:1.35 !important;
-    color:rgba(245,239,228,.74) !important;
-  }
-  .workshop-cell{
-    position:relative !important;
+
+  .workshop-table > .workshop-row:not(.workshop-header){
     display:block !important;
-    min-height:auto !important;
-    border:0 !important;
-    border-top:1px solid rgba(234,228,216,.075) !important;
-    padding:42px 22px 24px !important;
+    border:1px solid rgba(234,228,216,.13) !important;
+    border-radius:24px !important;
+    overflow:hidden !important;
+    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018)) !important;
+    box-shadow:inset 0 1px rgba(255,255,255,.06),0 18px 54px rgba(0,0,0,.18) !important;
   }
+
+  .workshop-time{
+    display:block !important;
+    padding:18px 22px 14px !important;
+    border-right:0 !important;
+    border-bottom:1px solid rgba(234,228,216,.10) !important;
+    background:rgba(255,255,255,.035) !important;
+    font-size:15px !important;
+    line-height:1.35 !important;
+    color:rgba(245,239,228,.72) !important;
+  }
+
+  .workshop-cell{
+    display:block !important;
+    padding:22px !important;
+    border-right:0 !important;
+    border-top:1px solid rgba(234,228,216,.09) !important;
+    min-height:auto !important;
+  }
+
+  .workshop-time + .workshop-cell{
+    border-top:0 !important;
+  }
+
   .workshop-cell:nth-of-type(2)::before,
   .workshop-cell:nth-of-type(3)::before{
-    position:absolute;
-    top:18px;
-    left:22px;
+    display:block;
     font-family:var(--mono);
-    font-size:11px;
-    letter-spacing:.20em;
+    font-size:12px;
+    line-height:1;
+    letter-spacing:.22em;
     text-transform:uppercase;
-    color:rgba(0,215,215,.9);
+    color:rgba(0,215,215,.92);
+    margin-bottom:16px;
   }
-  .workshop-cell:nth-of-type(2)::before{
-    content:'Workshop Room 1';
-  }
-  .workshop-cell:nth-of-type(3)::before{
-    content:'Workshop Room 2';
-  }
+
+  .workshop-cell:nth-of-type(2)::before{content:'Workshop Room 1';}
+  .workshop-cell:nth-of-type(3)::before{content:'Workshop Room 2';}
+
   .workshop-cell span{
-    font-size:11.5px !important;
-    line-height:1.45 !important;
+    font-size:12px !important;
+    line-height:1.5 !important;
+    letter-spacing:.08em !important;
+    color:rgba(0,205,205,.82) !important;
     margin-bottom:10px !important;
-    color:rgba(0,215,215,.82) !important;
   }
+
   .workshop-cell h4{
     max-width:none !important;
-    font-size:23px !important;
-    line-height:1.14 !important;
-    letter-spacing:-.05em !important;
+    font-size:25px !important;
+    line-height:1.12 !important;
+    letter-spacing:-.052em !important;
+    color:#f1eadf !important;
   }
+
   .workshop-muted h4{
-    color:rgba(234,228,216,.58) !important;
+    color:rgba(234,228,216,.55) !important;
   }
+
   .workshop-break{
-    background:rgba(0,146,146,.055) !important;
-  }
-  .workshop-break .workshop-cell{
-    padding:42px 22px 22px !important;
+    background:rgba(0,146,146,.05) !important;
   }
 }
 
@@ -2067,12 +2063,12 @@ nav{height:86px;background:rgba(250,247,242,.92);box-shadow:0 12px 38px rgba(15,
         <p data-i18n="limited_text">This year, we're at frizzforum, Berlin Kreuzberg. Whether you're here for the deep‑tech sessions, the hands‑on workshops, or the high‑level networking, this is a day you won't want to miss.</p>
       </article>
       <a class="visual-panel video-link-card" href="https://www.youtube.com/watch?v=X6wZg2viJkM" target="_blank" rel="noopener" aria-label="Watch impressions and interviews from last year's event on YouTube">
-        <img src="https://i.ytimg.com/vi/X6wZg2viJkM/maxresdefault.jpg" alt="Impressions and interviews from last year's dida conference" loading="lazy">
+        <img decoding="async" src="https://i.ytimg.com/vi/X6wZg2viJkM/maxresdefault.jpg" alt="Impressions and interviews from last year's dida conference" loading="lazy">
         <span class="video-play" aria-hidden="true">▶</span>
         <span class="video-cap">Impressions and interviews from last year's event</span>
       </a>
       <a class="venue-photo venue-map-link" id="venue" href="https://www.google.com/maps/search/?api=1&query=frizzforum%20Friedrichstra%C3%9Fe%2023%20Berlin%20Kreuzberg" target="_blank" rel="noopener" aria-label="Open frizzforum Friedrichstraße 23 Berlin Kreuzberg in Google Maps">
-        <img src="https://cdn.dida.do/eventlocation-frizzforum-berlin.webp" alt="frizzforum Berlin Kreuzberg" loading="lazy">
+        <img decoding="async" src="https://cdn.dida.do/eventlocation-frizzforum-berlin.webp" alt="frizzforum Berlin Kreuzberg" loading="lazy">
         <span class="venue-map-overlay" aria-hidden="true">
           <span class="venue-map-kicker">Venue</span>
           <strong>frizzforum</strong>
@@ -2096,22 +2092,22 @@ nav{height:86px;background:rgba(250,247,242,.92);box-shadow:0 12px 38px rgba(15,
       <p class="section-lead sr sr-delay-1" data-i18n="speakers_lead">The confirmed dida conference 2026 lineup — research, industry, scientific machine learning, explainability, tabular foundation models, cryptography and PDEs.</p>
     </div>
     <div class="speaker-grid">
-      <article class="speaker sr"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image1.png" alt="Jonas Köhler"></div><div class="s-info"><span class="s-num">01</span><p class="s-name">Jonas Köhler</p><p class="s-role">Member of Technical Staff · CuspAI</p><p class="s-talk">Simulating Molecules in the Age of AI</p></div></article>
-      <article class="speaker sr sr-delay-1"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image-%2810%29.png" alt="Gerhard Koch"></div><div class="s-info"><span class="s-num">02</span><p class="s-name">Gerhard Koch</p><p class="s-role">Chief Software &amp; Product Officer · Siemens Energy</p><p class="s-talk">Industrial &amp; Energy AI challenges &quot;solved&quot; with a new structural and explainable AI approach</p></div></article>
-      <article class="speaker sr sr-delay-2"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image2.png" alt="Noah Hollmann"></div><div class="s-info"><span class="s-num">03</span><p class="s-name">Noah Hollmann</p><p class="s-role">Co-Founder &amp; CTO · Prior Labs</p><p class="s-talk">The Revolution in Tabular Data Prediction</p></div></article>
-      <article class="speaker sr sr-delay-3"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image5.png" alt="Maria Bergmann"></div><div class="s-info"><span class="s-num">04</span><p class="s-name">Maria Bergmann</p><p class="s-role">Development Engineer · Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
-      <article class="speaker sr"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image-%286%29.png" alt="Gabriel Nobis"></div><div class="s-info"><span class="s-num">05</span><p class="s-name">Gabriel Nobis</p><p class="s-role">Research Associate · Fraunhofer HHI</p><p class="s-talk">Fractional Noise in Diffusion-Based Generative Models</p></div></article>
-      <article class="speaker sr sr-delay-1"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image3-1776949837.png" alt="Markus Düttmann"></div><div class="s-info"><span class="s-num">06</span><p class="s-name">Markus Düttmann</p><p class="s-role">Managing Director · dida</p><p class="s-talk">coming soon&hellip;</p></div></article>
-      <article class="speaker sr sr-delay-2"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/annette-rudolph.png" alt="Annette Rudolph"></div><div class="s-info"><span class="s-num">07</span><p class="s-name">Annette Rudolph</p><p class="s-role">Professorin · TU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
-      <article class="speaker sr sr-delay-3"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image4.png" alt="Peter Kirstel"></div><div class="s-info"><span class="s-num">08</span><p class="s-name">Peter Kirstel</p><p class="s-role">Forschungsreferenz Schlüsseltechnologie · Cyberagentur</p><p class="s-talk">AI-Methods in Symmetric Cryptography</p></div></article>
-      <article class="speaker sr"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/leonard-schenk.png" alt="Leonard Schenk"></div><div class="s-info"><span class="s-num">09</span><p class="s-name">Leonard Schenk</p><p class="s-role">Senior Analyst &amp; Engineer · SPRIND</p><p class="s-talk">The European AI Playbook - Why, What and How</p></div></article>
-      <article class="speaker sr sr-delay-1"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image6.png" alt="Benjamin Ulbrich"></div><div class="s-info"><span class="s-num">10</span><p class="s-name">Benjamin Ulbrich</p><p class="s-role">Director Global Digital Processes · Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
-      <article class="speaker sr sr-delay-2"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/ma-li.png" alt="Ma Li"></div><div class="s-info"><span class="s-num">11</span><p class="s-name">Ma Li</p><p class="s-role">ML Scientist · dida</p><p class="s-talk">dida Reading Group</p></div></article>
-      <article class="speaker sr sr-delay-3"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/tom-freudenberg.png" alt="Tom Freudenberg"></div><div class="s-info"><span class="s-num">12</span><p class="s-name">Tom Freudenberg</p><p class="s-role">Postdoctoral Researcher · Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
-      <article class="speaker sr"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/nick-heilkotter.png" alt="Nick Heilenkötter"></div><div class="s-info"><span class="s-num">13</span><p class="s-name">Nick Heilenkötter</p><p class="s-role">Research Associate · Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
-      <article class="speaker sr sr-delay-1"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image-%289%29.png" alt="Kai Hartmann"></div><div class="s-info"><span class="s-num">14</span><p class="s-name">Kai Hartmann</p><p class="s-role">Postdoctoral Researcher · FU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
-      <article class="speaker sr sr-delay-2"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/lorenz-richter.png" alt="Lorenz Richter"></div><div class="s-info"><span class="s-num">15</span><p class="s-name">Lorenz Richter</p><p class="s-role">Managing Director &amp; CTO · dida</p><p class="s-talk">Moderation</p></div></article>
-      <article class="speaker sr sr-delay-3"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image-%2811%29.png" alt="Johannes Müller"></div><div class="s-info"><span class="s-num">16</span><p class="s-name">Johannes Müller</p><p class="s-role">Postdoctoral Researcher · TU Berlin</p><p class="s-talk">Resolving Ill-Conditioning in Scientific Machine Learning</p></div></article>
+      <article class="speaker sr"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image1.png" alt="Jonas Köhler"></div><div class="s-info"><span class="s-num">01</span><p class="s-name">Jonas Köhler</p><p class="s-role">Member of Technical Staff · CuspAI</p><p class="s-talk">Simulating Molecules in the Age of AI</p></div></article>
+      <article class="speaker sr sr-delay-1"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%2810%29.png" alt="Gerhard Koch"></div><div class="s-info"><span class="s-num">02</span><p class="s-name">Gerhard Koch</p><p class="s-role">Chief Software &amp; Product Officer · Siemens Energy</p><p class="s-talk">Industrial &amp; Energy AI challenges &quot;solved&quot; with a new structural and explainable AI approach</p></div></article>
+      <article class="speaker sr sr-delay-2"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image2.png" alt="Noah Hollmann"></div><div class="s-info"><span class="s-num">03</span><p class="s-name">Noah Hollmann</p><p class="s-role">Co-Founder &amp; CTO · Prior Labs</p><p class="s-talk">The Revolution in Tabular Data Prediction</p></div></article>
+      <article class="speaker sr sr-delay-3"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image5.png" alt="Maria Bergmann"></div><div class="s-info"><span class="s-num">04</span><p class="s-name">Maria Bergmann</p><p class="s-role">Development Engineer · Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
+      <article class="speaker sr"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%286%29.png" alt="Gabriel Nobis"></div><div class="s-info"><span class="s-num">05</span><p class="s-name">Gabriel Nobis</p><p class="s-role">Research Associate · Fraunhofer HHI</p><p class="s-talk">Fractional Noise in Diffusion-Based Generative Models</p></div></article>
+      <article class="speaker sr sr-delay-1"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image3-1776949837.png" alt="Markus Düttmann"></div><div class="s-info"><span class="s-num">06</span><p class="s-name">Markus Düttmann</p><p class="s-role">Managing Director · dida</p><p class="s-talk">coming soon&hellip;</p></div></article>
+      <article class="speaker sr sr-delay-2"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/annette-rudolph.png" alt="Annette Rudolph"></div><div class="s-info"><span class="s-num">07</span><p class="s-name">Annette Rudolph</p><p class="s-role">Professorin · TU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
+      <article class="speaker sr sr-delay-3"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image4.png" alt="Peter Kirstel"></div><div class="s-info"><span class="s-num">08</span><p class="s-name">Peter Kirstel</p><p class="s-role">Forschungsreferenz Schlüsseltechnologie · Cyberagentur</p><p class="s-talk">AI-Methods in Symmetric Cryptography</p></div></article>
+      <article class="speaker sr"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/leonard-schenk.png" alt="Leonard Schenk"></div><div class="s-info"><span class="s-num">09</span><p class="s-name">Leonard Schenk</p><p class="s-role">Senior Analyst &amp; Engineer · SPRIND</p><p class="s-talk">The European AI Playbook - Why, What and How</p></div></article>
+      <article class="speaker sr sr-delay-1"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image6.png" alt="Benjamin Ulbrich"></div><div class="s-info"><span class="s-num">10</span><p class="s-name">Benjamin Ulbrich</p><p class="s-role">Director Global Digital Processes · Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
+      <article class="speaker sr sr-delay-2"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/ma-li.png" alt="Ma Li"></div><div class="s-info"><span class="s-num">11</span><p class="s-name">Ma Li</p><p class="s-role">ML Scientist · dida</p><p class="s-talk">dida Reading Group</p></div></article>
+      <article class="speaker sr sr-delay-3"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/tom-freudenberg.png" alt="Tom Freudenberg"></div><div class="s-info"><span class="s-num">12</span><p class="s-name">Tom Freudenberg</p><p class="s-role">Postdoctoral Researcher · Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
+      <article class="speaker sr"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/nick-heilkotter.png" alt="Nick Heilenkötter"></div><div class="s-info"><span class="s-num">13</span><p class="s-name">Nick Heilenkötter</p><p class="s-role">Research Associate · Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
+      <article class="speaker sr sr-delay-1"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%289%29.png" alt="Kai Hartmann"></div><div class="s-info"><span class="s-num">14</span><p class="s-name">Kai Hartmann</p><p class="s-role">Postdoctoral Researcher · FU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
+      <article class="speaker sr sr-delay-2"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/lorenz-richter.png" alt="Lorenz Richter"></div><div class="s-info"><span class="s-num">15</span><p class="s-name">Lorenz Richter</p><p class="s-role">Managing Director &amp; CTO · dida</p><p class="s-talk">Moderation</p></div></article>
+      <article class="speaker sr sr-delay-3"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%2811%29.png" alt="Johannes Müller"></div><div class="s-info"><span class="s-num">16</span><p class="s-name">Johannes Müller</p><p class="s-role">Postdoctoral Researcher · TU Berlin</p><p class="s-talk">Resolving Ill-Conditioning in Scientific Machine Learning</p></div></article>
     </div>
   </div>
 </section>
@@ -2340,6 +2336,13 @@ nav{height:86px;background:rgba(250,247,242,.92);box-shadow:0 12px 38px rgba(15,
 (function(){
   const canvas = document.getElementById('dotCanvas');
   if(!canvas) return;
+  /* mobile performance: the animated full-page dot canvas is heavy on phones.
+     Desktop keeps the exact same animation; mobile gets a static/light page. */
+  if (window.matchMedia('(max-width: 760px), (prefers-reduced-motion: reduce)').matches) {
+    const wrap = document.getElementById('dotWrap');
+    if (wrap) wrap.style.display = 'none';
+    return;
+  }
   const ctx = canvas.getContext('2d');
 
   const GAP       = 26;
