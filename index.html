@@ -1,737 +1,2433 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>dida conference 2026</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dida conference 2026 — machine learning</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,300&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;1,14..32,300;1,14..32,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f4f2ec;--ink:#0a0c10;
-  --ink60:rgba(10,12,16,.60);--ink40:rgba(10,12,16,.40);
-  --ink12:rgba(10,12,16,.12);--ink06:rgba(10,12,16,.06);
-  --teal:#38a9a5;--teal-d:#0f8080;
-  --mono:'JetBrains Mono',ui-monospace,monospace;
-  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --ease-out:cubic-bezier(.16,1,.3,1);
-  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --bg:#FAF7F2;
+  --ink:#0b0b0b;
+  --ink-2:#282828;
+  --ink-3:#727272;
+  --ink-4:#9a9a9a;
+  --teal:#009292;
+  --teal-hi:#00AAAA;
+  --teal-d:#007a7a;
+  --teal-subtle:rgba(0,146,146,0.07);
+  --b:rgba(0,0,0,0.038);
+  --b2:rgba(0,0,0,0.065);
+  --dark:#07090c;
+  --dark-s:#0d1218;
+  --dark-ink:#EAE4D8;
+  --dark-dim:rgba(229,223,212,0.38);
+  --sans:'Inter',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --E:cubic-bezier(0.2,0.9,0.3,1);
+  --E-out:cubic-bezier(0.33,1,0.68,1);
+  --C:cubic-bezier(0.25,0.1,0.25,1);
+  --w:1100px;
+  --g:56px;
 }
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);overflow-x:hidden;cursor:none;text-rendering:geometricPrecision}
-body::after{content:"";position:fixed;inset:0;z-index:9000;pointer-events:none;opacity:.010;mix-blend-mode:multiply;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)'/%3E%3C/svg%3E");}
-
-/* soft page atmosphere only — no dusty dot texture */
-body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.46;
-  background:radial-gradient(900px circle at 82% 28%,rgba(56,169,165,.035),transparent 62%);
+html{scroll-behavior:smooth;background:var(--bg);}
+body{
+  background:transparent;
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
 }
 
-/* actual dida-style hero halftone field */
-#dot-canvas{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity 1.1s ease;}
-body.loaded #dot-canvas{opacity:1;}
+/* grain */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9900;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.68' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:0.018;mix-blend-mode:multiply;
+}
 
-/* CURSOR */
-.cursor-ring{position:fixed;width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(56,169,165,.7);backdrop-filter:blur(6px) saturate(1.3);-webkit-backdrop-filter:blur(6px) saturate(1.3);background:radial-gradient(circle at 38% 34%,rgba(255,255,255,.28),rgba(255,255,255,.06) 50%,transparent);transform:translate(-50%,-50%);z-index:9999;pointer-events:none;transition:width .24s var(--ease-out),height .24s var(--ease-out),border-color .2s;will-change:transform;left:-100px;top:-100px;}
-.cursor-ring.big{width:54px;height:54px;border-color:rgba(56,169,165,.9);background:radial-gradient(circle at 38% 34%,rgba(255,255,255,.34),rgba(56,169,165,.08) 60%,transparent);}
-.cursor-dot{position:fixed;width:5px;height:5px;border-radius:50%;background:var(--teal);transform:translate(-50%,-50%);z-index:9999;pointer-events:none;will-change:transform;left:-100px;top:-100px;}
+/* grid overlay */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(rgba(0,0,0,0.014) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,0.014) 1px,transparent 1px);
+  background-size:56px 56px;
+}
 
-/* NAV */
-.nav{position:sticky;top:0;z-index:500;height:68px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:48px;padding:0 44px;background:rgba(244,242,236,.86);backdrop-filter:blur(24px) saturate(1.18);-webkit-backdrop-filter:blur(24px) saturate(1.18);border-bottom:1px solid var(--ink06);}
-.brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);font-weight:700;font-size:15px;letter-spacing:-.02em;}
-.mark{width:26px;height:26px;background:var(--teal);clip-path:polygon(50% 0,90% 23%,90% 72%,50% 100%,10% 72%,10% 23%);flex-shrink:0;}
-.mark::after{content:"";display:block;width:10px;height:10px;margin:8px auto;background:var(--bg);clip-path:inherit;}
-.links{display:flex;justify-content:center;gap:clamp(20px,3.5vw,60px);}
-.links a,.lang a{color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;letter-spacing:-.01em;opacity:.55;transition:opacity .18s;cursor:none;}
-.links a:hover,.lang a:hover{opacity:1}
-.links a.active{opacity:1;font-weight:600}
-.lang{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:500;}
-.lang .active{opacity:1;font-weight:700}
-.lang span{opacity:.28}
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:600;
+  height:76px;
+  background:rgba(250,247,242,.97);
+  backdrop-filter:blur(28px) saturate(1.2);
+  -webkit-backdrop-filter:blur(28px) saturate(1.2);
+  border-bottom:1px solid var(--b);
+}
+.nav-inner{
+  max-width:var(--w);margin:0 auto;
+  padding:0 var(--g);height:76px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.logo{
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;color:var(--ink);
+  font-size:17px;font-weight:500;letter-spacing:-0.03em;
+}
+.l-pip{
+  width:5px;height:5px;border-radius:50%;background:var(--teal);
+  flex-shrink:0;animation:lp 4.8s cubic-bezier(0.4,0,0.6,1) infinite;
+}
+@keyframes lp{0%,100%{opacity:1}50%{opacity:0.28}}
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none;}
+.nav-links a{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;
+  text-decoration:none;color:var(--ink-3);
+  transition:color 0.2s var(--C);
+}
+.nav-links a:hover,.nav-links a.active{color:var(--ink);}
+.nav-links .cta{
+  color:var(--ink);
+  background:var(--ink);color:#fff;
+  padding:10px 20px;border-radius:999px;
+  font-size:10px;letter-spacing:0.12em;
+  transition:background .18s,transform .22s var(--E-out),box-shadow .18s;
+}
+.nav-links .cta:hover{background:#1a2232;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.nav-lang{
+  display:flex;gap:8px;align-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.1em;
+}
+.nav-lang button{
+  color:var(--ink-4);text-decoration:none;transition:color .2s;background:transparent;border:0;cursor:pointer;font:inherit;letter-spacing:inherit;
+}
+.nav-lang button.active{color:var(--ink);}
+.nav-lang span{color:var(--b2);}
 
-.wrap{width:min(1300px,calc(100vw - 80px));margin:0 auto;position:relative;z-index:2;}
+/* ── LAYOUT ── */
+.w{max-width:var(--w);margin:0 auto;padding:0 var(--g);}
 
-/* HERO */
-.hero{min-height:calc(100vh - 68px);display:grid;align-content:center;padding:96px 0 116px;position:relative;overflow:hidden;}
-.hero-inner{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.43fr);gap:clamp(56px,7vw,112px);align-items:end;position:relative;z-index:2;animation:heroFloat 16s ease-in-out infinite;}
-@keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.kicker{font-family:var(--mono);color:var(--teal-d);font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;margin-bottom:28px;display:flex;align-items:center;gap:14px;}
-.kicker::before{content:"";display:block;width:20px;height:1px;background:var(--teal);flex-shrink:0;}
-h1{font-size:clamp(72px,10.2vw,156px);line-height:.82;letter-spacing:-.078em;font-weight:800;}
-h1 .thin{font-weight:300;font-style:italic;letter-spacing:-.094em;color:rgba(10,12,16,.42);}
-.hero-title .line{display:block;transform:translateY(42px);opacity:0;filter:blur(9px);transition:opacity 1.25s var(--ease-out),transform 1.25s var(--ease-out),filter 1.25s var(--ease-out);}
-.hero-title.on .line{transform:translateY(0);opacity:1;filter:blur(0);}
-.hero-title .line:nth-child(1){transition-delay:.24s;}
-.hero-title .line:nth-child(2){transition-delay:.38s;}
-.hero-title .line:nth-child(3){transition-delay:.54s;}
-.hero-title .accent{background:linear-gradient(90deg,#0a0c10 0%,#0a0c10 48%,rgba(56,169,165,.95) 126%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-.hero-note{margin-top:42px;max-width:640px;font-size:19px;line-height:1.68;color:rgba(10,12,16,.62);font-weight:400;letter-spacing:-.018em;}
-.hero-actions{margin-top:44px;}
-.btns{display:flex;gap:11px;flex-wrap:wrap;}
-.btn{height:48px;display:inline-flex;align-items:center;gap:9px;padding:0 24px;border-radius:999px;text-decoration:none;border:1px solid var(--ink12);color:var(--ink);background:rgba(255,255,255,.55);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.065em;transition:background .18s,border-color .18s,transform .22s var(--ease-spring),box-shadow .18s;cursor:none;}
-.btn:hover{background:rgba(255,255,255,.82);border-color:rgba(10,12,16,.18);transform:translateY(-2px);box-shadow:0 8px 32px rgba(10,12,16,.07);}
-.btn.primary{background:var(--ink);color:#fff;border-color:transparent;box-shadow:0 4px 24px rgba(10,12,16,.18);}
-.btn.primary:hover{background:#1a2232;box-shadow:0 12px 40px rgba(10,12,16,.22);}
-.live{width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 0 0 rgba(255,255,255,.65);animation:pulse 2s infinite;}
+/* ── FULL-PAGE DOT CANVAS ── */
+#dotCanvas{
+  position:fixed;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;
+}
+#dotWrap{
+  position:fixed;inset:0;
+  z-index:0;pointer-events:none;
+}
+
+/* ensure all page content sits above the dot canvas */
+nav,header,section,footer,.w{position:relative;z-index:2;}
+
+/* ── CONTENT PROTECTION ──
+   Sections are transparent so dots show on left/right margins.
+   Only the inner .w content wrapper gets a background strip
+   so text is always readable. */
+#about .w, #speakers .w, #register .w {
+  background: var(--bg);
+  padding-top: 88px;
+  padding-bottom: 88px;
+}
+#about { padding: 0; }
+#speakers { padding: 0; }
+#register { padding: 0; z-index:3; position:relative; }
+
+/* hero — transparent everywhere, gradient mask only behind text */
+.hero { background: transparent; }
+.hero-inner>div {
+  position: relative;
+  padding: 48px 56px 48px 0;
+}
+.hero-inner>div::before {
+  content: '';
+  position: absolute;
+  inset: 0 -24px 0 -48px;
+  background: linear-gradient(90deg, rgba(250,247,242,.96) 0%, rgba(250,247,242,.92) 55%, rgba(250,247,242,0) 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ── HERO ── */
+.hero{
+  min-height:calc(100vh - 76px);
+  display:grid;align-content:center;
+  padding:100px 0 110px;
+  position:relative;overflow:hidden;
+}
+/* ── HERO INNER ── */
+.hero-inner{
+  position:relative;z-index:3;
+  display:grid;
+  grid-template-columns:1fr;
+  max-width:780px;
+}
+.hero-kicker{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--teal);display:flex;align-items:center;gap:14px;margin-bottom:28px;
+  opacity:0;
+}
+.hero-kicker::before{content:'';display:block;width:24px;height:1px;background:var(--teal);}
+
+.hero h1{
+  font-size:clamp(72px,11vw,160px);
+  font-weight:400;letter-spacing:-0.068em;
+  line-height:0.84;
+  color:var(--ink);
+  margin-bottom:36px;
+  opacity:0;
+}
+.hero h1 .line{display:block;}
+.hero h1 .thin{font-weight:300;font-style:italic;color:var(--ink-3);}
+.hero h1 .accent{
+  background:linear-gradient(90deg,#0b0b0b 0%,#0b0b0b 45%,rgba(0,146,146,.9) 130%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  font-weight:400;
+}
+.hero-note{
+  font-size:16px;font-weight:300;color:var(--ink-3);
+  line-height:1.78;max-width:52ch;letter-spacing:0.003em;
+  margin-bottom:40px;opacity:0;
+}
+.hero-act{display:flex;gap:16px;align-items:center;opacity:0;flex-wrap:wrap;margin-bottom:52px;}
+
+/* date strip below CTA */
+.hero-meta{
+  opacity:0;
+  display:flex;gap:0;
+  border:1px solid var(--b2);
+  border-radius:14px;
+  overflow:hidden;
+  background:rgba(255,255,255,.42);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  width:fit-content;
+}
+.meta-item{
+  padding:18px 28px;
+  border-right:1px solid var(--b);
+  position:relative;
+}
+.meta-item:last-child{border-right:0;}
+.meta-item span{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--teal);display:block;margin-bottom:6px;
+}
+.meta-item b{
+  font-size:15px;font-weight:400;letter-spacing:-0.03em;color:var(--ink);
+}
+
+/* go animations */
+.hero.go .hero-kicker{animation:rise .82s var(--E) .6s forwards;}
+.hero.go h1{animation:rise .82s var(--E) .78s forwards;}
+.hero.go .hero-note{animation:rise .82s var(--E) .96s forwards;}
+.hero.go .hero-act{animation:rise .82s var(--E) 1.12s forwards;}
+.hero.go .hero-meta{animation:rise .82s var(--E) 1.26s forwards;}
+@keyframes rise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+
+/* CTA buttons */
+.btn-primary{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.13em;text-transform:uppercase;
+  color:#fff;background:var(--ink);text-decoration:none;
+  height:54px;padding:0 32px;border-radius:999px;
+  display:inline-flex;align-items:center;gap:10px;
+  transition:background .18s,transform .22s var(--E-out),box-shadow .18s;
+}
+.btn-primary:hover{background:#1a2232;transform:translateY(-2px);box-shadow:0 12px 38px rgba(0,0,0,.18);}
+.live-dot{
+  width:6px;height:6px;border-radius:50%;background:#fff;
+  box-shadow:0 0 0 0 rgba(255,255,255,.5);animation:pulse 2.2s infinite;
+}
 @keyframes pulse{70%{box-shadow:0 0 0 7px rgba(255,255,255,0)}}
-.event-column{border-left:1px solid rgba(10,12,16,.12);padding:26px 0 26px 36px;align-self:end;position:relative;}
-.event-column::before{content:"";position:absolute;inset:-18px -22px -18px -20px;z-index:-1;border-radius:28px;background:linear-gradient(90deg,rgba(244,242,236,.76),rgba(244,242,236,.52));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);}
-.event-line{padding:19px 0;border-bottom:1px solid var(--ink12);}
-.event-line:first-child{border-top:1px solid var(--ink12);}
-.event-line span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-d);font-weight:700;margin-bottom:7px;}
-.event-line b{display:block;font-size:20px;line-height:1.1;letter-spacing:-.042em;font-weight:650;}
-
-/* SECTIONS */
-section{padding:120px 0;position:relative;z-index:2;}
-
-section::before{content:"";position:absolute;z-index:-1;pointer-events:none;opacity:.58;filter:saturate(.9);
-  background:radial-gradient(circle,rgba(56,169,165,.24) 0 1.55px,transparent 1.9px) 0 0/22px 22px;
-  width:min(420px,34vw);height:360px;right:-8vw;top:22px;
-  mask-image:radial-gradient(ellipse at center,#000 0 34%,transparent 72%);
-  -webkit-mask-image:radial-gradient(ellipse at center,#000 0 34%,transparent 72%);
+.btn-ghost{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.13em;text-transform:uppercase;
+  color:var(--ink-3);text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+  height:54px;padding:0 24px;
+  border:1px solid var(--b2);border-radius:999px;
+  transition:color .2s var(--C),border-color .2s,background .2s;
 }
-#about::before{left:-10vw;right:auto;top:18%;width:min(520px,40vw);height:520px;}
-#speakers::before{right:-9vw;top:8%;width:min(620px,42vw);height:540px;}
-#agenda::before{left:-8vw;right:auto;top:30%;width:min(520px,38vw);height:460px;}
-#register::before{right:8vw;top:0;width:min(480px,36vw);height:380px;opacity:.42;}
-.section-head{display:grid;grid-template-columns:.40fr 1fr;gap:80px;align-items:end;margin-bottom:58px;}
-h2{font-size:clamp(40px,6vw,90px);line-height:.88;letter-spacing:-.064em;font-weight:800;}
-.lead{max-width:700px;font-size:18px;line-height:1.68;color:var(--ink60);font-weight:400;}
+.btn-ghost .arr{display:inline-block;transition:transform .35s var(--E-out);}
+.btn-ghost:hover{color:var(--ink);border-color:rgba(0,0,0,.15);background:rgba(255,255,255,.6);}
+.btn-ghost:hover .arr{transform:translateX(4px);}
 
-/* APPLE GLASS PANELS */
-.editorial{display:grid;grid-template-columns:repeat(12,1fr);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.64);box-shadow:0 2px 1px rgba(255,255,255,.9) inset,0 24px 80px rgba(10,12,16,.07);}
-.panel{grid-column:span 4;min-height:270px;padding:34px;border-right:1px solid rgba(255,255,255,.44);border-bottom:1px solid rgba(255,255,255,.44);background:rgba(255,255,255,.38);backdrop-filter:blur(18px) saturate(1.22);-webkit-backdrop-filter:blur(18px) saturate(1.22);transition:background .22s;position:relative;overflow:hidden;cursor:none;}
-.panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(280px circle at var(--px,50%) var(--py,50%),rgba(56,169,165,.12),rgba(255,255,255,.12) 44%,transparent 68%);transition:opacity .2s;}
+/* Hero aside removed — date info now in hero-meta strip */
+.hero-aside::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(380px circle at 8% 4%,rgba(0,146,146,.09),transparent 62%);
+}
+/* event-line styles removed */
+
+/* ── EYEBROW ── */
+.ey{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--teal);display:block;margin-bottom:16px;opacity:0.9;
+}
+.section-h2{
+  font-size:clamp(30px,4vw,56px);
+  font-weight:400;letter-spacing:-0.052em;line-height:0.92;color:var(--ink);
+  margin-bottom:10px;
+}
+.section-lead{
+  font-size:15px;font-weight:300;color:var(--ink-3);
+  line-height:1.78;max-width:54ch;
+}
+
+/* ── SECTION ── */
+section{padding:0;position:relative;}
+.ruled{border-top:1px solid var(--b);}
+
+/* ── ABOUT PANELS ── */
+#about{}
+.about-head{
+  display:grid;grid-template-columns:.44fr 1fr;gap:80px;
+  align-items:end;margin-bottom:56px;
+}
+.editorial{
+  display:grid;grid-template-columns:repeat(12,1fr);
+  border-radius:20px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.62);
+  box-shadow:0 2px 1px rgba(255,255,255,.9) inset,0 22px 72px rgba(0,0,0,.07);
+}
+.panel{
+  grid-column:span 4;min-height:260px;padding:32px;
+  border-right:1px solid rgba(255,255,255,.42);
+  border-bottom:1px solid rgba(255,255,255,.42);
+  background:rgba(255,255,255,.36);
+  backdrop-filter:blur(18px) saturate(1.2);
+  -webkit-backdrop-filter:blur(18px) saturate(1.2);
+  transition:background .2s;
+  position:relative;overflow:hidden;
+}
+.panel::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:radial-gradient(260px circle at var(--px,50%) var(--py,50%),rgba(0,146,146,.11),rgba(255,255,255,.1) 44%,transparent 68%);
+  transition:opacity .2s;
+}
 .panel:hover::before{opacity:1}
-.panel:hover{background:rgba(255,255,255,.56);}
-.panel.large{grid-column:span 8}
-.panel.dark{background:rgba(14,17,24,.92);border-color:rgba(255,255,255,.08);color:#fff;}
-.panel.dark::before{background:radial-gradient(280px circle at var(--px,50%) var(--py,50%),rgba(56,169,165,.18),rgba(255,255,255,.04) 44%,transparent 68%);}
-.panel.dark:hover{background:rgba(18,22,34,.94)}
-.panel.dark p{color:rgba(255,255,255,.55)}
-.mono{font-family:var(--mono);color:var(--teal-d);font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;}
-.panel.dark .mono{color:var(--teal)}
-.panel h3{margin:18px 0 13px;font-size:27px;line-height:1.05;letter-spacing:-.042em;font-weight:700;}
-.panel p{color:var(--ink60);font-size:16.5px;line-height:1.68;}
-.stats{margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.stats strong{font-size:44px;letter-spacing:-.06em;font-weight:800;line-height:1;display:block;}
-.stats span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink40);margin-top:4px;}
-.visual-panel{grid-column:span 8;min-height:340px;border-right:1px solid rgba(255,255,255,.44);border-bottom:1px solid rgba(255,255,255,.44);position:relative;overflow:hidden;background:#0a0c10;filter:none;transition:transform .35s var(--ease-out),box-shadow .35s var(--ease-out);cursor:none;text-decoration:none;}
-.visual-panel:hover{transform:translateY(-3px);box-shadow:0 22px 70px rgba(10,12,16,.11)}
-.visual-panel iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;}
-.video-caption{position:absolute;left:24px;bottom:20px;z-index:2;color:rgba(255,255,255,.86);font:700 10.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;text-shadow:0 1px 18px rgba(0,0,0,.7);}
-.venue-photo{grid-column:span 8;min-height:340px;border-right:1px solid rgba(255,255,255,.44);border-bottom:1px solid rgba(255,255,255,.44);position:relative;overflow:hidden;background:#d7d2c7;}
-.venue-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.15) contrast(1.03);transform:scale(1.01);transition:filter .35s,transform .55s var(--ease-out);}
-.venue-photo:hover img{filter:grayscale(0) contrast(1.05);transform:scale(1.045);} 
-
-/* SPEAKER GLASS CARDS */
-.speaker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
-.speaker,.speaker.wide,.speaker.hero-speaker{grid-column:auto;grid-row:auto;display:grid;grid-template-rows:240px auto;border-radius:20px;border:1px solid rgba(255,255,255,.66);background:rgba(255,255,255,.38);backdrop-filter:blur(20px) saturate(1.25);-webkit-backdrop-filter:blur(20px) saturate(1.25);overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.85) inset,0 18px 60px rgba(10,12,16,.05),0 2px 8px rgba(10,12,16,.04);transition:transform .5s var(--ease-out),box-shadow .5s var(--ease-out),background .3s,border-color .3s;position:relative;cursor:none;will-change:transform;}
-.speaker::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.32) 0%,rgba(255,255,255,.06) 28%,transparent 52%);border-radius:inherit;}
-.speaker::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(260px circle at var(--cx,50%) var(--cy,50%),rgba(56,169,165,.14),rgba(255,255,255,.08) 42%,transparent 68%);transition:opacity .22s;}
-.speaker:hover::after{opacity:1}
-.speaker:hover,.speaker.wide:hover,.speaker.hero-speaker:hover{transform:translateY(-8px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));background:rgba(255,255,255,.58);border-color:rgba(255,255,255,.80);box-shadow:0 1px 0 rgba(255,255,255,.90) inset,0 32px 90px rgba(10,12,16,.09),0 4px 16px rgba(10,12,16,.06),0 0 0 1px rgba(56,169,165,.12);}
-.photo{display:flex;align-items:flex-end;justify-content:center;padding:20px 16px 0;background:radial-gradient(circle at 68% 12%,rgba(56,169,165,.09),transparent 42%),linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,.08));border-bottom:1px solid rgba(255,255,255,.45);overflow:hidden;position:relative;z-index:1;}
-.photo img{max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1) contrast(1.04);mix-blend-mode:multiply;transition:filter .4s,transform .55s var(--ease-out);}
-.speaker:hover .photo img{filter:grayscale(.28) contrast(1.04);transform:translate3d(var(--imgx,0px),var(--imgy,-3px),0) scale(1.04);}
-.speaker-text{padding:22px 24px 26px;position:relative;z-index:4;}
-.speaker-text span{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:rgba(56,169,165,.80);font-weight:700;}
-.speaker h3,.speaker.hero-speaker h3{margin:11px 0 7px;font-size:23px;line-height:1.02;letter-spacing:-.042em;font-weight:700;color:var(--ink);}
-.role,.hero-speaker .role{margin:0 0 10px;font-family:var(--mono);font-size:10.5px;line-height:1.5;letter-spacing:.046em;color:var(--teal-d);font-weight:700;}
-.talk,.hero-speaker .talk{margin:0;font-size:14px;line-height:1.52;color:var(--ink60);}
-
-/* AGENDA */
-#agenda{padding-top:120px}
-#agenda .section-head{align-items:start;grid-template-columns:.92fr 1.28fr;gap:80px;margin-bottom:0;}
-#agenda .section-head h2{position:sticky;top:88px;font-size:clamp(56px,7.2vw,112px);line-height:.88;letter-spacing:-.075em;max-width:420px;}
-#agenda .section-head .lead{display:none}
-.agenda{border-top:0;margin-top:0;border-left:1px solid var(--ink12);padding-left:34px;}
-.agenda-day{padding:0 0 68px}
-.agenda-day+.agenda-day{padding-top:38px;border-top:1px solid var(--ink12)}
-.day-tag{display:inline-flex;align-items:center;gap:8px;height:24px;padding:0 10px;border-radius:8px;border:1px solid var(--ink12);background:rgba(255,255,255,.52);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font:700 12px/1 var(--mono);color:var(--ink60);margin-bottom:16px;letter-spacing:-.01em;}
-.day-tag::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--teal);transform:skew(-8deg);}
-.day-title{font-size:clamp(32px,4vw,52px);line-height:1;letter-spacing:-.062em;font-weight:700;margin:0 0 18px;}
-.agenda-row{display:grid;grid-template-columns:180px 1fr;gap:36px;padding:22px 0;border-top:1px solid var(--ink12);}
-.agenda-time{color:var(--ink40);font-size:17px;line-height:1.5;letter-spacing:-.02em;}
-.agenda-items{display:grid;gap:9px}
-.agenda-items p{margin:0;color:var(--ink);font-size:17.5px;line-height:1.35;letter-spacing:-.024em;font-weight:500;}
-.agenda-items span{display:block;color:var(--ink40);font-size:13.5px;line-height:1.5;margin-top:2px;}
-
-/* FORM */
-.form-wrap{width:min(600px,100%);margin:auto;padding-top:58px;border-top:1px solid var(--ink12);}
-.form-wrap h2{text-align:center;margin-bottom:50px;font-size:clamp(36px,5vw,68px)}
-.field{margin:24px 0}
-.field label{display:block;margin-bottom:9px;font-family:var(--mono);font-size:10px;letter-spacing:.20em;text-transform:uppercase;color:var(--ink40);font-weight:700;}
-.field input{width:100%;height:50px;background:transparent;border:0;border-bottom:1.5px solid rgba(10,12,16,.13);outline:0;font:500 17px/1 var(--sans);color:var(--ink);letter-spacing:-.01em;transition:border-color .18s;cursor:none;}
-.field input::placeholder{color:rgba(10,12,16,.24)}
-.field input:focus{border-color:var(--teal)}
-.captcha{width:295px;height:66px;display:flex;align-items:center;gap:13px;background:rgba(255,255,255,.58);border:1px solid var(--ink12);padding:13px;margin:24px 0;color:var(--ink60);font-size:13.5px;border-radius:10px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
-.check{width:25px;height:25px;border:1.5px solid rgba(10,12,16,.26);border-radius:3px;flex-shrink:0}
-.submit{width:100%;height:58px;border:0;background:var(--ink);color:white;font:700 13.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;cursor:none;border-radius:10px;transition:background .16s,transform .22s var(--ease-spring),box-shadow .2s;box-shadow:0 4px 24px rgba(10,12,16,.16);}
-.submit:hover{background:#1a2232;transform:translateY(-2px);box-shadow:0 12px 40px rgba(10,12,16,.22)}
-.success{text-align:center;font-family:var(--mono);font-size:12px;color:var(--teal-d);line-height:1.7;margin-top:20px}
-
-/* FOOTER */
-.footer{background:linear-gradient(180deg,rgba(246,244,238,.98),rgba(239,237,229,.99));color:var(--ink);padding:104px 7vw 48px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px;position:relative;z-index:2;overflow:hidden;border-top:1px solid rgba(10,12,16,.08);}
-.footer-dot-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:1;}
-.footer::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:
-  linear-gradient(90deg,rgba(246,244,238,.95) 0%,rgba(246,244,238,.82) 34%,rgba(246,244,238,.58) 58%,rgba(246,244,238,.82) 100%),
-  radial-gradient(ellipse 48vw 32vh at 54% 28%,rgba(255,255,255,.62),transparent 72%);}
-.footer::after{content:"";position:absolute;left:7vw;right:7vw;top:38px;height:1px;z-index:2;background:linear-gradient(90deg,transparent,rgba(56,169,165,.42),transparent);}
-.footer>*:not(.footer-dot-canvas){position:relative;z-index:3;}
-.footer>div:not(.legal){padding:4px 0;}
-.footer>div:nth-child(3),.footer>div:nth-child(4){background:linear-gradient(90deg,rgba(246,244,238,.54),rgba(246,244,238,.78));border-radius:18px;box-shadow:0 0 42px rgba(246,244,238,.72);}
-.footer h3{font-size:10px;letter-spacing:.20em;text-transform:uppercase;font-family:var(--mono);font-weight:700;color:rgba(15,128,128,.82);margin:0 0 18px;text-shadow:0 1px 0 rgba(246,244,238,.85);}
-.footer a,.footer p{display:block;color:rgba(10,12,16,.68);text-decoration:none;font-size:15px;line-height:2;margin:0;transition:color .15s,transform .18s;cursor:none;text-shadow:0 1px 0 rgba(246,244,238,.82);}
-.footer a:hover{color:var(--ink);transform:translateX(3px)}
-.footer p a{display:inline;color:inherit;line-height:inherit;text-shadow:inherit;}
-.footer p a:hover{transform:none;color:var(--ink);} 
-.legal a{display:inline;color:inherit;}
-.legal{grid-column:1/-1;color:rgba(10,12,16,.36);font-size:11.5px;font-family:var(--mono);margin-top:22px;padding-top:22px;border-top:1px solid rgba(10,12,16,.08);letter-spacing:.04em;}
-
-/* REVEAL */
-.reveal{opacity:0;transform:translate3d(0,44px,0);filter:blur(6px);transition:opacity 1.1s var(--ease-out),transform 1.1s var(--ease-out),filter 1.1s var(--ease-out);transition-delay:var(--delay,0ms);will-change:transform,opacity,filter;}
-.reveal.on{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}
-h1.reveal{transform:translate3d(0,40px,0) scale(.97)}
-h1.reveal.on{transform:translate3d(0,0,0) scale(1)}
-.section-head h2.reveal{transform:translate3d(-16px,44px,0)}
-.section-head h2.reveal.on{transform:translate3d(0,0,0)}
-.agenda-day{opacity:0;transform:translateY(32px);filter:blur(5px);transition:opacity .95s var(--ease-out),transform .95s var(--ease-out),filter .95s var(--ease-out);}
-.agenda-day.on{opacity:1;transform:none;filter:blur(0)}
-.speaker:nth-child(3n+1){--delay:30ms}.speaker:nth-child(3n+2){--delay:80ms}.speaker:nth-child(3n+3){--delay:130ms}
-.panel:nth-child(1){--delay:40ms}.panel:nth-child(2){--delay:100ms}.panel:nth-child(3){--delay:160ms}
-.hero .kicker.reveal{transition-delay:.10s}
-.hero h1.reveal{transition-delay:.20s}
-.hero .hero-note.reveal{transition-delay:.32s}
-.hero .hero-actions.reveal{transition-delay:.42s}
-.hero .event-column.reveal{transition-delay:.78s}
-
-/* refined scroll text effects */
-.reveal-word{display:inline-block;opacity:0;transform:translateY(18px);filter:blur(7px);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out),filter .9s var(--ease-out);transition-delay:calc(var(--word-index,0) * 34ms + var(--delay,0ms));will-change:transform,opacity,filter;}
-.reveal.on .reveal-word{opacity:1;transform:translateY(0);filter:blur(0)}
-.lead .reveal-word,.hero-note .reveal-word{transition-delay:calc(var(--word-index,0) * 18ms + var(--delay,0ms));}
-.panel h3 .reveal-word,.panel p .reveal-word,.agenda-items p .reveal-word{transition-delay:calc(var(--word-index,0) * 14ms);}
-.kicker.reveal::after{content:"";width:36px;height:1px;background:linear-gradient(90deg,var(--teal),transparent);transform-origin:left;transform:scaleX(0);transition:transform 1.05s var(--ease-out) .35s;}
-.kicker.reveal.on::after{transform:scaleX(1)}
-
-@media(max-width:1080px){
-  .nav{grid-template-columns:1fr auto}.links{display:none}
-  .hero-inner{grid-template-columns:1fr;gap:44px}
-  .event-column{border-left:0;padding-left:0;border-top:1px solid var(--ink12);padding-top:22px}
-  .section-head{grid-template-columns:1fr;gap:22px}
-  .panel,.panel.large,.visual-panel,.venue-photo{grid-column:1/-1}
-  .speaker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .footer{grid-template-columns:1fr 1fr}
-  #agenda .section-head{grid-template-columns:1fr;gap:32px}
-  #agenda .section-head h2{position:static;max-width:none}
-  .agenda{border-left:0;padding-left:0}
+.panel:hover{background:rgba(255,255,255,.54);}
+.panel.large{grid-column:span 8;}
+.panel.dark{
+  background:rgba(10,14,20,.92);
+  border-color:rgba(255,255,255,.07);
+  color:#fff;
 }
-@media(max-width:640px){
-  .wrap{width:calc(100vw - 32px)}.nav{padding:0 16px}h1{font-size:54px}
-  .speaker-grid{grid-template-columns:1fr}.footer{grid-template-columns:1fr}
-  .agenda-row{grid-template-columns:1fr;gap:6px}
+.panel.dark .mono{color:var(--teal-hi);}
+.panel.dark p{color:rgba(234,228,216,.52);}
+.panel.dark:hover{background:rgba(14,18,26,.94);}
+.panel .mono{
+  font-family:var(--mono);color:var(--teal-d);font-size:9px;
+  letter-spacing:0.26em;text-transform:uppercase;font-weight:500;
 }
-
-@media(max-width:1080px){
-  #dot-canvas{opacity:.72}
-  .hero-inner{grid-template-columns:1fr;gap:42px;}
-  .event-column{max-width:520px;background:rgba(244,242,236,.78)}
+.panel h3{
+  margin:16px 0 12px;font-size:26px;line-height:1.06;
+  letter-spacing:-0.04em;font-weight:400;
+}
+.panel p{color:var(--ink-3);font-size:15.5px;line-height:1.7;}
+.stats{
+  margin-top:30px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.stats strong{
+  font-size:42px;letter-spacing:-0.058em;font-weight:400;line-height:1;display:block;color:var(--ink);
+}
+.stats span{
+  display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--ink-4);margin-top:3px;
+}
+.visual-panel{
+  grid-column:span 8;min-height:340px;
+  border-right:1px solid rgba(255,255,255,.42);
+  border-bottom:1px solid rgba(255,255,255,.42);
+  position:relative;overflow:hidden;background:#07090c;
+  text-decoration:none;display:block;
+  transition:filter .3s;
+}
+.visual-panel:hover{filter:brightness(1.04);}
+.visual-panel iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.video-cap{
+  position:absolute;left:22px;bottom:18px;z-index:2;
+  color:rgba(255,255,255,.82);font:500 8.5px var(--mono);
+  letter-spacing:.18em;text-transform:uppercase;
+  text-shadow:0 1px 16px rgba(0,0,0,.65);
+}
+.venue-photo{
+  grid-column:span 4;
+  border-bottom:1px solid rgba(255,255,255,.42);
+  position:relative;overflow:hidden;background:#d4cfc5;
+}
+.venue-photo img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(.14) contrast(1.03);transform:scale(1.02);
+  transition:filter .35s,transform .55s var(--E-out);
+}
+.venue-photo:hover img{filter:grayscale(0);transform:scale(1.052);}
+.venue-map-link{
+  display:block;
+  color:inherit;
+  text-decoration:none;
+  cursor:pointer;
+}
+.venue-map-overlay{
+  position:absolute;
+  inset:18px;
+  z-index:3;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:flex-start;
+  padding:24px;
+  border-radius:18px;
+  background:
+    linear-gradient(180deg,rgba(5,8,10,0) 18%,rgba(5,8,10,.72) 100%),
+    radial-gradient(320px circle at 12% 12%,rgba(0,146,146,.22),transparent 58%);
+  color:#fff;
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity .38s var(--E-out),transform .38s var(--E-out);
+  pointer-events:none;
+}
+.venue-map-link:hover .venue-map-overlay,
+.venue-map-link:focus-visible .venue-map-overlay{
+  opacity:1;
+  transform:translateY(0);
+}
+.venue-map-overlay .venue-map-kicker{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(0,220,220,.92);
+  margin-bottom:10px;
+}
+.venue-map-overlay strong{
+  font-size:28px;
+  line-height:1;
+  letter-spacing:-.045em;
+  font-weight:400;
+  margin-bottom:10px;
+}
+.venue-map-overlay span:not(.venue-map-kicker){
+  font-size:15px;
+  line-height:1.45;
+  color:rgba(255,255,255,.82);
+}
+.venue-map-overlay em{
+  margin-top:16px;
+  font-style:normal;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.08em;
+  color:#fff;
+  border-bottom:1px solid rgba(255,255,255,.5);
+  padding-bottom:3px;
+}
+.venue-map-link:focus-visible{
+  outline:2px solid rgba(0,146,146,.65);
+  outline-offset:4px;
 }
 @media(max-width:768px){
-  body{cursor:auto}.cursor-ring,.cursor-dot{display:none}
-  #dot-canvas{opacity:.38}
-  .hero{padding:72px 0 80px;min-height:auto;}
-  h1{font-size:clamp(58px,18vw,96px);letter-spacing:-.07em;}
-  .hero-note{font-size:16.5px;max-width:100%;}
-  .btn{height:46px;padding:0 18px;}
-  .event-column{padding:18px 20px;border:1px solid rgba(56,169,165,.14);border-radius:18px;}
-  .event-line{display:grid;grid-template-columns:88px 1fr;gap:12px;align-items:baseline;padding:13px 0;}
-  .event-line span{margin:0;}
-  section{padding:82px 0;}
-  .section-head{margin-bottom:34px;}
-  .speaker-grid{gap:14px;}
-  .agenda-row{padding:18px 0;}
-  .footer{padding:78px 22px 36px;gap:30px;}
-  .footer::before{background:linear-gradient(180deg,rgba(246,244,238,.94),rgba(246,244,238,.82));}
+  .venue-map-overlay{opacity:1;transform:none;inset:12px;padding:18px;}
+  .venue-map-overlay strong{font-size:24px;}
 }
+
+
+/* ── SPEAKERS ── */
+#speakers{padding:0;}
+.speakers-head{
+  display:grid;grid-template-columns:.4fr 1fr;gap:72px;
+  align-items:end;margin-bottom:56px;
+}
+.speaker-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;
+}
+.speaker{
+  border-radius:18px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.64);
+  background:rgba(255,255,255,.36);
+  backdrop-filter:blur(18px) saturate(1.22);
+  -webkit-backdrop-filter:blur(18px) saturate(1.22);
+  box-shadow:0 1px 0 rgba(255,255,255,.85) inset,0 14px 48px rgba(0,0,0,.055);
+  transition:transform .48s var(--E-out),box-shadow .48s var(--E-out),background .28s;
+  position:relative;will-change:transform;
+  display:grid;grid-template-rows:220px auto;
+}
+.speaker::before{
+  content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.3) 0%,rgba(255,255,255,.06) 28%,transparent 52%);
+  border-radius:inherit;
+}
+.speaker::after{
+  content:'';position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;
+  background:radial-gradient(240px circle at var(--cx,50%) var(--cy,50%),rgba(0,146,146,.13),rgba(255,255,255,.07) 42%,transparent 68%);
+  transition:opacity .2s;
+}
+.speaker:hover::after{opacity:1;}
+.speaker:hover{
+  transform:translateY(-7px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  background:rgba(255,255,255,.56);
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 28px 80px rgba(0,0,0,.1);
+}
+.s-photo{
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:18px 14px 0;
+  background:radial-gradient(circle at 65% 10%,rgba(0,146,146,.08),transparent 44%),
+             linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.07));
+  border-bottom:1px solid rgba(255,255,255,.42);
+  overflow:hidden;position:relative;z-index:1;
+}
+.s-photo img{
+  max-width:100%;max-height:100%;object-fit:contain;
+  filter:grayscale(1) contrast(1.03);mix-blend-mode:multiply;
+  transition:filter .4s,transform .52s var(--E-out);
+}
+.speaker:hover .s-photo img{
+  filter:grayscale(.24) contrast(1.03);
+  transform:translate3d(var(--imgx,0px),var(--imgy,-3px),0) scale(1.04);
+}
+.s-info{padding:20px 22px 24px;position:relative;z-index:4;}
+.s-num{
+  font-family:var(--mono);font-size:8.5px;letter-spacing:0.2em;
+  color:rgba(0,146,146,.75);font-weight:400;margin-bottom:8px;display:block;
+}
+.s-name{
+  font-size:18px;font-weight:400;letter-spacing:-0.036em;line-height:1.08;
+  color:var(--ink);margin-bottom:4px;
+}
+.s-role{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.06em;
+  color:var(--teal-d);font-weight:400;margin-bottom:7px;line-height:1.52;
+}
+.s-talk{font-size:13px;line-height:1.54;color:var(--ink-3);}
+
+/* ── AGENDA ── */
+#agenda{
+  background:var(--dark);
+  padding:96px 0;
+  position:relative;overflow:hidden;
+  z-index:3;
+}
+#agenda::before{
+  content:'';position:absolute;
+  top:-160px;right:-120px;
+  width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,146,146,.14) 0%,transparent 68%);
+  pointer-events:none;
+}
+#agenda::after{
+  content:'';position:absolute;
+  bottom:-120px;left:-80px;
+  width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,146,146,.08) 0%,transparent 72%);
+  pointer-events:none;
+}
+.agenda-inner{
+  display:grid;grid-template-columns:320px 1fr;gap:80px;align-items:start;
+}
+.agenda-title-block{position:sticky;top:96px;}
+.agenda-title-block .ey{color:rgba(0,190,190,.7);}
+.agenda-h2{
+  font-size:clamp(42px,5vw,72px);
+  font-weight:400;letter-spacing:-0.062em;line-height:0.88;
+  color:var(--dark-ink);margin-bottom:20px;
+}
+.agenda-sub{
+  font-size:14px;font-weight:300;color:var(--dark-dim);line-height:1.8;
+}
+.agenda-rows{
+  border-left:1px solid rgba(255,255,255,.07);
+  padding-left:48px;
+  position:relative;z-index:1;
+}
+.a-day-tag{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(0,190,190,.55);margin-bottom:10px;display:block;
+}
+.a-day-date{
+  font-size:clamp(32px,4vw,52px);font-weight:400;
+  letter-spacing:-0.055em;color:var(--dark-ink);
+  margin-bottom:36px;line-height:1;
+}
+.a-row{
+  display:grid;grid-template-columns:120px 1fr;gap:32px;
+  padding:28px 0;border-top:1px solid rgba(255,255,255,.055);
+}
+.a-time{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;
+  color:rgba(234,228,216,.32);padding-top:4px;
+}
+.a-items{display:grid;gap:10px;}
+.a-item{
+  font-size:16px;font-weight:300;letter-spacing:-0.018em;
+  color:rgba(234,228,216,.82);line-height:1.45;
+}
+.a-note{
+  margin-top:8px;font-family:var(--mono);font-size:8.5px;letter-spacing:0.08em;
+  color:rgba(0,190,190,.45);
+}
+
+/* ── REGISTER ── */
+#register{
+  padding:100px 0;
+  background:var(--bg);
+  position:relative;
+  z-index:3;
+}
+.register-inner{
+  display:grid;grid-template-columns:1fr 500px;gap:96px;align-items:center;
+}
+.reg-lhs .ey{margin-bottom:20px;}
+.reg-h2{
+  font-size:clamp(48px,6vw,88px);font-weight:400;letter-spacing:-0.058em;line-height:0.88;
+  color:var(--ink);margin-bottom:24px;
+}
+.reg-note{
+  font-size:15px;font-weight:300;color:var(--ink-3);line-height:1.85;max-width:34ch;
+}
+.form-card{
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(255,255,255,.9);
+  backdrop-filter:blur(28px) saturate(1.15);
+  -webkit-backdrop-filter:blur(28px) saturate(1.15);
+  border-radius:22px;padding:44px;
+  box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 24px 80px rgba(0,0,0,.08);
+  position:relative;overflow:hidden;
+}
+.form-card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(360px circle at 8% 4%,rgba(0,146,146,.07),transparent 60%);
+}
+.form-card>*{position:relative;z-index:1;}
+.field{margin-bottom:22px;}
+.field label{
+  display:block;margin-bottom:8px;
+  font-family:var(--mono);font-size:8px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--ink-4);
+}
+.field input{
+  width:100%;height:48px;background:transparent;border:0;
+  border-bottom:1px solid var(--b2);outline:0;
+  font:300 15px/1 var(--sans);color:var(--ink);letter-spacing:-0.01em;
+  transition:border-color .18s;
+}
+.field input::placeholder{color:rgba(0,0,0,.22);}
+.field input:focus{border-color:var(--teal);}
+.f-honey{display:none;}
+.captcha-row{
+  display:flex;align-items:center;gap:12px;
+  height:62px;padding:0 14px;
+  background:rgba(255,255,255,.55);
+  border:1px solid var(--b);border-radius:10px;
+  margin-bottom:20px;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  font-size:13px;color:var(--ink-3);
+}
+.captcha-box{
+  width:22px;height:22px;border:1.5px solid var(--b2);
+  border-radius:3px;flex-shrink:0;
+}
+.btn-submit{
+  width:100%;height:52px;border:0;
+  background:var(--ink);color:#fff;
+  border-radius:10px;
+  font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;
+  transition:background .16s,transform .22s var(--E-out),box-shadow .18s;
+  box-shadow:0 4px 22px rgba(0,0,0,.14);
+}
+.btn-submit:hover{
+  background:#1a2232;transform:translateY(-2px);box-shadow:0 12px 38px rgba(0,0,0,.2);
+}
+.form-success{
+  text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;
+  color:var(--teal-d);margin-top:18px;line-height:1.7;display:none;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:#07090c;color:var(--dark-ink);
+  padding:88px var(--g) 48px;
+  border-top:1px solid rgba(255,255,255,.04);
+  position:relative;
+}
+footer::before{
+  content:'';position:absolute;top:0;left:var(--g);right:var(--g);height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,146,146,.38),transparent);
+}
+.footer-grid{
+  max-width:var(--w);margin:0 auto;
+  display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:48px;
+  margin-bottom:56px;
+}
+.footer-brand{display:flex;flex-direction:column;gap:16px;}
+.footer-logo{
+  display:flex;align-items:center;gap:7px;
+  text-decoration:none;color:var(--dark-ink);
+  font-size:15px;font-weight:500;letter-spacing:-0.03em;
+}
+.footer-desc{font-size:14px;font-weight:300;color:var(--dark-dim);line-height:1.75;max-width:26ch;}
+.footer-col h4{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(0,190,190,.6);margin-bottom:18px;
+}
+.footer-col a,.footer-col p{
+  display:block;font-size:13.5px;font-weight:300;color:var(--dark-dim);
+  text-decoration:none;line-height:2.1;
+  transition:color .15s,transform .18s;
+}
+.footer-col a:hover{color:var(--dark-ink);transform:translateX(3px);}
+.footer-legal{
+  max-width:var(--w);margin:0 auto;
+  border-top:1px solid rgba(255,255,255,.04);
+  padding-top:24px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:8px;letter-spacing:0.1em;
+  color:rgba(234,228,216,.22);
+}
+
+/* ── SCROLL REVEAL ── */
+.sr{
+  opacity:0;transform:translateY(14px);
+  transition:opacity .85s var(--E),transform .85s var(--E);
+}
+.sr.on{opacity:1;transform:none;}
+.sr-delay-1{transition-delay:.08s;}
+.sr-delay-2{transition-delay:.16s;}
+.sr-delay-3{transition-delay:.24s;}
+.sr-delay-4{transition-delay:.32s;}
+
+/* ── MOUSE GLOW ── */
+#mg{
+  position:fixed;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;opacity:0;
+  transition:opacity .4s;
+}
+#mg.on{opacity:1;}
+
+
+/* ── PREMIUM FIX PASS: dida-native glass, readable type, cleaner register, speaker modals ── */
+nav{height:86px;background:rgba(250,247,242,.92);box-shadow:0 12px 38px rgba(15,25,34,.055)}
+.nav-inner{height:86px;max-width:1440px}.logo{font-size:20px}.l-pip{width:7px;height:7px}.nav-links{gap:48px}.nav-links a{font-size:12px;letter-spacing:.02em;text-transform:none;font-family:var(--sans);font-weight:450;color:#111}.nav-links .cta{font-family:var(--sans);font-size:13px;text-transform:none;letter-spacing:-.01em;padding:13px 24px}.nav-lang{font-size:14px;font-family:var(--sans);letter-spacing:0}
+.w{max-width:1180px}.hero-inner{max-width:1040px}.hero-inner>div{padding:58px 64px 58px 0}.hero h1{font-size:clamp(76px,10.6vw,154px);margin-bottom:34px}.hero-note{font-size:18px;line-height:1.72;color:#3f4447;max-width:58ch}.hero-act{margin-bottom:22px}.btn-primary,.btn-ghost{height:60px;font-size:12px}.btn-primary{padding:0 38px;box-shadow:0 16px 46px rgba(0,0,0,.16)}
+.hero-meta{margin-top:18px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.74);box-shadow:0 18px 60px rgba(0,0,0,.095), inset 0 1px rgba(255,255,255,.9);backdrop-filter:blur(26px) saturate(1.25);-webkit-backdrop-filter:blur(26px) saturate(1.25)}
+.meta-item{padding:20px 30px}.meta-item span{font-size:9.5px}.meta-item b{font-size:17px;color:#101820}.section-lead,.panel p,.reg-note{font-size:17px;color:#444b4d}.section-h2{font-size:clamp(38px,5vw,66px)}
+#about .w,#speakers .w,#register .w{background:linear-gradient(90deg,rgba(250,247,242,.99),rgba(250,247,242,.94) 74%,rgba(250,247,242,.75));border-radius:0 0 32px 32px}.editorial,.speaker,.form-card{border-color:rgba(255,255,255,.82);background:rgba(255,255,255,.50);backdrop-filter:blur(30px) saturate(1.28);-webkit-backdrop-filter:blur(30px) saturate(1.28)}
+.speaker-grid{gap:22px}.speaker{cursor:pointer;display:grid;grid-template-rows:238px auto;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 20px 70px rgba(7,16,22,.075)}.s-name{font-size:20px}.s-role{font-size:9.5px;color:#027f7f}.s-talk{font-size:14.5px;color:#465052}.s-info{padding:22px 24px 26px}.s-photo{background:radial-gradient(circle at 68% 4%,rgba(0,170,170,.15),transparent 44%),linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.10))}
+.register-inner{grid-template-columns:minmax(0,1fr) minmax(420px,560px);gap:72px;align-items:stretch}.reg-lhs{padding:36px 0}.reg-h2{font-size:clamp(58px,7vw,104px)}.form-card{padding:48px;border-radius:30px;box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 28px 90px rgba(11,23,30,.12)}.field label{font-size:9.5px;color:#697071}.field input{height:56px;font-size:17px}.captcha-row{height:68px;font-size:15px}.btn-submit{height:58px;border-radius:14px;font-size:11px}
+#agenda{padding:112px 0}.agenda-h2{font-size:clamp(52px,6vw,88px)}.a-item{font-size:18px}.a-time{font-size:11px}.agenda-sub{font-size:16px}.a-day-date{font-size:56px}
+/* modal */
+.speaker-modal{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;padding:28px;background:rgba(8,14,15,.44);backdrop-filter:blur(18px) saturate(.9);-webkit-backdrop-filter:blur(18px) saturate(.9)}
+.speaker-modal.open{display:flex}.modal-card{width:min(760px,calc(100vw - 44px));max-height:min(86vh,860px);overflow:auto;border-radius:28px;padding:52px;background:linear-gradient(145deg,rgba(255,255,255,.86),rgba(250,247,242,.74));border:1px solid rgba(255,255,255,.82);box-shadow:0 42px 120px rgba(2,10,18,.34),inset 0 1px rgba(255,255,255,.9);color:#12202c}.modal-close{position:absolute;top:26px;right:28px;width:42px;height:42px;border:0;background:rgba(255,255,255,.44);border-radius:999px;font-size:26px;line-height:1;color:#12202c;cursor:pointer}.modal-kicker{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--teal);margin-bottom:18px}.modal-title{font-size:34px;line-height:1.06;letter-spacing:-.045em;margin-bottom:10px}.modal-role{font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--teal-d);margin-bottom:26px}.modal-talk{font-size:26px;line-height:1.12;letter-spacing:-.045em;margin-bottom:26px;color:#15243a}.modal-bio{font-size:18px;line-height:1.7;color:#24303c}.modal-bio p+p{margin-top:14px}
+#dotCanvas{filter:drop-shadow(0 0 16px rgba(0,146,146,.08))}
+@media(max-width:1080px){.register-inner{grid-template-columns:1fr}.nav-inner{padding:0 28px}.nav-links{gap:20px}.speaker-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){nav,.nav-inner{height:76px}.hero h1{font-size:64px}.hero-note{font-size:16px}.hero-meta{width:100%}.meta-item{flex:1 1 50%;padding:16px}.speaker-grid{grid-template-columns:1fr}.modal-card{padding:36px 26px}.modal-title{font-size:28px}.modal-talk{font-size:22px}.modal-bio{font-size:16px}.register-inner{gap:28px}.form-card{padding:30px}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1080px){
+  .about-head{grid-template-columns:1fr;gap:20px;}
+  .speakers-head{grid-template-columns:1fr;gap:20px;}
+  .speaker-grid{grid-template-columns:repeat(3,1fr);}
+  .panel,.panel.large,.visual-panel,.venue-photo{grid-column:1/-1;}
+  .agenda-inner{grid-template-columns:1fr;}
+  .agenda-title-block{position:static;margin-bottom:40px;}
+  .agenda-rows{border-left:0;padding-left:0;}
+  .register-inner{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  :root{--g:24px;}
+  .nav-links{display:none;}
+  .speaker-grid{grid-template-columns:repeat(2,1fr);}
+  .a-row{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .hero-meta{flex-wrap:wrap;}
+  .hero-inner>div{padding:32px 24px 32px 0;}
+}
+@media(max-width:480px){
+  .speaker-grid{grid-template-columns:1fr;}
+  .stats{grid-template-columns:repeat(3,1fr);}
+}
+
+/* ── AGENDA FUNCTIONAL POLISH: 2025-style time rows + workshop rooms ── */
+.agenda-inner-wide{grid-template-columns:300px 1fr;gap:96px}
+.agenda-timeline{padding-left:56px}
+.agenda-room-label{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:rgba(0,190,190,.72);
+  margin:38px 0 8px;
+}
+.agenda-slot{
+  display:grid;
+  grid-template-columns:150px minmax(0,1fr);
+  gap:42px;
+  padding:32px 0 36px;
+  border-top:1px solid rgba(255,255,255,.075);
+}
+.agenda-slot:first-of-type{margin-top:8px}
+.slot-time{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.08em;
+  color:rgba(234,228,216,.50);
+  padding-top:7px;
+  white-space:nowrap;
+}
+.slot-speaker{
+  display:block;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.06em;
+  color:rgba(0,190,190,.66);
+  margin-bottom:9px;
+}
+.slot-body h3{
+  font-size:24px;
+  line-height:1.12;
+  letter-spacing:-.045em;
+  font-weight:400;
+  color:var(--dark-ink);
+  margin-bottom:10px;
+}
+.slot-body p{
+  font-size:16px;
+  line-height:1.7;
+  color:rgba(234,228,216,.58);
+  max-width:62ch;
+}
+.agenda-slot.is-break .slot-body h3,
+.agenda-slot.is-soft .slot-body h3{color:rgba(234,228,216,.78)}
+.agenda-room-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:54px;
+}
+.agenda-room-card{
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;
+  padding:28px 30px 8px;
+  background:rgba(255,255,255,.035);
+  backdrop-filter:blur(20px) saturate(1.15);
+  -webkit-backdrop-filter:blur(20px) saturate(1.15);
+  box-shadow:inset 0 1px rgba(255,255,255,.06),0 22px 70px rgba(0,0,0,.18);
+}
+.agenda-room-card .agenda-room-label{margin:0 0 14px}
+.agenda-slot.mini{
+  grid-template-columns:112px minmax(0,1fr);
+  gap:24px;
+  padding:24px 0 26px;
+}
+.agenda-slot.mini .slot-time{font-size:10px;white-space:normal;line-height:1.45}
+.agenda-slot.mini .slot-speaker{font-size:9px;line-height:1.45}
+.agenda-slot.mini .slot-body h3{font-size:18px;letter-spacing:-.035em;line-height:1.22}
+@media(max-width:1080px){
+  .agenda-inner-wide{grid-template-columns:1fr;gap:42px}
+  .agenda-timeline{padding-left:0}
+  .agenda-room-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .agenda-slot,.agenda-slot.mini{grid-template-columns:1fr;gap:12px;padding:28px 0}
+  .slot-time{font-size:11px}
+  .slot-body h3{font-size:22px}
+  .agenda-room-card{padding:24px 22px 4px;border-radius:20px}
+}
+
+
+
+/* ── AGENDA FINAL POLISH: dark editorial, readable, confident ── */
+#agenda{
+  background:
+    radial-gradient(780px circle at 92% 0%, rgba(0,146,146,.16), transparent 62%),
+    linear-gradient(180deg,#050708 0%,#07090c 54%,#050607 100%) !important;
+  padding:128px 0 140px !important;
+}
+#agenda::before{opacity:.42 !important;}
+#agenda .w{max-width:1220px;}
+.agenda-inner-wide{
+  grid-template-columns:minmax(280px,340px) minmax(0,1fr) !important;
+  gap:72px !important;
+  align-items:start !important;
+}
+.agenda-title-block{
+  position:sticky !important;
+  top:118px !important;
+  padding-right:42px !important;
+  border-right:1px solid rgba(234,228,216,.105) !important;
+}
+.agenda-title-block .ey{
+  font-size:11px !important;
+  letter-spacing:.24em !important;
+  color:rgba(0,190,190,.84) !important;
+  margin-bottom:26px !important;
+}
+.agenda-h2{
+  max-width:7ch;
+  font-size:clamp(58px,6.7vw,92px) !important;
+  line-height:.88 !important;
+  letter-spacing:-.075em !important;
+  color:#f3eee4 !important;
+  margin-bottom:30px !important;
+}
+.agenda-sub{
+  font-size:17px !important;
+  line-height:1.75 !important;
+  color:rgba(234,228,216,.56) !important;
+  max-width:29ch !important;
+}
+.agenda-timeline{padding-left:0 !important;border-left:0 !important;}
+.a-day-tag,
+.agenda-room-label{
+  font-size:11px !important;
+  letter-spacing:.22em !important;
+  color:rgba(0,200,200,.80) !important;
+}
+.a-day-date{
+  font-size:clamp(46px,5.2vw,74px) !important;
+  letter-spacing:-.065em !important;
+  color:#f3eee4 !important;
+  margin:10px 0 52px !important;
+}
+.agenda-room-label{display:block;margin:0 0 20px !important;}
+.agenda-slot{
+  grid-template-columns:150px minmax(0,1fr) !important;
+  gap:46px !important;
+  padding:30px 0 34px !important;
+  border-top:1px solid rgba(234,228,216,.105) !important;
+  margin:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+}
+.agenda-slot:hover{background:transparent !important;}
+.slot-time{
+  font-family:var(--mono) !important;
+  font-size:14px !important;
+  letter-spacing:.04em !important;
+  line-height:1.4 !important;
+  color:rgba(234,228,216,.56) !important;
+  white-space:nowrap !important;
+  padding-top:5px !important;
+}
+.slot-speaker{
+  font-size:12px !important;
+  line-height:1.45 !important;
+  letter-spacing:.08em !important;
+  color:rgba(0,200,200,.78) !important;
+  margin-bottom:10px !important;
+}
+.slot-body h3{
+  font-size:clamp(25px,2.25vw,34px) !important;
+  line-height:1.12 !important;
+  letter-spacing:-.055em !important;
+  color:#eee8dd !important;
+  max-width:18ch;
+}
+.slot-body p{
+  font-size:17px !important;
+  line-height:1.65 !important;
+  color:rgba(234,228,216,.58) !important;
+  margin-top:8px !important;
+}
+.agenda-slot.is-break,
+.agenda-slot.is-soft{
+  padding:28px 0 32px !important;
+}
+.agenda-slot.is-break .slot-body h3,
+.agenda-slot.is-soft .slot-body h3{
+  color:rgba(244,238,228,.82) !important;
+}
+.parallel-workshops{
+  margin-top:74px;
+  padding-top:42px;
+  border-top:1px solid rgba(234,228,216,.12);
+}
+.parallel-head{
+  display:grid;
+  grid-template-columns:minmax(240px,.55fr) 1fr;
+  gap:42px;
+  align-items:end;
+  margin-bottom:24px;
+}
+.parallel-head h3{
+  margin:8px 0 0;
+  font-size:clamp(34px,3.8vw,56px);
+  line-height:.95;
+  letter-spacing:-.065em;
+  font-weight:400;
+  color:#f3eee4;
+}
+.parallel-head p{
+  font-size:17px;
+  line-height:1.65;
+  color:rgba(234,228,216,.58);
+  max-width:48ch;
+}
+.workshop-table{
+  border:1px solid rgba(234,228,216,.105);
+  border-radius:28px;
+  overflow:hidden;
+  background:linear-gradient(135deg,rgba(255,255,255,.052),rgba(255,255,255,.018));
+  box-shadow:inset 0 1px rgba(255,255,255,.06),0 28px 90px rgba(0,0,0,.20);
+}
+.workshop-row{
+  display:grid;
+  grid-template-columns:146px minmax(0,1fr) minmax(0,1fr);
+  border-top:1px solid rgba(234,228,216,.09);
+}
+.workshop-row:first-child{border-top:0;}
+.workshop-header{
+  background:rgba(255,255,255,.045);
+}
+.workshop-time,
+.workshop-room,
+.workshop-cell{
+  padding:24px 26px;
+}
+.workshop-time{
+  font-family:var(--mono);
+  font-size:13px;
+  line-height:1.45;
+  letter-spacing:.04em;
+  color:rgba(234,228,216,.58);
+  border-right:1px solid rgba(234,228,216,.09);
+}
+.workshop-room{
+  font-family:var(--mono);
+  text-transform:uppercase;
+  font-size:11px;
+  letter-spacing:.18em;
+  color:rgba(0,200,200,.82);
+  border-right:1px solid rgba(234,228,216,.09);
+}
+.workshop-room:last-child{border-right:0;}
+.workshop-cell{
+  min-height:132px;
+  border-right:1px solid rgba(234,228,216,.09);
+}
+.workshop-cell:last-child{border-right:0;}
+.workshop-cell span{
+  display:block;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.06em;
+  line-height:1.45;
+  color:rgba(0,200,200,.76);
+  margin-bottom:12px;
+}
+.workshop-cell h4{
+  margin:0;
+  font-size:clamp(20px,1.75vw,25px);
+  line-height:1.18;
+  letter-spacing:-.047em;
+  font-weight:400;
+  color:#eee8dd;
+}
+.workshop-muted span{color:rgba(234,228,216,.34);}
+.workshop-muted h4{color:rgba(234,228,216,.48);}
+.workshop-break{background:rgba(0,146,146,.045);}
+.workshop-break .workshop-cell{min-height:auto;}
+.workshop-break h4{color:rgba(244,238,228,.78);}
+@media(max-width:1040px){
+  .agenda-inner-wide{grid-template-columns:1fr !important;gap:48px !important;}
+  .agenda-title-block{position:relative !important;top:auto !important;padding-right:0 !important;border-right:0 !important;}
+  .agenda-h2{max-width:none;}
+  .agenda-sub{max-width:58ch !important;}
+  .parallel-head{grid-template-columns:1fr;gap:16px;}
+}
+@media(max-width:760px){
+  #agenda{padding:92px 0 104px !important;}
+  .agenda-slot{grid-template-columns:1fr !important;gap:12px !important;padding:26px 0 !important;}
+  .slot-time{font-size:13px !important;}
+  .slot-body h3{max-width:none;font-size:25px !important;}
+  .workshop-table{border-radius:22px;}
+  .workshop-row{display:block;}
+  .workshop-header{display:none;}
+  .workshop-time{border-right:0;border-bottom:1px solid rgba(234,228,216,.08);padding:20px 22px 10px;}
+  .workshop-cell{border-right:0;border-top:1px solid rgba(234,228,216,.08);min-height:auto;padding:22px;}
+}
+
 
 
 /* ─────────────────────────────────────────────
-   V14B QUICK FIX — keep original right-side info, make it glass,
-   fix intro balance, add subtle bottom-left dots, avoid dirty/double dots
+   CRYSTAL CLEAN AGENDA PASS — dark, calm, readable
+   Keeps the existing design direction, fixes overlap/scale,
+   and makes workshop rooms scan in one second.
 ───────────────────────────────────────────── */
-.hero{
-  min-height:calc(100vh - 68px);
-  padding:86px 0 110px;
-  display:grid;
-  align-content:center;
-  position:relative;
+#agenda{
+  background:
+    radial-gradient(860px circle at 92% 0%, rgba(0,146,146,.13), transparent 60%),
+    radial-gradient(640px circle at 8% 100%, rgba(0,146,146,.045), transparent 68%),
+    linear-gradient(180deg,#050708 0%,#07090c 52%,#050607 100%) !important;
+  padding:122px 0 132px !important;
 }
-.hero::after{
-  content:"";
-  position:absolute;
-  left:-110px;
-  bottom:-120px;
-  width:390px;
-  height:390px;
-  z-index:1;
-  pointer-events:none;
-  opacity:.34;
-  background-image:radial-gradient(rgba(56,169,165,.26) 1.35px, transparent 1.35px);
-  background-size:15px 15px;
-  -webkit-mask-image:radial-gradient(circle at center,#000 22%,transparent 72%);
-  mask-image:radial-gradient(circle at center,#000 22%,transparent 72%);
+#agenda .w{max-width:1320px !important;}
+.agenda-inner-wide{
+  display:grid !important;
+  grid-template-columns:minmax(250px,300px) minmax(0,1fr) !important;
+  gap:68px !important;
+  align-items:start !important;
 }
-.hero-inner{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(300px,390px);
-  gap:clamp(52px,7vw,108px);
+.agenda-title-block{
+  position:sticky !important;
+  top:116px !important;
+  padding-right:40px !important;
+  border-right:1px solid rgba(234,228,216,.095) !important;
+  min-height:auto !important;
+  z-index:3 !important;
+}
+.agenda-title-block .ey{
+  font-size:10px !important;
+  letter-spacing:.24em !important;
+  color:rgba(0,205,205,.88) !important;
+  margin-bottom:26px !important;
+}
+.agenda-h2{
+  max-width:7.4ch !important;
+  font-size:clamp(50px,5.5vw,82px) !important;
+  line-height:.9 !important;
+  letter-spacing:-.075em !important;
+  color:#f5efe4 !important;
+  margin-bottom:28px !important;
+}
+.agenda-sub{
+  max-width:29ch !important;
+  font-size:17.5px !important;
+  line-height:1.72 !important;
+  color:rgba(234,228,216,.62) !important;
+}
+.agenda-timeline{padding-left:0 !important;border-left:0 !important;}
+.a-day-tag,
+.agenda-room-label{
+  font-size:11px !important;
+  letter-spacing:.22em !important;
+  color:rgba(0,205,205,.82) !important;
+}
+.a-day-date{
+  font-size:clamp(44px,4.5vw,66px) !important;
+  line-height:.95 !important;
+  color:#f5efe4 !important;
+  letter-spacing:-.065em !important;
+  margin:10px 0 44px !important;
+}
+.agenda-slot{
+  grid-template-columns:142px minmax(0,1fr) !important;
+  gap:42px !important;
+  padding:28px 0 30px !important;
+  border-top:1px solid rgba(234,228,216,.115) !important;
+  margin:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+}
+.agenda-slot:hover{background:transparent !important;}
+.slot-time{
+  font-family:var(--mono) !important;
+  font-size:14px !important;
+  letter-spacing:.045em !important;
+  line-height:1.42 !important;
+  color:rgba(234,228,216,.66) !important;
+  white-space:nowrap !important;
+  padding-top:5px !important;
+}
+.slot-speaker{
+  display:block !important;
+  font-size:12px !important;
+  letter-spacing:.085em !important;
+  line-height:1.45 !important;
+  color:rgba(0,205,205,.82) !important;
+  margin-bottom:10px !important;
+}
+.slot-body h3{
+  max-width:25ch !important;
+  font-size:clamp(24px,2.05vw,31px) !important;
+  line-height:1.14 !important;
+  letter-spacing:-.052em !important;
+  font-weight:400 !important;
+  color:#f1eadf !important;
+}
+.slot-body p{
+  max-width:58ch !important;
+  font-size:17px !important;
+  line-height:1.62 !important;
+  color:rgba(234,228,216,.64) !important;
+  margin-top:8px !important;
+}
+.agenda-slot.is-break,
+.agenda-slot.is-soft{
+  padding:26px 0 28px !important;
+}
+.agenda-slot.is-break .slot-body h3,
+.agenda-slot.is-soft .slot-body h3{
+  color:rgba(245,239,228,.86) !important;
+}
+
+/* Workshop rooms: clean comparison rows, no cramped boxes */
+.parallel-workshops{
+  margin-top:70px !important;
+  padding-top:44px !important;
+  border-top:1px solid rgba(234,228,216,.13) !important;
+}
+.parallel-head{
+  display:grid !important;
+  grid-template-columns:minmax(220px,.52fr) minmax(0,1fr) !important;
+  gap:38px !important;
+  align-items:end !important;
+  margin-bottom:26px !important;
+}
+.parallel-head h3{
+  margin:8px 0 0 !important;
+  max-width:8ch !important;
+  font-size:clamp(34px,3.2vw,50px) !important;
+  line-height:.96 !important;
+  letter-spacing:-.068em !important;
+  color:#f5efe4 !important;
+}
+.parallel-head p{
+  max-width:46ch !important;
+  font-size:17px !important;
+  line-height:1.6 !important;
+  color:rgba(234,228,216,.62) !important;
+}
+.workshop-table{
+  border:1px solid rgba(234,228,216,.11) !important;
+  border-radius:24px !important;
+  overflow:hidden !important;
+  background:rgba(255,255,255,.026) !important;
+  box-shadow:inset 0 1px rgba(255,255,255,.055),0 22px 72px rgba(0,0,0,.18) !important;
+}
+.workshop-row{
+  display:grid !important;
+  grid-template-columns:132px minmax(0,1fr) minmax(0,1fr) !important;
+  border-top:1px solid rgba(234,228,216,.095) !important;
+}
+.workshop-row:first-child{border-top:0 !important;}
+.workshop-header{background:rgba(255,255,255,.035) !important;}
+.workshop-time,
+.workshop-room,
+.workshop-cell{
+  padding:22px 24px !important;
+}
+.workshop-time{
+  font-family:var(--mono) !important;
+  font-size:12.5px !important;
+  line-height:1.48 !important;
+  letter-spacing:.035em !important;
+  color:rgba(234,228,216,.62) !important;
+  border-right:1px solid rgba(234,228,216,.095) !important;
+  background:rgba(255,255,255,.012) !important;
+}
+.workshop-room{
+  font-family:var(--mono) !important;
+  text-transform:uppercase !important;
+  font-size:10.5px !important;
+  letter-spacing:.18em !important;
+  color:rgba(0,205,205,.84) !important;
+  border-right:1px solid rgba(234,228,216,.095) !important;
+}
+.workshop-room:last-child{border-right:0 !important;}
+.workshop-cell{
+  min-height:112px !important;
+  border-right:1px solid rgba(234,228,216,.095) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+}
+.workshop-cell:last-child{border-right:0 !important;}
+.workshop-cell span{
+  display:block !important;
+  font-family:var(--mono) !important;
+  font-size:10.5px !important;
+  letter-spacing:.065em !important;
+  line-height:1.45 !important;
+  color:rgba(0,205,205,.78) !important;
+  margin-bottom:10px !important;
+}
+.workshop-cell h4{
+  margin:0 !important;
+  max-width:22ch !important;
+  font-size:clamp(19px,1.55vw,23px) !important;
+  line-height:1.18 !important;
+  letter-spacing:-.045em !important;
+  font-weight:400 !important;
+  color:#f1eadf !important;
+}
+.workshop-muted span{color:rgba(234,228,216,.38) !important;}
+.workshop-muted h4{color:rgba(234,228,216,.52) !important;}
+.workshop-break{background:rgba(0,146,146,.045) !important;}
+.workshop-break .workshop-cell{min-height:78px !important;}
+.workshop-break h4{color:rgba(245,239,228,.82) !important;}
+
+@media(max-width:1080px){
+  .agenda-inner-wide{grid-template-columns:1fr !important;gap:48px !important;}
+  .agenda-title-block{position:relative !important;top:auto !important;padding-right:0 !important;border-right:0 !important;}
+  .agenda-h2{max-width:none !important;}
+  .agenda-sub{max-width:60ch !important;}
+  .parallel-head{grid-template-columns:1fr !important;gap:14px !important;}
+  .parallel-head h3{max-width:none !important;}
+}
+@media(max-width:760px){
+  #agenda{padding:88px 0 100px !important;}
+  .agenda-slot{grid-template-columns:1fr !important;gap:10px !important;padding:24px 0 !important;}
+  .slot-time{font-size:13px !important;}
+  .slot-body h3{max-width:none !important;font-size:25px !important;}
+  .slot-body p{font-size:16px !important;}
+  .workshop-table{border-radius:20px !important;}
+  .workshop-row{display:block !important;}
+  .workshop-header{display:none !important;}
+  .workshop-time{border-right:0 !important;border-bottom:1px solid rgba(234,228,216,.08) !important;padding:18px 22px 10px !important;}
+  .workshop-cell{border-right:0 !important;border-top:1px solid rgba(234,228,216,.08) !important;min-height:auto !important;padding:20px 22px !important;display:block !important;}
+  .workshop-cell h4{max-width:none !important;font-size:22px !important;}
+}
+
+
+
+/* ── FINAL AGENDA OVERLAP FIX: crystal-clean, no sticky collision ── */
+#agenda{
+  padding:118px 0 128px !important;
+}
+#agenda .w{
+  max-width:1360px !important;
+}
+.agenda-inner-wide{
+  grid-template-columns:minmax(340px,390px) minmax(0,1fr) !important;
+  gap:92px !important;
+}
+.agenda-title-block{
+  position:relative !important;
+  top:auto !important;
+  align-self:start !important;
+  padding-right:54px !important;
+  border-right:1px solid rgba(234,228,216,.10) !important;
+  z-index:1 !important;
+}
+.agenda-title-block .ey{
+  margin-bottom:34px !important;
+}
+.agenda-h2{
+  max-width:8.8ch !important;
+  font-size:clamp(48px,4.8vw,74px) !important;
+  line-height:.92 !important;
+  letter-spacing:-.07em !important;
+}
+.agenda-sub{
+  max-width:32ch !important;
+  font-size:18px !important;
+  line-height:1.72 !important;
+  color:rgba(234,228,216,.66) !important;
+}
+.agenda-timeline{
+  min-width:0 !important;
+}
+.a-day-date{
+  font-size:clamp(48px,4.25vw,66px) !important;
+  margin-bottom:40px !important;
+}
+.agenda-slot{
+  grid-template-columns:152px minmax(0,1fr) !important;
+  gap:42px !important;
+  padding:31px 0 34px !important;
+}
+.slot-time{
+  font-size:14px !important;
+  opacity:.92 !important;
+}
+.slot-body h3{
+  max-width:31ch !important;
+  font-size:clamp(25px,2vw,30px) !important;
+  line-height:1.16 !important;
+}
+.slot-body p{
+  font-size:17px !important;
+}
+.parallel-workshops{
+  margin-top:76px !important;
+  padding-top:46px !important;
+}
+.parallel-head{
+  grid-template-columns:minmax(260px,340px) minmax(0,1fr) !important;
+  gap:44px !important;
+  margin-bottom:30px !important;
+}
+.parallel-head h3{
+  max-width:10ch !important;
+  font-size:clamp(34px,3vw,48px) !important;
+  line-height:1 !important;
+}
+.parallel-head p{
+  font-size:18px !important;
+  max-width:52ch !important;
+  color:rgba(234,228,216,.68) !important;
+}
+.workshop-table{
+  border-radius:22px !important;
+  background:rgba(255,255,255,.018) !important;
+}
+.workshop-row{
+  grid-template-columns:150px minmax(0,1fr) minmax(0,1fr) !important;
+}
+.workshop-time,.workshop-room,.workshop-cell{
+  padding:24px 28px !important;
+}
+.workshop-time{
+  font-size:13px !important;
+  line-height:1.5 !important;
+}
+.workshop-cell{
+  min-height:118px !important;
+  justify-content:flex-start !important;
+}
+.workshop-cell span{
+  font-size:11px !important;
+  line-height:1.5 !important;
+}
+.workshop-cell h4{
+  max-width:26ch !important;
+  font-size:clamp(20px,1.45vw,24px) !important;
+  line-height:1.2 !important;
+  text-wrap:balance;
+}
+.workshop-break .workshop-cell{
+  min-height:76px !important;
+  justify-content:center !important;
+}
+@media(max-width:1180px){
+  .agenda-inner-wide{
+    grid-template-columns:1fr !important;
+    gap:52px !important;
+  }
+  .agenda-title-block{
+    padding-right:0 !important;
+    border-right:0 !important;
+    max-width:680px !important;
+  }
+  .agenda-h2{max-width:none !important;}
+  .agenda-sub{max-width:56ch !important;}
+}
+@media(max-width:760px){
+  .agenda-slot{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+  .workshop-row{display:block !important;}
+  .workshop-header{display:none !important;}
+}
+
+
+
+/* ── FINAL REQUEST: keep left agenda intro following the agenda scroll, no overlap ── */
+@media (min-width:1181px){
+  #agenda{
+    overflow:visible !important;
+  }
+  .agenda-inner-wide{
+    align-items:start !important;
+  }
+  .agenda-title-block{
+    position:sticky !important;
+    top:128px !important;
+    align-self:start !important;
+    max-height:calc(100vh - 160px) !important;
+    padding-right:54px !important;
+    border-right:1px solid rgba(234,228,216,.10) !important;
+    z-index:2 !important;
+  }
+  .agenda-title-block .ey{
+    margin-bottom:28px !important;
+    font-size:10px !important;
+    letter-spacing:.24em !important;
+  }
+  .agenda-h2{
+    font-size:clamp(46px,4.4vw,68px) !important;
+    line-height:.92 !important;
+    max-width:8.7ch !important;
+    margin-bottom:28px !important;
+  }
+  .agenda-sub{
+    font-size:17px !important;
+    line-height:1.72 !important;
+    max-width:31ch !important;
+    color:rgba(234,228,216,.64) !important;
+  }
+  .agenda-timeline{
+    position:relative !important;
+    z-index:1 !important;
+  }
+}
+@media (max-width:1180px){
+  .agenda-title-block{
+    position:relative !important;
+    top:auto !important;
+  }
+}
+
+
+
+/* ── FINAL READABILITY + NO OVERLAP PATCH ── */
+@media (min-width:1181px){
+  #agenda{
+    overflow:visible !important;
+    padding-top:118px !important;
+    padding-bottom:138px !important;
+  }
+  #agenda .w{
+    max-width:1260px !important;
+  }
+  .agenda-inner-wide,
+  .agenda-2025-style{
+    display:grid !important;
+    grid-template-columns:minmax(360px,390px) minmax(0,1fr) !important;
+    gap:74px !important;
+    align-items:start !important;
+  }
+  .agenda-title-block{
+    position:sticky !important;
+    top:118px !important;
+    align-self:start !important;
+    width:100% !important;
+    max-width:390px !important;
+    max-height:none !important;
+    overflow:visible !important;
+    padding-right:44px !important;
+    border-right:1px solid rgba(234,228,216,.12) !important;
+    z-index:3 !important;
+  }
+  .agenda-title-block .ey{
+    display:block !important;
+    margin-bottom:30px !important;
+    font-size:12px !important;
+    line-height:1.35 !important;
+    letter-spacing:.24em !important;
+    font-weight:500 !important;
+    color:rgba(0,215,215,.86) !important;
+  }
+  .agenda-title-block .agenda-h2{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    font-size:clamp(44px,4.1vw,58px) !important;
+    line-height:.96 !important;
+    letter-spacing:-.068em !important;
+    margin:0 0 32px !important;
+    color:var(--dark-ink) !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+    white-space:normal !important;
+    text-wrap:balance !important;
+  }
+  .agenda-title-block .agenda-sub{
+    display:block !important;
+    max-width:30ch !important;
+    font-size:18px !important;
+    line-height:1.78 !important;
+    color:rgba(234,228,216,.70) !important;
+    letter-spacing:-.012em !important;
+  }
+  .agenda-timeline{
+    position:relative !important;
+    z-index:1 !important;
+    min-width:0 !important;
+    padding-left:0 !important;
+  }
+}
+
+/* bigger, still elegant labels */
+.ey,
+.hero-kicker,
+.panel .mono,
+.s-num,
+.meta-item span,
+.a-day-tag,
+.agenda-room-label,
+.slot-speaker,
+.workshop-cell span,
+.workshop-room,
+.footer-col h4,
+.field label,
+.reg-lhs .ey{
+  font-size:12px !important;
+  line-height:1.4 !important;
+  letter-spacing:.20em !important;
+  font-weight:500 !important;
+  opacity:.92 !important;
+}
+.reg-lhs .ey{
+  color:var(--teal-d) !important;
+  margin-bottom:22px !important;
+}
+.footer-col h4{
+  color:rgba(0,210,210,.76) !important;
+  margin-bottom:20px !important;
+}
+.footer-col a,
+.footer-col p,
+.footer-desc{
+  font-size:15px !important;
+  line-height:2 !important;
+  color:rgba(234,228,216,.62) !important;
+}
+.footer-legal{
+  font-size:11px !important;
+  line-height:1.7 !important;
+  color:rgba(234,228,216,.58) !important;
+  letter-spacing:.08em !important;
+}
+
+/* agenda row legibility without changing the dark design */
+.slot-time{
+  font-size:15px !important;
+  color:rgba(234,228,216,.70) !important;
+  letter-spacing:.04em !important;
+}
+.slot-body h3{
+  font-size:clamp(25px,2.25vw,34px) !important;
+  line-height:1.16 !important;
+  letter-spacing:-.052em !important;
+  max-width:28ch !important;
+}
+.slot-body p{
+  font-size:18px !important;
+  line-height:1.62 !important;
+  color:rgba(234,228,216,.66) !important;
+}
+.agenda-slot{
+  grid-template-columns:158px minmax(0,1fr) !important;
+  gap:34px !important;
+  padding-top:34px !important;
+  padding-bottom:36px !important;
+}
+.a-day-date{
+  font-size:clamp(50px,5.2vw,76px) !important;
+  line-height:1 !important;
+  margin-bottom:46px !important;
+}
+
+/* workshop table: less cramped, more scanable */
+.parallel-workshops{
+  margin-top:92px !important;
+  padding-top:56px !important;
+}
+.parallel-head{
+  display:grid !important;
+  grid-template-columns:minmax(240px,.55fr) 1fr !important;
+  gap:48px !important;
+  align-items:end !important;
+  margin-bottom:32px !important;
+}
+.parallel-head h3{
+  font-size:clamp(38px,4.5vw,62px) !important;
+  line-height:.94 !important;
+  letter-spacing:-.068em !important;
+  max-width:10ch !important;
+}
+.parallel-head p{
+  font-size:18px !important;
+  line-height:1.65 !important;
+  color:rgba(234,228,216,.62) !important;
+  max-width:44ch !important;
+}
+.workshop-table{
+  border-radius:26px !important;
+  overflow:hidden !important;
+  background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.018)) !important;
+}
+.workshop-row{
+  grid-template-columns:140px minmax(0,1fr) minmax(0,1fr) !important;
+}
+.workshop-time,.workshop-room,.workshop-cell{
+  padding:24px 26px !important;
+}
+.workshop-time{
+  font-size:14px !important;
+  line-height:1.5 !important;
+  color:rgba(234,228,216,.64) !important;
+}
+.workshop-cell h4{
+  font-size:clamp(20px,1.6vw,25px) !important;
+  line-height:1.22 !important;
+  letter-spacing:-.045em !important;
+  max-width:24ch !important;
+}
+.workshop-cell{
+  min-height:118px !important;
+}
+
+@media(max-width:1180px){
+  .agenda-inner-wide,
+  .agenda-2025-style{
+    grid-template-columns:1fr !important;
+    gap:50px !important;
+  }
+  .agenda-title-block{
+    position:relative !important;
+    top:auto !important;
+    max-width:680px !important;
+    border-right:0 !important;
+    padding-right:0 !important;
+  }
+  .agenda-title-block .agenda-h2{
+    max-width:none !important;
+    font-size:clamp(46px,8vw,72px) !important;
+  }
+  .agenda-title-block .agenda-sub{
+    max-width:54ch !important;
+    font-size:18px !important;
+  }
+  .parallel-head{
+    grid-template-columns:1fr !important;
+    gap:18px !important;
+  }
+}
+@media(max-width:760px){
+  .agenda-slot{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+  .slot-body h3{font-size:25px !important;}
+  .workshop-row{display:block !important;}
+  .workshop-header{display:none !important;}
+  .footer-legal{display:block !important;}
+  .footer-legal span{display:block;margin-bottom:8px;}
+}
+
+
+
+/* ── FINAL CLARITY PASS: clean dida-like intro/video + readable micro text ── */
+#about .w{
+  background:linear-gradient(90deg,rgba(250,247,242,.98),rgba(250,247,242,.92) 68%,rgba(250,247,242,.68));
+}
+.about-head{
+  grid-template-columns:minmax(280px,.62fr) minmax(360px,1fr);
+  gap:84px;
   align-items:center;
-  position:relative;
-  z-index:3;
-  animation:none;
+  margin-bottom:62px;
 }
-.hero-inner > div:first-child{
-  max-width:720px;
+.about-head .ey,
+.reg-lhs .ey,
+.agenda-title-block .ey,
+.a-day-tag,
+.agenda-room-label,
+.slot-speaker,
+.s-num,
+.panel .mono,
+.footer-col h4{
+  font-size:11.5px !important;
+  letter-spacing:.22em !important;
+  opacity:.9 !important;
+  font-weight:500 !important;
 }
-.event-column{
-  align-self:center;
-  padding:30px 30px 28px;
-  border-left:1px solid rgba(56,169,165,.22);
+.about-head .section-h2{
+  font-size:clamp(46px,5.8vw,76px);
+  line-height:.92;
+  letter-spacing:-.065em;
+  max-width:8ch;
+}
+.about-head .section-lead{
+  font-size:19px;
+  line-height:1.72;
+  color:#394144;
+  max-width:56ch;
+}
+.editorial{
   border-radius:28px;
+  background:rgba(255,255,255,.42);
+  border:1px solid rgba(255,255,255,.76);
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 28px 90px rgba(17,27,32,.08);
+}
+.visual-panel.video-link-card{
+  min-height:410px;
+  background:#101416;
+  display:block;
   position:relative;
   overflow:hidden;
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,255,255,.40)),
-    rgba(244,242,236,.45);
-  border:1px solid rgba(255,255,255,.74);
-  backdrop-filter:blur(22px) saturate(1.18);
-  -webkit-backdrop-filter:blur(22px) saturate(1.18);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.90) inset,
-    0 24px 70px rgba(10,12,16,.075);
 }
-.event-column::before{
-  content:"";
+.visual-panel.video-link-card img{
   position:absolute;
   inset:0;
-  z-index:0;
-  border-radius:inherit;
-  background:
-    radial-gradient(420px circle at 12% 0%,rgba(56,169,165,.10),transparent 62%),
-    linear-gradient(110deg,rgba(255,255,255,.40),transparent 40%);
-  pointer-events:none;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter:saturate(.96) contrast(1.04) brightness(.86);
+  transform:scale(1.01);
+  transition:transform .55s var(--E-out),filter .4s ease;
 }
-.event-column > *{
-  position:relative;
+.visual-panel.video-link-card:hover img{
+  transform:scale(1.045);
+  filter:saturate(1.02) contrast(1.06) brightness(.92);
+}
+.video-play{
+  position:absolute;
+  inset:0;
+  margin:auto;
+  width:68px;
+  height:68px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:3;
+  background:rgba(255,255,255,.86);
+  color:#101820;
+  font-size:24px;
+  line-height:1;
+  padding-left:4px;
+  box-shadow:0 18px 48px rgba(0,0,0,.22), inset 0 1px rgba(255,255,255,.94);
+  backdrop-filter:blur(18px) saturate(1.25);
+  -webkit-backdrop-filter:blur(18px) saturate(1.25);
+  transition:transform .28s var(--E-out),background .2s ease;
+}
+.visual-panel.video-link-card:hover .video-play{
+  transform:scale(1.07);
+  background:#fff;
+}
+.video-cap{
+  font-size:11px !important;
+  letter-spacing:.12em !important;
+  background:rgba(7,9,12,.52);
+  padding:10px 13px;
+  border-radius:999px;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+.panel h3{font-size:30px;line-height:1.12;letter-spacing:-.045em;}
+.panel p{font-size:17.5px;line-height:1.72;color:#424a4d;}
+.panel.dark p{color:rgba(234,228,216,.68);}
+.stats span,
+.meta-item span,
+.field label,
+.footer-legal,
+.footer-col a,
+.footer-col p,
+.footer-desc{
+  font-size:12px !important;
+  opacity:.88 !important;
+}
+.footer-col a,.footer-col p,.footer-desc{color:rgba(234,228,216,.62) !important;}
+.footer-legal{color:rgba(234,228,216,.54) !important;}
+.reg-note{font-size:18px !important;line-height:1.72;color:#424a4d !important;}
+.field label{letter-spacing:.20em !important;color:#667070 !important;}
+.captcha-row{font-size:16px !important;color:#565f62 !important;}
+.form-success{font-size:12px !important;}
+/* agenda: left intro follows scroll cleanly without overlaying content */
+.agenda-2025-style .agenda-title-block{
+  position:sticky;
+  top:120px;
+  align-self:start;
+  max-width:360px;
+  padding-right:52px;
+  background:transparent;
   z-index:1;
 }
-.event-line{
-  padding:18px 0;
-  border-bottom:1px solid rgba(10,12,16,.12);
+.agenda-2025-style{
+  grid-template-columns:minmax(300px,380px) minmax(0,1fr) !important;
+  column-gap:72px !important;
 }
-.event-line:first-child{
-  border-top:0;
+.agenda-2025-style .agenda-rows{
+  min-width:0;
+  z-index:2;
 }
-.event-line:last-child{
-  border-bottom:0;
+.agenda-h2{
+  font-size:clamp(54px,5.4vw,84px) !important;
+  max-width:6.5ch;
+  overflow-wrap:normal;
+  word-break:normal;
 }
-.event-line span{
-  color:var(--teal-d);
+.agenda-sub{
+  font-size:18px !important;
+  line-height:1.72 !important;
+  color:rgba(234,228,216,.62) !important;
 }
-.event-line b{
-  color:rgba(10,12,16,.88);
-}
-.hero-note{
-  max-width:650px;
-}
-#dot-canvas{
-  z-index:1;
-}
+.slot-time{font-size:15px !important;color:rgba(234,228,216,.72) !important;}
+.slot-body h3{font-size:clamp(26px,2.35vw,34px) !important;}
+.slot-body p{font-size:17px !important;color:rgba(234,228,216,.62) !important;}
 @media(max-width:1080px){
-  .hero-inner{
-    grid-template-columns:1fr;
-    gap:36px;
-  }
-  .event-column{
-    max-width:560px;
-    width:100%;
-  }
+  .about-head{grid-template-columns:1fr;gap:24px;}
+  .about-head .section-h2{max-width:11ch;}
+  .agenda-2025-style{grid-template-columns:1fr !important;gap:48px !important;}
+  .agenda-2025-style .agenda-title-block{position:relative;top:auto;max-width:100%;padding-right:0;}
+  .agenda-h2{max-width:100%;}
 }
-@media(max-width:640px){
-  .hero{
-    padding:48px 0 74px;
-  }
-  .event-column{
-    padding:22px;
-    border-radius:22px;
-  }
-  .hero::after{
-    width:250px;
-    height:250px;
-    left:-90px;
-    bottom:-90px;
-    opacity:.26;
-  }
+@media(max-width:768px){
+  .visual-panel.video-link-card{min-height:280px;}
+  .video-play{width:56px;height:56px;font-size:20px;}
+  .about-head .section-lead{font-size:17px;}
 }
 
 </style>
 </head>
 <body>
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="cursor-dot" id="cursorDot"></div>
-<canvas id="dot-canvas"></canvas>
 
-<nav class="nav">
-  <a class="brand" href="https://dida.do/" target="_blank" rel="noopener"><span class="mark"></span><span>dida</span></a>
-  <div class="links">
-    <a href="https://dida.do/machine-learning-solutions" target="_blank" rel="noopener" data-i18n="nav_services">Services</a>
-    <a href="#speakers" data-i18n="nav_speakers">Speakers</a>
-    <a href="#venue" data-i18n="nav_venue">Venue</a>
-    <a class="active" href="#agenda" data-i18n="nav_agenda">Agenda</a>
-    <a href="#register" data-i18n="nav_register">Register</a>
-    <a href="https://dida.do/recorded-talks" target="_blank" rel="noopener" data-i18n="nav_resources">Resources</a>
+<div id="dotWrap"><canvas id="dotCanvas"></canvas></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="https://dida.do/" target="_blank" rel="noopener">
+      <span class="l-pip"></span>dida
+    </a>
+    <ul class="nav-links">
+      <li><a href="https://dida.do/machine-learning-solutions" target="_blank" rel="noopener">Our Services</a></li>
+      <li><a href="#speakers">Speakers</a></li>
+      <li><a href="#agenda">Agenda</a></li>
+      <li><a href="#about">Venue</a></li>
+      <li><a class="cta" href="#register">Register</a></li>
+      <li><a href="https://dida.do/recorded-talks" target="_blank" rel="noopener">Resources</a></li>
+    </ul>
+    <div class="nav-lang">
+      <button class="active" data-set-lang="en" type="button">EN</button>
+      <span>/</span>
+      <button data-set-lang="de" type="button">DE</button>
+    </div>
   </div>
-  <div class="lang"><a class="active" data-set-lang="en">EN</a><span>/</span><a data-set-lang="de">DE</a></div>
 </nav>
 
-<main id="top">
-<header class="hero wrap">
-  <div class="hero-inner">
-    <div>
-      <div class="kicker reveal" data-i18n="kicker">on machine learning</div>
-      <h1 class="reveal hero-title"><span class="thin line">dida</span><span class="line">conference</span><span class="line accent">2026</span></h1>
-      <p class="hero-note reveal" data-i18n="hero_note">After three successful editions, the dida conference returns in 2026. Join us at the frizzforum in Berlin-Kreuzberg for a day of applied and technical machine learning talks, hands-on workshops, networking, and good food.</p>
-      <div class="hero-actions reveal">
-        <div class="btns">
-          <a class="btn primary" href="#register"><span class="live"></span><span data-i18n="cta_register">Register</span></a>
-          <a class="btn" href="#agenda" data-i18n="cta_agenda">Agenda</a>
+<!-- HERO -->
+<header class="hero">
+  <div class="w">
+    <div class="hero-inner" id="heroInner">
+      <div>
+        <div class="hero-kicker" data-i18n="kicker">on machine learning</div>
+        <h1>
+          <span class="thin line">dida</span>
+          <span class="line">conference</span>
+          <span class="accent line">2026</span>
+        </h1>
+        <p class="hero-note" data-i18n="hero_note">After three successful editions, the dida conference returns in 2026. Join us at the frizzforum in Berlin‑Kreuzberg for a day of applied and technical machine learning talks, hands‑on workshops, networking, and good food.</p>
+        <div class="hero-act">
+          <a class="btn-primary" href="#register">
+            <span class="live-dot"></span>
+            <span data-i18n="cta_register">Register</span>
+          </a>
+          <a class="btn-ghost" href="#agenda">
+            <span data-i18n="cta_agenda">Agenda</span>
+            <span class="arr">→</span>
+          </a>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-item"><span>date</span><b>19 June 2026</b></div>
+          <div class="meta-item"><span>venue</span><b>frizzforum</b></div>
+          <div class="meta-item"><span>city</span><b>Berlin Kreuzberg</b></div>
+          <div class="meta-item"><span>time</span><b>09:00 — 18:00</b></div>
         </div>
       </div>
     </div>
-    <aside class="event-column reveal">
-      <div class="event-line"><span>date</span><b>19.6.2026</b></div>
-      <div class="event-line"><span>venue</span><b>frizzforum</b></div>
-      <div class="event-line"><span>city</span><b>Berlin Kreuzberg</b></div>
-      <div class="event-line"><span>format</span><b>talks &middot; workshops &middot; networking</b></div>
-    </aside>
   </div>
 </header>
 
-<section id="about" class="wrap">
-  <div class="section-head">
-    <h2 class="reveal" data-i18n="about_title">a day full of machine learning</h2>
-    <p class="lead reveal" data-i18n="about_lead">After three successful editions, the dida conference returns in 2026. Join us at the frizzforum in Berlin-Kreuzberg for a day of applied and technical machine learning talks, hands-on workshops, networking, and good food. As the number of participants is limited, we recommend early registration.</p>
-  </div>
-  <div class="editorial reveal">
-    <article class="panel large">
-      <span class="mono" data-i18n="invited">you're invited</span>
-      <h3 data-i18n="annual_title">The 4th Annual dida Machine Learning Conference</h3>
-      <p data-i18n="annual_text">We're leveling up! After three incredible years of insights and innovation, dida conference 2026 is officially on the horizon.</p>
-      <div class="stats"><div><strong>15</strong><span>speakers</span></div><div><strong>4th</strong><span>edition</span></div><div><strong>1</strong><span>focused day</span></div></div>
-    </article>
-    <article class="panel dark">
-      <span class="mono" data-i18n="limited">limited access</span>
-      <h3>09:00&mdash;18:00</h3>
-      <p data-i18n="limited_text">This year, we're at frizzforum, Berlin Kreuzberg. Whether you\'re here for the deep-tech sessions, the hands-on workshops, or the high-level networking, this is a day you won\'t want to miss.</p>
-    </article>
-    <a class="visual-panel video-panel" href="https://www.youtube.com/watch?v=X6wZg2viJkM" target="_blank" rel="noopener" aria-label="Watch dida conference 2025 impressions and interviews"><iframe src="https://www.youtube.com/embed/X6wZg2viJkM" title="dida conference 2025 - impressions and interviews" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><span class="video-caption">Impressions and interviews from last year's event</span></a>
-    <article class="venue-photo" aria-label="frizzforum venue image"><img src="https://cdn.dida.do/eventlocation-frizzforum-berlin.webp" alt="frizzforum Berlin Kreuzberg"></article>
-    <article class="panel" id="venue">
-      <span class="mono" data-i18n="location">location</span>
-      <h3>frizzforum<br>Friedrichstra&szlig;e 23</h3>
-      <p data-i18n="location_text">Berlin Kreuzberg<br>June 19, 2026 • 09:00 – 18:00 CET</p>
-    </article>
-  </div>
-</section>
-
-<section id="speakers" class="wrap">
-  <div class="section-head">
-    <h2 class="reveal" data-i18n="speakers_title">the speakers</h2>
-    <p class="lead reveal" data-i18n="speakers_lead">A modern speaker system with dida's real lineup, monochrome portraits, teal technical labels and controlled spacing.</p>
-  </div>
-  <div class="speaker-grid">
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image1.png" alt="Jonas K&ouml;hler"></div><div class="speaker-text"><span>01</span><h3>Jonas K&ouml;hler</h3><p class="role">Member of Technical Staff &middot; CuspAI</p><p class="talk">Simulating Molecules in the Age of AI</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image-%2810%29.png" alt="Gerhard Koch"></div><div class="speaker-text"><span>02</span><h3>Gerhard Koch</h3><p class="role">Chief Software &amp; Product Officer &middot; Siemens Energy</p><p class="talk">Industrial &amp; Energy AI challenges &quot;solved&quot; with a new structural and explainable AI approach</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image2.png" alt="Noah Hollmann"></div><div class="speaker-text"><span>03</span><h3>Noah Hollmann</h3><p class="role">Co-Founder &amp; CTO &middot; Prior Labs</p><p class="talk">The Revolution in Tabular Data Prediction</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image5.png" alt="Maria Bergmann"></div><div class="speaker-text"><span>04</span><h3>Maria Bergmann</h3><p class="role">Development Engineer &middot; Innomotics</p><p class="talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image-%286%29.png" alt="Gabriel Nobis"></div><div class="speaker-text"><span>05</span><h3>Gabriel Nobis</h3><p class="role">Research Associate &middot; Fraunhofer HHI</p><p class="talk">Fractional Noise in Diffusion-Based Generative Models</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image3-1776949837.png" alt="Markus D&uuml;ttmann"></div><div class="speaker-text"><span>06</span><h3>Markus D&uuml;ttmann</h3><p class="role">Managing Director &middot; dida</p><p class="talk">coming soon ...</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/annette-rudolph.png" alt="Annette Rudolph"></div><div class="speaker-text"><span>07</span><h3>Annette Rudolph</h3><p class="role">Professorin &middot; TU Berlin</p><p class="talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image4.png" alt="Peter Kirstel"></div><div class="speaker-text"><span>08</span><h3>Peter Kirstel</h3><p class="role">Forschungsreferenz Schl&uuml;sseltechnologie &middot; Cyberagentur</p><p class="talk">AI-Methods in Symmetric Cryptography</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/leonard-schenk.png" alt="Leonard Schenk"></div><div class="speaker-text"><span>09</span><h3>Leonard Schenk</h3><p class="role">Senior Analyst &amp; Engineer &middot; SPRIND</p><p class="talk">The European AI Playbook &mdash; Why, What and How</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image6.png" alt="Benjamin Ulbrich"></div><div class="speaker-text"><span>10</span><h3>Benjamin Ulbrich</h3><p class="role">Director Global Digital Processes &middot; Innomotics</p><p class="talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/ma-li.png" alt="Ma Li"></div><div class="speaker-text"><span>11</span><h3>Ma Li</h3><p class="role">ML Scientist &middot; dida</p><p class="talk">dida Reading Group</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/tom-freudenberg.png" alt="Tom Freudenberg"></div><div class="speaker-text"><span>12</span><h3>Tom Freudenberg</h3><p class="role">Postdoctoral Researcher &middot; Uni Bremen</p><p class="talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/nick-heilkotter.png" alt="Nick Heilenk&ouml;tter"></div><div class="speaker-text"><span>13</span><h3>Nick Heilenk&ouml;tter</h3><p class="role">Research Associate &middot; Uni Bremen</p><p class="talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image-%289%29.png" alt="Kai Hartmann"></div><div class="speaker-text"><span>14</span><h3>Kai Hartmann</h3><p class="role">Postdoctoral Researcher &middot; FU Berlin</p><p class="talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/lorenz-richter.png" alt="Lorenz Richter"></div><div class="speaker-text"><span>15</span><h3>Lorenz Richter</h3><p class="role">Managing Director &amp; CTO &middot; dida</p><p class="talk">Moderation</p></div></article>
-    <article class="speaker reveal"><div class="photo"><img src="https://cdn.dida.do/conferences/2026/image-%2811%29.png" alt="Johannes M&uuml;ller"></div><div class="speaker-text"><span>16</span><h3>Johannes M&uuml;ller</h3><p class="role">Postdoctoral Researcher &middot; TU Berlin</p><p class="talk">Resolving Ill-Conditioning in Scientific Machine Learning</p></div></article>
-  </div>
-</section>
-
-<section id="agenda" class="wrap">
-  <div class="section-head">
-    <h2 class="reveal" data-i18n="agenda_title">agenda at a glance</h2>
-    <div class="agenda reveal">
-      <article class="agenda-day">
-        <div class="day-tag" data-i18n="agenda_day">Conference day</div>
-        <h3 class="day-title">June 19</h3>
-        <div class="agenda-row"><div class="agenda-time" data-i18n="agenda_morning">Morning</div><div class="agenda-items"><p data-i18n="agenda_arrival">Arrival, coffee and registration</p><p data-i18n="agenda_keynote">Opening keynote</p><p data-i18n="agenda_talks">Technical talks</p></div></div>
-        <div class="agenda-row"><div class="agenda-time" data-i18n="agenda_afternoon">Afternoon</div><div class="agenda-items"><p data-i18n="agenda_lunch">Lunch and networking</p><p data-i18n="agenda_research">Research talks and applied ML sessions</p><p data-i18n="agenda_workshops">Hands-on workshops</p></div></div>
-        <div class="agenda-row"><div class="agenda-time" data-i18n="agenda_evening">Evening</div><div class="agenda-items"><p data-i18n="agenda_closing">Closing conversations and community exchange</p><span data-i18n="agenda_note">A calm, focused day for technical exchange around machine learning.</span></div></div>
+<!-- ABOUT -->
+<section id="about" class="ruled">
+  <div class="w">
+    <div class="about-head">
+      <div class="sr">
+        <span class="ey" data-i18n="invited">you're invited</span>
+        <h2 class="section-h2" data-i18n="about_title">a day full of machine learning</h2>
+      </div>
+      <p class="section-lead sr sr-delay-1" data-i18n="about_lead">After three successful editions, the dida conference returns in 2026. Join us at the frizzforum in Berlin‑Kreuzberg for a day of applied and technical machine learning talks, hands‑on workshops, networking, and good food. As the number of participants is limited, we recommend early registration.</p>
+    </div>
+    <div class="editorial sr">
+      <article class="panel large">
+        <span class="mono" data-i18n="annual_subtitle">4th annual edition</span>
+        <h3 data-i18n="annual_title">The 4th Annual dida Machine Learning Conference</h3>
+        <p data-i18n="annual_text">After three incredible years of insights and innovation, dida conference 2026 is officially on the horizon — deeper, broader, more focused than ever.</p>
+        <div class="stats">
+          <div><strong>16</strong><span>speakers</span></div>
+          <div><strong>4th</strong><span>edition</span></div>
+          <div><strong>1</strong><span>focused day</span></div>
+        </div>
       </article>
+      <article class="panel dark">
+        <span class="mono">frizzforum</span>
+        <h3>09:00&thinsp;—&thinsp;18:00</h3>
+        <p data-i18n="limited_text">This year, we're at frizzforum, Berlin Kreuzberg. Whether you're here for the deep‑tech sessions, the hands‑on workshops, or the high‑level networking, this is a day you won't want to miss.</p>
+      </article>
+      <a class="visual-panel video-link-card" href="https://www.youtube.com/watch?v=X6wZg2viJkM" target="_blank" rel="noopener" aria-label="Watch impressions and interviews from last year's event on YouTube">
+        <img src="https://i.ytimg.com/vi/X6wZg2viJkM/maxresdefault.jpg" alt="Impressions and interviews from last year's dida conference" loading="lazy">
+        <span class="video-play" aria-hidden="true">▶</span>
+        <span class="video-cap">Impressions and interviews from last year's event</span>
+      </a>
+      <a class="venue-photo venue-map-link" id="venue" href="https://www.google.com/maps/search/?api=1&query=frizzforum%20Friedrichstra%C3%9Fe%2023%20Berlin%20Kreuzberg" target="_blank" rel="noopener" aria-label="Open frizzforum Friedrichstraße 23 Berlin Kreuzberg in Google Maps">
+        <img src="https://cdn.dida.do/eventlocation-frizzforum-berlin.webp" alt="frizzforum Berlin Kreuzberg" loading="lazy">
+        <span class="venue-map-overlay" aria-hidden="true">
+          <span class="venue-map-kicker">Venue</span>
+          <strong>frizzforum</strong>
+          <span>Friedrichstraße 23</span>
+          <span>Berlin Kreuzberg</span>
+          <em>Open in Maps ↗</em>
+        </span>
+      </a>
     </div>
   </div>
 </section>
 
-<section id="register" class="wrap">
-  <div class="form-wrap reveal">
-    <h2 data-i18n="register_title">Register now</h2>
-    <form>
-      <div class="field"><label>strings.form_honeypot *</label><input autocomplete="off"></div>
-      <div class="field"><label>Name</label><input placeholder="Your Name"></div>
-      <div class="field"><label>Email</label><input placeholder="your.email@company.com"></div>
-      <div class="field"><label>Company</label><input placeholder="Company Name"></div>
-      <div class="captcha"><div class="check"></div><span>Please check the CAPTCHA box.</span></div>
-      <button class="submit" type="button" data-i18n="submit">REGISTER</button>
-      <p class="success">Sie haben sich erfolgreich f&uuml;r die Konferenz registriert! In K&uuml;rze erhalten Sie eine Best&auml;tigungs-E-Mail.</p>
-    </form>
+<!-- SPEAKERS -->
+<section id="speakers" class="ruled">
+  <div class="w">
+    <div class="speakers-head">
+      <div class="sr">
+        <span class="ey">confirmed lineup</span>
+        <h2 class="section-h2" data-i18n="speakers_title">the speakers</h2>
+      </div>
+      <p class="section-lead sr sr-delay-1" data-i18n="speakers_lead">The confirmed dida conference 2026 lineup — research, industry, scientific machine learning, explainability, tabular foundation models, cryptography and PDEs.</p>
+    </div>
+    <div class="speaker-grid">
+      <article class="speaker sr"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image1.png" alt="Jonas Köhler"></div><div class="s-info"><span class="s-num">01</span><p class="s-name">Jonas Köhler</p><p class="s-role">Member of Technical Staff · CuspAI</p><p class="s-talk">Simulating Molecules in the Age of AI</p></div></article>
+      <article class="speaker sr sr-delay-1"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image-%2810%29.png" alt="Gerhard Koch"></div><div class="s-info"><span class="s-num">02</span><p class="s-name">Gerhard Koch</p><p class="s-role">Chief Software &amp; Product Officer · Siemens Energy</p><p class="s-talk">Industrial &amp; Energy AI challenges &quot;solved&quot; with a new structural and explainable AI approach</p></div></article>
+      <article class="speaker sr sr-delay-2"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image2.png" alt="Noah Hollmann"></div><div class="s-info"><span class="s-num">03</span><p class="s-name">Noah Hollmann</p><p class="s-role">Co-Founder &amp; CTO · Prior Labs</p><p class="s-talk">The Revolution in Tabular Data Prediction</p></div></article>
+      <article class="speaker sr sr-delay-3"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image5.png" alt="Maria Bergmann"></div><div class="s-info"><span class="s-num">04</span><p class="s-name">Maria Bergmann</p><p class="s-role">Development Engineer · Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
+      <article class="speaker sr"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image-%286%29.png" alt="Gabriel Nobis"></div><div class="s-info"><span class="s-num">05</span><p class="s-name">Gabriel Nobis</p><p class="s-role">Research Associate · Fraunhofer HHI</p><p class="s-talk">Fractional Noise in Diffusion-Based Generative Models</p></div></article>
+      <article class="speaker sr sr-delay-1"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image3-1776949837.png" alt="Markus Düttmann"></div><div class="s-info"><span class="s-num">06</span><p class="s-name">Markus Düttmann</p><p class="s-role">Managing Director · dida</p><p class="s-talk">coming soon&hellip;</p></div></article>
+      <article class="speaker sr sr-delay-2"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/annette-rudolph.png" alt="Annette Rudolph"></div><div class="s-info"><span class="s-num">07</span><p class="s-name">Annette Rudolph</p><p class="s-role">Professorin · TU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
+      <article class="speaker sr sr-delay-3"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image4.png" alt="Peter Kirstel"></div><div class="s-info"><span class="s-num">08</span><p class="s-name">Peter Kirstel</p><p class="s-role">Forschungsreferenz Schlüsseltechnologie · Cyberagentur</p><p class="s-talk">AI-Methods in Symmetric Cryptography</p></div></article>
+      <article class="speaker sr"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/leonard-schenk.png" alt="Leonard Schenk"></div><div class="s-info"><span class="s-num">09</span><p class="s-name">Leonard Schenk</p><p class="s-role">Senior Analyst &amp; Engineer · SPRIND</p><p class="s-talk">The European AI Playbook - Why, What and How</p></div></article>
+      <article class="speaker sr sr-delay-1"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image6.png" alt="Benjamin Ulbrich"></div><div class="s-info"><span class="s-num">10</span><p class="s-name">Benjamin Ulbrich</p><p class="s-role">Director Global Digital Processes · Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
+      <article class="speaker sr sr-delay-2"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/ma-li.png" alt="Ma Li"></div><div class="s-info"><span class="s-num">11</span><p class="s-name">Ma Li</p><p class="s-role">ML Scientist · dida</p><p class="s-talk">dida Reading Group</p></div></article>
+      <article class="speaker sr sr-delay-3"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/tom-freudenberg.png" alt="Tom Freudenberg"></div><div class="s-info"><span class="s-num">12</span><p class="s-name">Tom Freudenberg</p><p class="s-role">Postdoctoral Researcher · Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
+      <article class="speaker sr"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/nick-heilkotter.png" alt="Nick Heilenkötter"></div><div class="s-info"><span class="s-num">13</span><p class="s-name">Nick Heilenkötter</p><p class="s-role">Research Associate · Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
+      <article class="speaker sr sr-delay-1"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image-%289%29.png" alt="Kai Hartmann"></div><div class="s-info"><span class="s-num">14</span><p class="s-name">Kai Hartmann</p><p class="s-role">Postdoctoral Researcher · FU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
+      <article class="speaker sr sr-delay-2"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/lorenz-richter.png" alt="Lorenz Richter"></div><div class="s-info"><span class="s-num">15</span><p class="s-name">Lorenz Richter</p><p class="s-role">Managing Director &amp; CTO · dida</p><p class="s-talk">Moderation</p></div></article>
+      <article class="speaker sr sr-delay-3"><div class="s-photo"><img src="https://cdn.dida.do/conferences/2026/image-%2811%29.png" alt="Johannes Müller"></div><div class="s-info"><span class="s-num">16</span><p class="s-name">Johannes Müller</p><p class="s-role">Postdoctoral Researcher · TU Berlin</p><p class="s-talk">Resolving Ill-Conditioning in Scientific Machine Learning</p></div></article>
+    </div>
   </div>
 </section>
-</main>
 
-<footer id="footer" class="footer">
-  <canvas id="footer-dot-canvas" class="footer-dot-canvas"></canvas>
-  <div><h3>Our Services</h3><a href="https://dida.do/machine-learning-solutions" target="_blank" rel="noopener">ML Solutions</a><a href="https://dida.do/machine-learning-consulting" target="_blank" rel="noopener">ML Consulting</a><a href="https://dida.do/machine-learning-operations" target="_blank" rel="noopener">ML Operations</a><a href="https://dida.do/research" target="_blank" rel="noopener">ML Research</a></div>
-  <div><h3>Information</h3><a href="https://dida.do/projects" target="_blank" rel="noopener">Projects</a><a href="https://dida.do/demos" target="_blank" rel="noopener">Demos</a><a href="https://dida.do/blog" target="_blank" rel="noopener">Blog</a><a href="https://dida.do/recorded-talks" target="_blank" rel="noopener">Recorded Talks</a><a href="https://dida.do/sectors/industry" target="_blank" rel="noopener">Industries</a><a href="https://dida.do/newsletter" target="_blank" rel="noopener">Newsletter</a></div>
-  <div><h3>Company</h3><a href="https://dida.do/about-us" target="_blank" rel="noopener">About us</a><a href="https://dida.do/news" target="_blank" rel="noopener">Company News</a><a href="https://dida.do/jobs" target="_blank" rel="noopener">Jobs</a><a href="https://dida.do/publication-archive" target="_blank" rel="noopener">Publication Archive</a><a href="https://dida.do/contact" target="_blank" rel="noopener">Contact</a></div>
-  <div><h3>Contact</h3><p>dida Datenschmiede GmbH<br>Email: <a href="mailto:info@dida.do">info@dida.do</a><br>Phone: <a href="tel:+4930921058800">+49 30 921058800</a><br>Ritterstra&szlig;e 12&ndash;14, 10969 Berlin, Germany</p></div>
-  <div class="legal">&copy; 2018 &ndash; 2026 dida Datenschmiede GmbH &middot; <a href="https://dida.do/legal-notice" target="_blank" rel="noopener">Legal Notice</a> &middot; <a href="https://dida.do/privacy-policy" target="_blank" rel="noopener">Privacy policy</a></div>
+<!-- AGENDA -->
+<section id="agenda">
+  <div class="w">
+    <div class="agenda-inner agenda-inner-wide agenda-2025-style">
+      <div class="agenda-title-block sr">
+        <span class="ey" data-i18n="agenda_date">19 june 2026</span>
+        <h2 class="agenda-h2" data-i18n="agenda_title">conference schedule</h2>
+        <p class="agenda-sub" data-i18n="agenda_sub">The detailed 2026 programme can follow the same rhythm as the previous dida conferences: main stage talks, coffee breaks, workshops in separate rooms, poster session, dinner and networking.</p>
+      </div>
+
+      <div class="agenda-rows agenda-timeline sr sr-delay-2">
+        <span class="a-day-tag" data-i18n="agenda_day">Conference day</span>
+        <div class="a-day-date" data-i18n="agenda_full_date">June 19, 2026</div>
+
+        <div class="agenda-room-label" data-i18n="main_stage_label">Main Stage</div>
+
+        <article class="agenda-slot is-soft">
+          <div class="slot-time">09:15 – 10:00</div>
+          <div class="slot-body"><h3 data-i18n="slot_doors_title">Doors are open</h3><p data-i18n="slot_doors_text">Arrive, get coffee and connect with others.</p></div>
+        </article>
+
+        <article class="agenda-slot is-soft">
+          <div class="slot-time">10:00 – 10:10</div>
+          <div class="slot-body"><h3 data-i18n="slot_intro_title">Introduction</h3><p data-i18n="slot_intro_text">Welcome to the dida conference.</p></div>
+        </article>
+
+        <article class="agenda-slot">
+          <div class="slot-time">10:10 – 10:50</div>
+          <div class="slot-body"><span class="slot-speaker">Jonas Köhler · CuspAI</span><h3>Simulating Molecules in the Age of AI</h3></div>
+        </article>
+
+        <article class="agenda-slot">
+          <div class="slot-time">10:50 – 11:45</div>
+          <div class="slot-body"><span class="slot-speaker">Gerhard Koch · Siemens Energy</span><h3>Industrial &amp; Energy AI challenges “solved” with a new structural and explainable AI approach</h3></div>
+        </article>
+
+        <article class="agenda-slot is-break">
+          <div class="slot-time">11:45 – 12:15</div>
+          <div class="slot-body"><h3 data-i18n="slot_coffee_title">Coffee break</h3></div>
+        </article>
+
+        <article class="agenda-slot">
+          <div class="slot-time">12:15 – 13:00</div>
+          <div class="slot-body"><span class="slot-speaker">Noah Hollmann · Prior Labs</span><h3>The Revolution in Tabular Data Prediction</h3></div>
+        </article>
+
+        <article class="agenda-slot is-break">
+          <div class="slot-time">13:00 – 14:00</div>
+          <div class="slot-body"><h3 data-i18n="slot_lunch_title">Lunch break</h3><p data-i18n="slot_lunch_text">Food and drinks will be available for all guests.</p></div>
+        </article>
+
+        <article class="agenda-slot">
+          <div class="slot-time">14:00 – 14:45</div>
+          <div class="slot-body"><span class="slot-speaker">Maria Bergmann &amp; Benjamin Ulbrich · Innomotics</span><h3>Automated Vibration Prediction for Electric Motors via PDE Approximation</h3></div>
+        </article>
+
+        <article class="agenda-slot">
+          <div class="slot-time">14:45 – 15:45</div>
+          <div class="slot-body"><span class="slot-speaker">Gabriel Nobis · Fraunhofer HHI</span><h3>Fractional Noise in Diffusion-Based Generative Models</h3></div>
+        </article>
+
+        <article class="agenda-slot is-break">
+          <div class="slot-time">15:45 – 16:15</div>
+          <div class="slot-body"><h3 data-i18n="slot_coffee_title_2">Coffee break</h3></div>
+        </article>
+
+        <article class="agenda-slot">
+          <div class="slot-time">16:15 – 17:00</div>
+          <div class="slot-body"><span class="slot-speaker">Peter Kirstel · Cyberagentur</span><h3>AI-Methods in Symmetric Cryptography</h3></div>
+        </article>
+
+        <article class="agenda-slot">
+          <div class="slot-time">17:00 – 18:00</div>
+          <div class="slot-body"><span class="slot-speaker">Leonard Schenk · SPRIND</span><h3>The European AI Playbook - Why, What and How</h3></div>
+        </article>
+
+        <article class="agenda-slot is-soft">
+          <div class="slot-time">18:00 – 19:00</div>
+          <div class="slot-body"><h3 data-i18n="slot_poster_title">Poster Session</h3><p data-i18n="slot_poster_text">Open exchange, posters and community conversations.</p></div>
+        </article>
+
+        <article class="agenda-slot is-soft">
+          <div class="slot-time">19:00 – 23:00</div>
+          <div class="slot-body"><h3 data-i18n="slot_dinner_title">Dinner &amp; Networking</h3><p data-i18n="slot_dinner_text">Food and drinks will be available for all guests.</p></div>
+        </article>
+
+        <section class="parallel-workshops" aria-label="Parallel workshops">
+          <div class="parallel-head">
+            <div>
+              <span class="agenda-room-label" data-i18n="workshop_label">Parallel workshops</span>
+              <h3 data-i18n="workshop_title">Workshop rooms</h3>
+            </div>
+            <p data-i18n="workshop_note">Two focused rooms running alongside the main stage rhythm — easy to scan, easy to choose.</p>
+          </div>
+
+          <div class="workshop-table" role="table" aria-label="Workshop rooms schedule">
+            <div class="workshop-row workshop-header" role="row">
+              <div class="workshop-time" role="columnheader">Time</div>
+              <div class="workshop-room" role="columnheader">Room 1</div>
+              <div class="workshop-room" role="columnheader">Room 2</div>
+            </div>
+
+            <div class="workshop-row" role="row">
+              <div class="workshop-time" role="cell">10:15 – 11:30</div>
+              <div class="workshop-cell" role="cell"><span>Noah Hollmann · Prior Labs</span><h4>The Revolution in Tabular Data Prediction</h4></div>
+              <div class="workshop-cell workshop-muted" role="cell"><span>Room opens</span><h4>Arrival / setup window</h4></div>
+            </div>
+
+            <div class="workshop-row" role="row">
+              <div class="workshop-time" role="cell">11:30 – 13:00</div>
+              <div class="workshop-cell" role="cell"><span>Gerhard Koch · Siemens Energy</span><h4>Structural and explainable AI for industrial energy systems</h4></div>
+              <div class="workshop-cell" role="cell"><span>Annette Rudolph &amp; Kai Hartmann</span><h4>How to feed Machine Learning algorithms with proper metrics?</h4></div>
+            </div>
+
+            <div class="workshop-row workshop-break" role="row">
+              <div class="workshop-time" role="cell">13:00 – 14:00</div>
+              <div class="workshop-cell" role="cell"><h4 data-i18n="slot_lunch_title">Lunch break</h4></div>
+              <div class="workshop-cell" role="cell"><h4 data-i18n="slot_lunch_title">Lunch break</h4></div>
+            </div>
+
+            <div class="workshop-row" role="row">
+              <div class="workshop-time" role="cell">14:00 – 16:00</div>
+              <div class="workshop-cell" role="cell"><span>Tom Freudenberg &amp; Nick Heilenkötter · Uni Bremen</span><h4>TorchPhysics and making Deep Learning for PDEs accessible</h4></div>
+              <div class="workshop-cell" role="cell"><span>Johannes Müller · TU Berlin</span><h4>Resolving Ill-Conditioning in Scientific Machine Learning</h4></div>
+            </div>
+
+            <div class="workshop-row" role="row">
+              <div class="workshop-time" role="cell">16:30 – 18:00</div>
+              <div class="workshop-cell" role="cell"><span>Ma Li · dida</span><h4>dida Reading Group</h4></div>
+              <div class="workshop-cell workshop-muted" role="cell"><span>Open room</span><h4>Discussion / poster preparation</h4></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section id="register" class="ruled">
+  <div class="w">
+    <div class="register-inner">
+      <div class="reg-lhs sr">
+        <span class="ey">limited seats</span>
+        <h2 class="reg-h2" data-i18n="register_title">Register<br><em style="font-style:italic;font-weight:300;color:var(--ink-3)">now</em></h2>
+        <p class="reg-note">We recommend early registration as seats are limited. Attendance is free for this invitation-based event.</p>
+      </div>
+      <div class="form-card sr sr-delay-2">
+        <div class="f-honey field" aria-hidden="true"><label>Leave blank</label><input autocomplete="off" tabindex="-1"></div>
+        <div class="field">
+          <label>Name</label>
+          <input id="fName" placeholder="Your name" autocomplete="name">
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input id="fEmail" type="email" placeholder="your.email@company.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Company</label>
+          <input id="fCompany" placeholder="Company name" autocomplete="organization">
+        </div>
+        <div class="captcha-row">
+          <div class="captcha-box"></div>
+          <span>Please check the CAPTCHA box.</span>
+        </div>
+        <button class="btn-submit" type="button" data-i18n="submit">Register</button>
+        <p class="form-success" id="formSuccess">You've successfully registered! A confirmation email is on its way.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="speaker-modal" id="speakerModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalName">
+    <button class="modal-close" type="button" aria-label="Close">×</button>
+    <div class="modal-kicker" id="modalNum"></div>
+    <h3 class="modal-title" id="modalName"></h3>
+    <div class="modal-role" id="modalRole"></div>
+    <div class="modal-talk" id="modalTalk"></div>
+    <div class="modal-bio" id="modalBio"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="footer-logo" href="https://dida.do/" target="_blank" rel="noopener">
+        <span class="l-pip"></span>dida
+      </a>
+      <p class="footer-desc">Machine learning for real-world complexity. Berlin, Germany.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Conference</h4>
+      <a href="#speakers">Speakers</a>
+      <a href="#agenda">Agenda</a>
+      <a href="#register">Register</a>
+      <a href="https://dida.do/recorded-talks" target="_blank" rel="noopener">Past Talks</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="https://dida.do" target="_blank" rel="noopener">dida.do</a>
+      <a href="https://dida.do/machine-learning-solutions" target="_blank" rel="noopener">Services</a>
+      <a href="https://dida.do/about" target="_blank" rel="noopener">About</a>
+    </div>
+    <div class="footer-col">
+      <h4>Venue</h4>
+      <p>frizzforum</p>
+      <p>Friedrichstraße 23</p>
+      <p>Berlin Kreuzberg</p>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <span>© 2026 dida Datenschmiede GmbH</span>
+    <span>June 19, 2026 · Berlin</span>
+  </div>
 </footer>
 
 <script>
-document.body.classList.add('loaded');
-window.addEventListener('load',()=>document.body.classList.add('loaded'));
-
-/* ── DIDA PROMO-STYLE HERO DOT FIELD: clean halftone + soft loop cursor effect ── */
+/* ── FULL-PAGE REACTIVE DOT FIELD ── */
 (function(){
-  const canvas = document.getElementById('dot-canvas');
+  const canvas = document.getElementById('dotCanvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
-  const SPACING = 13.5;
-  const TEAL = [56,169,165];
-  let W=0,H=0,dots=[];
-  let mouseX=-9999, mouseY=-9999, pmx=-9999, pmy=-9999, mouseVX=0, mouseVY=0, scrollY=window.scrollY;
 
-  function lerp(a,b,t){return a+(b-a)*t}
-  function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
-  function smoothstep(a,b,x){const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)}
+  const GAP       = 26;
+  const INFLUENCE = 220;
+  let clickX=-9999, clickY=-9999, clickT=0;
+
+  let mouseX = -9999, mouseY = -9999;
+  let tmx = -9999, tmy = -9999;
+  let W, H, heroH;
+
+  window.addEventListener('mousemove', e => {
+    tmx = e.clientX;
+    tmy = e.clientY;
+  }, {passive:true});
+  window.addEventListener('pointerdown', e => { clickX=e.clientX; clickY=e.clientY; clickT=1; }, {passive:true});
 
   function resize(){
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = Math.max(document.documentElement.scrollHeight, window.innerHeight);
-    dots=[];
-    const cols=Math.ceil(W/SPACING)+3;
-    const rows=Math.ceil(H/SPACING)+3;
-    for(let y=-1;y<rows;y++){
-      for(let x=-1;x<cols;x++){
-        const px=x*SPACING, py=y*SPACING;
-        dots.push({x0:px,y0:py,x:px,y:py,vx:0,vy:0,hot:0,spin:0});
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    /* hero height = viewport minus nav */
+    heroH = window.innerHeight;
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+
+    const cols = Math.ceil(W / GAP) + 1;
+    const rows = Math.ceil(H / GAP) + 1;
+
+    for(let r = 0; r < rows; r++){
+      for(let c = 0; c < cols; c++){
+        const x = c * GAP;
+        const y = r * GAP;
+
+        /* cursor bloom — viewport coords */
+        const dx    = x - mouseX;
+        const dy    = y - mouseY;
+        const dist  = Math.sqrt(dx*dx + dy*dy);
+        const boost = Math.max(0, 1 - dist / INFLUENCE);
+        const eased = boost * boost * (3 - 2 * boost);
+
+        /* halftone: dot size grows left→right across full width */
+        const xFrac = x / W;   /* 0 = left edge, 1 = right edge */
+
+        /* base radius: small on left, large on right — like the screenshot */
+        const baseR = 0.6 + xFrac * xFrac * 5.8;
+
+        /* base alpha: invisible far left, fully visible far right */
+        const baseA = Math.max(0, (xFrac - 0.08) / 0.55);
+        const clampedBaseA = Math.min(baseA, 0.68);
+
+        if(clampedBaseA < 0.01 && eased < 0.01) continue;
+
+        /* cursor adds bloom on top of whatever the base state is */
+        const alpha  = Math.min(0.92, clampedBaseA + eased * (0.88 - clampedBaseA));
+        const ripple = clickT>0 ? Math.max(0,1-Math.abs(Math.sqrt((x-clickX)*(x-clickX)+(y-clickY)*(y-clickY))-clickT*360)/70)*clickT : 0;
+        const twinkle = (Math.sin(performance.now()*0.0018 + c*.75 + r*.42)+1)*0.035;
+        const radius = baseR + eased * (10.0 - baseR) + ripple*4.5;
+
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0,146,146,${Math.min(.96,alpha+twinkle+ripple*.35).toFixed(3)})`;
+        ctx.fill();
       }
     }
   }
 
-  function tick(){
-    scrollY = window.scrollY;
-    const mx=mouseX, my=mouseY+scrollY;
-    const R=170, R2=R*R;
-    for(const d of dots){
-      let fx=0, fy=0;
-      const dx=d.x0-mx, dy=d.y0-my, ds=dx*dx+dy*dy;
-      if(ds<R2){
-        const dist=Math.sqrt(ds)||1;
-        const n=1-dist/R;
-        const nx=dx/dist, ny=dy/dist;
-        // loop, not explosion: tangential pull plus small elastic push
-        const orbit=Math.sin(n*Math.PI)*13.5;
-        const push=n*12;
-        fx += nx*push + (-ny)*orbit + mouseVX*.12*n;
-        fy += ny*push + ( nx)*orbit + mouseVY*.12*n;
-        d.hot=lerp(d.hot,n,.20);
-        d.spin=lerp(d.spin,Math.sin(n*Math.PI),.18);
-      }else{
-        d.hot=lerp(d.hot,0,.065);
-        d.spin=lerp(d.spin,0,.07);
-      }
-      d.vx=d.vx*.76+fx*.36;
-      d.vy=d.vy*.76+fy*.36;
-      d.x=d.x0+d.vx;
-      d.y=d.y0+d.vy;
-    }
+  function loop(){
+    mouseX += (tmx - mouseX) * 0.08;
+    mouseY += (tmy - mouseY) * 0.08;
+    if(clickT>0) clickT*=0.965;
+    if(clickT<0.02) clickT=0;
     draw();
-    requestAnimationFrame(tick);
+    requestAnimationFrame(loop);
   }
 
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    const hero=document.querySelector('.hero');
-    const heroTop=hero?hero.offsetTop:0;
-    const heroBottom=hero?heroTop+hero.offsetHeight:window.innerHeight;
-    const vTop=scrollY-80, vBot=scrollY+window.innerHeight+80;
-    const cursorAngle=Math.atan2(mouseVY,mouseVX||.001);
-    for(const d of dots){
-      if(d.y0<heroTop || d.y0>heroBottom || d.y0<vTop || d.y0>vBot) continue;
-      const nx=d.x0/W;
-      const ny=(d.y0-heroTop)/Math.max(1,heroBottom-heroTop);
-      // close to dida promo: clean rectangular right-side halftone, faded at left/top/bottom
-      const left=smoothstep(.43,.55,nx);
-      const top=smoothstep(.02,.10,ny);
-      const bottom=1-smoothstep(.91,1.02,ny);
-      const right=1-smoothstep(1.02,1.10,nx);
-      const mask=left*top*bottom*right;
-      if(mask<=.012) continue;
-      const ramp=smoothstep(.43,.96,nx);
-      const baseR=(.38 + ramp*4.15)*mask;
-      const hot=d.hot;
-      const alpha=clamp((.20+ramp*.42)*mask+hot*.10,0,.64);
-      if(alpha<.022) continue;
-      const stretch=1+hot*1.15;
-      ctx.save();
-      ctx.translate(d.x,d.y);
-      ctx.rotate(hot>.02 ? cursorAngle+d.spin*.65 : 0);
-      ctx.beginPath();
-      ctx.ellipse(0,0,baseR*stretch,Math.max(.45,baseR*(1-hot*.06)),0,0,Math.PI*2);
-      ctx.fillStyle=`rgba(${TEAL[0]},${TEAL[1]},${TEAL[2]},${alpha})`;
-      ctx.fill();
-      ctx.restore();
-    }
-  }
-
-  window.addEventListener('pointermove',e=>{
-    if(pmx<-9000){pmx=e.clientX;pmy=e.clientY;}
-    mouseVX=(e.clientX-pmx)*.75; mouseVY=(e.clientY-pmy)*.75;
-    pmx=mouseX=e.clientX; pmy=mouseY=e.clientY;
-  },{passive:true});
-  window.addEventListener('pointerleave',()=>{mouseX=-9999;mouseY=-9999;mouseVX=0;mouseVY=0;pmx=-9999;pmy=-9999;});
-  new ResizeObserver(resize).observe(document.body);
-  resize(); tick();
+  window.addEventListener('resize', resize, {passive:true});
+  window.addEventListener('load', resize);
+  resize();
+  loop();
 })();
 
-
-/* ── FOOTER DOT FIELD: same dida-style dots, readable text, reactive loop on touch ── */
+/* ── HERO ENTER ── */
 (function(){
-  const canvas=document.getElementById('footer-dot-canvas');
-  const footer=document.getElementById('footer');
-  if(!canvas||!footer) return;
-  const ctx=canvas.getContext('2d');
-  const SPACING=13.5, TEAL=[56,169,165];
-  let W=0,H=0,dots=[];
-  let mouseX=-9999,mouseY=-9999,pmx=-9999,pmy=-9999,mouseVX=0,mouseVY=0;
-  function lerp(a,b,t){return a+(b-a)*t}
-  function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
-  function smoothstep(a,b,x){const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)}
-  function resize(){
-    const r=footer.getBoundingClientRect();
-    W=canvas.width=Math.max(1,Math.floor(r.width));
-    H=canvas.height=Math.max(1,Math.floor(r.height));
-    dots=[];
-    const cols=Math.ceil(W/SPACING)+3, rows=Math.ceil(H/SPACING)+3;
-    for(let y=-1;y<rows;y++) for(let x=-1;x<cols;x++){
-      const px=x*SPACING, py=y*SPACING;
-      dots.push({x0:px,y0:py,x:px,y:py,vx:0,vy:0,hot:0,spin:0});
-    }
-  }
-  function tick(){
-    const fr=footer.getBoundingClientRect();
-    const inside=mouseX>=fr.left-60&&mouseX<=fr.right+60&&mouseY>=fr.top-60&&mouseY<=fr.bottom+60;
-    const mx=inside?mouseX-fr.left:-9999, my=inside?mouseY-fr.top:-9999;
-    const R=165,R2=R*R;
-    for(const d of dots){
-      let fx=0,fy=0;
-      const dx=d.x0-mx,dy=d.y0-my,ds=dx*dx+dy*dy;
-      if(ds<R2){
-        const dist=Math.sqrt(ds)||1,n=1-dist/R,nx=dx/dist,ny=dy/dist;
-        const orbit=Math.sin(n*Math.PI)*14;
-        const push=n*12;
-        fx+=nx*push+(-ny)*orbit+mouseVX*.12*n;
-        fy+=ny*push+( nx)*orbit+mouseVY*.12*n;
-        d.hot=lerp(d.hot,n,.22); d.spin=lerp(d.spin,Math.sin(n*Math.PI),.20);
-      }else{d.hot=lerp(d.hot,0,.07); d.spin=lerp(d.spin,0,.07);}
-      d.vx=d.vx*.76+fx*.36; d.vy=d.vy*.76+fy*.36;
-      d.x=d.x0+d.vx; d.y=d.y0+d.vy;
-    }
-    draw(); requestAnimationFrame(tick);
-  }
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    const cursorAngle=Math.atan2(mouseVY,mouseVX||.001);
-    for(const d of dots){
-      const nx=d.x0/W, ny=d.y0/H;
-      // visible bottom + right promo field, not dirty all-over texture
-      const rightBlock=smoothstep(.50,.66,nx)*(1-smoothstep(1.02,1.10,nx))*smoothstep(.02,.12,ny)*(1-smoothstep(.94,1.04,ny));
-      const bottomBand=smoothstep(.04,.18,nx)*(1-smoothstep(.98,1.08,nx))*smoothstep(.62,.80,ny)*(1-smoothstep(1.0,1.08,ny))*.72;
-      let mask=Math.max(rightBlock,bottomBand);
-      if(mask<=.012) continue;
-      // keep content legible: reduce dots in column text lanes but keep reaction available
-      const columnLane=(ny>.17&&ny<.68)&&((nx>.05&&nx<.25)||(nx>.28&&nx<.47)||(nx>.50&&nx<.69)||(nx>.72&&nx<.95));
-      if(columnLane) mask*=.18;
-      const ramp=Math.max(smoothstep(.50,.98,nx),smoothstep(.64,.98,ny)*.55);
-      const baseR=(.38+ramp*3.95)*mask;
-      const hot=d.hot;
-      const alpha=clamp((.18+ramp*.38)*mask+hot*.11,0,.58);
-      if(alpha<.018) continue;
-      ctx.save();
-      ctx.translate(d.x,d.y);
-      ctx.rotate(hot>.02?cursorAngle+d.spin*.68:0);
-      ctx.beginPath();
-      ctx.ellipse(0,0,baseR*(1+hot*1.2),Math.max(.45,baseR*(1-hot*.06)),0,0,Math.PI*2);
-      ctx.fillStyle=`rgba(${TEAL[0]},${TEAL[1]},${TEAL[2]},${alpha})`;
-      ctx.fill();
-      ctx.restore();
-    }
-  }
-  window.addEventListener('pointermove',e=>{
-    if(pmx<-9000){pmx=e.clientX;pmy=e.clientY;}
-    mouseVX=(e.clientX-pmx)*.75; mouseVY=(e.clientY-pmy)*.75;
-    pmx=mouseX=e.clientX; pmy=mouseY=e.clientY;
-  },{passive:true});
-  window.addEventListener('pointerleave',()=>{mouseX=-9999;mouseY=-9999;mouseVX=0;mouseVY=0;pmx=-9999;pmy=-9999;});
-  new ResizeObserver(resize).observe(footer);
-  resize(); tick();
+  const hero=document.querySelector('.hero'); if(!hero)return;
+  setTimeout(()=>hero.classList.add('go'),180);
 })();
 
+/* ── SCROLL REVEAL ── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('on');});
+},{threshold:0.08});
+document.querySelectorAll('.sr').forEach(el=>io.observe(el));
 
-/* ── CURSOR ── */
-(function(){
-  const ring=document.getElementById('cursorRing');
-  const dot=document.getElementById('cursorDot');
-  let tx=-100,ty=-100,rx=-100,ry=-100;
-  window.addEventListener('pointermove',e=>{tx=e.clientX;ty=e.clientY;dot.style.left=tx+'px';dot.style.top=ty+'px'},{passive:true});
-  (function loop(){rx+=(tx-rx)*.13;ry+=(ty-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
-  document.addEventListener('pointerover',e=>{if(e.target.closest('a,button,.speaker,.panel,.btn,.submit'))ring.classList.add('big');});
-  document.addEventListener('pointerout',e=>{if(e.target.closest('a,button,.speaker,.panel,.btn,.submit'))ring.classList.remove('big');});
-})();
-
-/* ── SPEAKER 3D TILT ── */
+/* ── SPEAKER TILT ── */
 document.querySelectorAll('.speaker').forEach(card=>{
   card.addEventListener('pointermove',e=>{
     const r=card.getBoundingClientRect();
     const x=e.clientX-r.left,y=e.clientY-r.top;
     const px=x/r.width-.5,py=y/r.height-.5;
-    card.style.setProperty('--cx',x+'px'); card.style.setProperty('--cy',y+'px');
-    card.style.setProperty('--ry',(px*3.2)+'deg'); card.style.setProperty('--rx',(-py*3.2)+'deg');
-    card.style.setProperty('--imgx',(px*7)+'px'); card.style.setProperty('--imgy',(-3+py*5)+'px');
+    card.style.setProperty('--cx',x+'px');card.style.setProperty('--cy',y+'px');
+    card.style.setProperty('--ry',(px*3)+'deg');card.style.setProperty('--rx',(-py*3)+'deg');
+    card.style.setProperty('--imgx',(px*6)+'px');card.style.setProperty('--imgy',(-3+py*4)+'px');
   });
   card.addEventListener('pointerleave',()=>{
-    card.style.setProperty('--ry','0deg'); card.style.setProperty('--rx','0deg');
-    card.style.setProperty('--imgx','0px'); card.style.setProperty('--imgy','-3px');
+    card.style.setProperty('--ry','0deg');card.style.setProperty('--rx','0deg');
+    card.style.setProperty('--imgx','0px');card.style.setProperty('--imgy','-3px');
   });
 });
 
-/* Panel cursor glow pos */
+
+
+/* ── SPEAKER MODALS WITH REAL PAGE ABSTRACTS ── */
+const speakerDetails = {
+  "Jonas Köhler": {
+    "en": "coming soon...",
+    "de": "coming soon..."
+  },
+  "Gerhard Koch": {
+    "en": "The energy transition demands precise control, yet in practice, many AI solutions fail due to unpredictable signal noise and a lack of reliability. This presentation introduces an innovative structural approach that overcomes these instabilities through a new principle of signal stability and adaptive classification logic. Instead of relying on raw computing power, we focus on the efficiency, transparency, and traceability of AI models to prevent critical errors in sensitive grid environments.\n\nWe demonstrate how AI for the energy sector becomes truly reliable, sustainable, and explainable through situational awareness. Discover a solution designed to guarantee security of supply even under extreme real-world conditions.",
+    "de": "The energy transition demands precise control, yet in practice, many AI solutions fail due to unpredictable signal noise and a lack of reliability. This presentation introduces an innovative structural approach that overcomes these instabilities through a new principle of signal stability and adaptive classification logic. Instead of relying on raw computing power, we focus on the efficiency, transparency, and traceability of AI models to prevent critical errors in sensitive grid environments.\n\nWe demonstrate how AI for the energy sector becomes truly reliable, sustainable, and explainable through situational awareness. Discover a solution designed to guarantee security of supply even under extreme real-world conditions."
+  },
+  "Noah Hollmann": {
+    "en": "Foundation models have transformed NLP and computer vision - but tabular data prediction still largely works the way it did ten years ago: pick an algorithm, engineer features, tune hyperparameters, repeat for every new dataset. In this talk, I present TabPFN, a foundation model that brings the same paradigm shift to tabular data.\n\nTabPFN is a transformer trained on billions of synthetic prediction problems that can be applied to new datasets in-context - replacing what used to be hours of pipeline work with a single API call that returns predictions in seconds. I will show how this works under the hood, how it compares to gradient-boosted trees and other baselines across hundreds of benchmarks, and what it means in practice: a simpler, faster, and more homogeneous workflow for tabular prediction.\n\nI will also discuss where we are headed next - from time series foundation models to agentic data science - and what we have learned bringing this from research into production.",
+    "de": "Foundation models have transformed NLP and computer vision - but tabular data prediction still largely works the way it did ten years ago: pick an algorithm, engineer features, tune hyperparameters, repeat for every new dataset. In this talk, I present TabPFN, a foundation model that brings the same paradigm shift to tabular data.\n\nTabPFN is a transformer trained on billions of synthetic prediction problems that can be applied to new datasets in-context - replacing what used to be hours of pipeline work with a single API call that returns predictions in seconds. I will show how this works under the hood, how it compares to gradient-boosted trees and other baselines across hundreds of benchmarks, and what it means in practice: a simpler, faster, and more homogeneous workflow for tabular prediction.\n\nI will also discuss where we are headed next - from time series foundation models to agentic data science - and what we have learned bringing this from research into production."
+  },
+  "Maria Bergmann": {
+    "en": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process.",
+    "de": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process."
+  },
+  "Gabriel Nobis": {
+    "en": "Most continuous-time diffusion models rely on Brownian motion as the source of randomness in the noising process, a memoryless mechanism characterized by independent increments. While this choice offers mathematical tractability, it constrains the expressivity of the noising dynamics, limits the richness of their temporal structure, and excludes noise processes with long-range temporal dependencies.\n\nAfter reviewing continuous-time diffusion models, this talk explores diffusion-based generative models driven by an approximation of fractional Brownian motion, a non-Markovian process with long-range temporal dependence. We further present applications of this novel generative paradigm to image generation, sampling, and the prediction of protein conformations.",
+    "de": "Most continuous-time diffusion models rely on Brownian motion as the source of randomness in the noising process, a memoryless mechanism characterized by independent increments. While this choice offers mathematical tractability, it constrains the expressivity of the noising dynamics, limits the richness of their temporal structure, and excludes noise processes with long-range temporal dependencies.\n\nAfter reviewing continuous-time diffusion models, this talk explores diffusion-based generative models driven by an approximation of fractional Brownian motion, a non-Markovian process with long-range temporal dependence. We further present applications of this novel generative paradigm to image generation, sampling, and the prediction of protein conformations."
+  },
+  "Markus Düttmann": {
+    "en": "coming soon...",
+    "de": "coming soon..."
+  },
+  "Annette Rudolph": {
+    "en": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples.",
+    "de": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples."
+  },
+  "Peter Kirstel": {
+    "en": "A block cipher is a cryptographic primitive that takes a key and a message, both of a fixed length, and turns it into a ciphertext. Ideally, one can only recover the message from the ciphertext by using the key. However, a theorem from Shannon from 1948 says that perfect secrecy can only be achieved if the key is of the same length as the ciphertext, which is a completely impractical constraint. In practice, the key is much shorter than the ciphertext.\n\nThis means that statistical analysis of the ciphertext reveals some information about the message (or even the key). Thus, when developing a block cipher, the goal is to make this statistical analysis computationally infeasible. While there are design principles for block ciphers, the proof is in the pudding, and the only way to determine if a cipher is secure is to try to break it.\n\nI will explain some basics of block cipher design, and then review some recent work applying Machine Learning to the analysis of block ciphers. After this overview, I would encourage the participants to brainstorm and discuss what kind of AI-methods could be promising for future research.",
+    "de": "A block cipher is a cryptographic primitive that takes a key and a message, both of a fixed length, and turns it into a ciphertext. Ideally, one can only recover the message from the ciphertext by using the key. However, a theorem from Shannon from 1948 says that perfect secrecy can only be achieved if the key is of the same length as the ciphertext, which is a completely impractical constraint. In practice, the key is much shorter than the ciphertext.\n\nThis means that statistical analysis of the ciphertext reveals some information about the message (or even the key). Thus, when developing a block cipher, the goal is to make this statistical analysis computationally infeasible. While there are design principles for block ciphers, the proof is in the pudding, and the only way to determine if a cipher is secure is to try to break it.\n\nI will explain some basics of block cipher design, and then review some recent work applying Machine Learning to the analysis of block ciphers. After this overview, I would encourage the participants to brainstorm and discuss what kind of AI-methods could be promising for future research."
+  },
+  "Leonard Schenk": {
+    "en": "Europe’s reliance on US and Chinese AI models creates systemic strategic vulnerabilities. This workshop outlines a playbook for establishing sovereign Frontier AI within Europe. Rather than replicating US-centric LLM scaling, we prioritize AI that aligns with European industrial strengths.\n\nThe session details the strategic imperative (“Why”), specific focus domains like robotics or energy-efficient architectures that fit the local landscape (“What”), and implementation via distributed training and semiconductor sovereignty (“How”). The outcome is a roadmap for deployable, \"continent-aligned\" models for long-term competitiveness.",
+    "de": "Europe’s reliance on US and Chinese AI models creates systemic strategic vulnerabilities. This workshop outlines a playbook for establishing sovereign Frontier AI within Europe. Rather than replicating US-centric LLM scaling, we prioritize AI that aligns with European industrial strengths.\n\nThe session details the strategic imperative (“Why”), specific focus domains like robotics or energy-efficient architectures that fit the local landscape (“What”), and implementation via distributed training and semiconductor sovereignty (“How”). The outcome is a roadmap for deployable, \"continent-aligned\" models for long-term competitiveness."
+  },
+  "Benjamin Ulbrich": {
+    "en": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process.",
+    "de": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process."
+  },
+  "Ma Li": {
+    "en": "dida has a weekly internal reading group where our ML scientists discuss recent papers and how they can help with our projects.\n\nPapers presented will be announced soon.",
+    "de": "dida has a weekly internal reading group where our ML scientists discuss recent papers and how they can help with our projects.\n\nPapers presented will be announced soon."
+  },
+  "Tom Freudenberg": {
+    "en": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices.",
+    "de": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices."
+  },
+  "Nick Heilenkötter": {
+    "en": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices.",
+    "de": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices."
+  },
+  "Kai Hartmann": {
+    "en": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples.",
+    "de": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples."
+  },
+  "Lorenz Richter": {
+    "en": "Moderation",
+    "de": "Moderation"
+  },
+  "Johannes Müller": {
+    "en": "We introduce an “optimize-then-project” framework for scientific machine learning that addresses numerical instability caused by differential operators in training objectives. The core concept is to first formulate optimization algorithms in a continuous (infinite-dimensional) setting, and then discretize them within the tangent space of the chosen neural network model.\n\nWe demonstrate how this approach can be applied to practical settings, including physics-informed neural networks and variational Monte Carlo methods for quantum many-body systems - areas where neural network-based models are increasingly gaining traction. We also discuss key considerations for scaling these methods to larger, real-world problems.",
+    "de": "We introduce an “optimize-then-project” framework for scientific machine learning that addresses numerical instability caused by differential operators in training objectives. The core concept is to first formulate optimization algorithms in a continuous (infinite-dimensional) setting, and then discretize them within the tangent space of the chosen neural network model.\n\nWe demonstrate how this approach can be applied to practical settings, including physics-informed neural networks and variational Monte Carlo methods for quantum many-body systems - areas where neural network-based models are increasingly gaining traction. We also discuss key considerations for scaling these methods to larger, real-world problems."
+  }
+};
+let currentLang = 'en';
+const modal = document.getElementById('speakerModal');
+function openSpeaker(card){
+  const name = card.querySelector('.s-name')?.textContent.trim() || '';
+  const role = card.querySelector('.s-role')?.textContent.trim() || '';
+  const talk = card.querySelector('.s-talk')?.textContent.trim() || '';
+  const num = card.querySelector('.s-num')?.textContent.trim() || '';
+  document.getElementById('modalNum').textContent = num + ' / speaker';
+  document.getElementById('modalName').textContent = name;
+  document.getElementById('modalRole').textContent = role;
+  document.getElementById('modalTalk').textContent = talk;
+  const detailText = ((speakerDetails[name] && speakerDetails[name][currentLang]) || 'coming soon ...');
+  document.getElementById('modalBio').innerHTML = detailText.split(/\n\s*\n/).map(p => '<p>' + p + '</p>').join('');
+  modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+}
+document.querySelectorAll('.speaker').forEach(card=>{
+  card.tabIndex = 0;
+  card.addEventListener('click',()=>openSpeaker(card));
+  card.addEventListener('keydown',e=>{ if(e.key==='Enter') openSpeaker(card); });
+});
+modal?.addEventListener('click',e=>{ if(e.target===modal || e.target.classList.contains('modal-close')){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape' && modal){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+  }
+});
+
+/* ── PANEL GLOW ── */
 document.querySelectorAll('.panel').forEach(p=>{
   p.addEventListener('pointermove',e=>{
     const r=p.getBoundingClientRect();
@@ -740,69 +2436,143 @@ document.querySelectorAll('.panel').forEach(p=>{
   });
 });
 
-
-/* ── WORD-BY-WORD REVEAL TEXT ── */
-function prepareRevealText(scope=document){
-  const targets = scope.querySelectorAll('h2.reveal,.lead.reveal,.hero-note.reveal,.panel h3,.panel p,.agenda-items p,.agenda-items span');
-  targets.forEach(el=>{
-    if(el.dataset.splitDone) return;
-    const original = el.innerHTML;
-    el.dataset.originalHtml = original;
-    const tmp = document.createElement('span');
-    tmp.innerHTML = original;
-    const nodes = Array.from(tmp.childNodes);
-    let index = 0;
-    el.innerHTML = '';
-    nodes.forEach(node=>{
-      if(node.nodeType === Node.TEXT_NODE){
-        node.textContent.split(/(\s+)/).forEach(part=>{
-          if(!part) return;
-          if(/\s+/.test(part)){ el.appendChild(document.createTextNode(part)); return; }
-          const span = document.createElement('span');
-          span.className = 'reveal-word';
-          span.style.setProperty('--word-index', index++);
-          span.textContent = part;
-          el.appendChild(span);
-        });
-      } else {
-        el.appendChild(node.cloneNode(true));
-      }
-    });
-    el.dataset.splitDone = 'true';
-  });
-}
-
-/* ── SCROLL REVEAL ── */
-const io=new IntersectionObserver(entries=>entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('on');}),{threshold:.08,rootMargin:'0px 0px -6% 0px'});
-function observeReveal(){document.querySelectorAll('.reveal,.agenda-day').forEach(el=>io.observe(el));}
-
 /* ── i18n ── */
 const dict={
-  en:{nav_services:'Services',nav_speakers:'Speakers',nav_venue:'Venue',nav_agenda:'Agenda',nav_register:'Register',nav_resources:'Resources',kicker:'on machine learning',hero_note:'After three successful editions, the dida conference returns in 2026. Join us at the frizzforum in Berlin-Kreuzberg for a day of applied and technical machine learning talks, hands-on workshops, networking, and good food.',cta_register:'Register',cta_agenda:'Agenda',about_title:'a day full of machine learning',about_lead:'After three successful editions, the dida conference returns in 2026. Join us at the frizzforum in Berlin-Kreuzberg for a day of applied and technical machine learning talks, hands-on workshops, networking, and good food. As the number of participants is limited, we recommend early registration.',invited:"you're invited",annual_title:'The 4th Annual dida Machine Learning Conference',annual_text:"We're leveling up! After three incredible years of insights and innovation, dida conference 2026 is officially on the horizon.",limited:'frizzforum',limited_text:"This year, we're at frizzforum, Berlin Kreuzberg. Whether you're here for the deep-tech sessions, the hands-on workshops, or the high-level networking, this is a day you won't want to miss.",location:'location',location_text:'Berlin Kreuzberg<br>June 19, 2026 • 09:00 – 18:00 CET',speakers_title:'the speakers',speakers_lead:"The confirmed dida conference 2026 lineup — research, industry, scientific machine learning, explainability, tabular foundation models, cryptography and PDEs.",agenda_title:'Agenda at a glance',agenda_day:'Conference day',agenda_morning:'Morning',agenda_afternoon:'Afternoon',agenda_evening:'Evening',agenda_arrival:'Arrival, coffee and registration',agenda_keynote:'Opening keynote',agenda_talks:'Technical talks',agenda_lunch:'Lunch and networking',agenda_research:'Research talks and applied ML sessions',agenda_workshops:'Hands-on workshops',agenda_closing:'Closing conversations and community exchange',agenda_note:'A calm, focused day for technical exchange around machine learning.',register_title:'Register now',submit:'REGISTER'},
-  de:{nav_services:'Services',nav_speakers:'Speaker',nav_venue:'Location',nav_agenda:'Agenda',nav_register:'Anmelden',nav_resources:'Ressourcen',kicker:'über machine learning',hero_note:'Nach drei erfolgreichen Jahren kehrt die dida conference 2026 zurück. Im frizzforum in Berlin-Kreuzberg erwartet dich ein Tag mit technischen Talks, Hands-on-Workshops, Networking und gutem Essen.',cta_register:'Anmelden',cta_agenda:'Agenda',about_title:'ein tag voller machine learning',about_lead:'Nach drei erfolgreichen Jahren kehrt die dida conference 2026 zurück. Im frizzforum in Berlin-Kreuzberg erwartet dich ein Tag mit technischen Talks, Hands-on-Workshops, Networking und gutem Essen. Da die Anzahl der Teilnehmenden begrenzt ist, empfehlen wir eine frühzeitige Anmeldung.',invited:'du bist eingeladen',annual_title:'Die 4. jährliche dida Machine Learning Conference',annual_text:'Nach drei erfolgreichen Jahren mit Insights und Innovation ist die dida conference 2026 offiziell auf dem Weg.',limited:'frizzforum',limited_text:'Dieses Jahr findet die Konferenz im frizzforum in Berlin-Kreuzberg statt — mit Deep-Tech-Sessions, Hands-on-Workshops und hochwertigem Networking.',location:'location',location_text:'Berlin Kreuzberg<br>19. Juni 2026 • 09:00 – 18:00 CET',speakers_title:'die speaker',speakers_lead:'Das bestätigte Lineup der dida conference 2026 — Forschung, Industrie, Scientific Machine Learning, Explainability, Tabular Foundation Models, Kryptografie und PDEs.',agenda_title:'Agenda im Überblick',agenda_day:'Konferenztag',agenda_morning:'Vormittag',agenda_afternoon:'Nachmittag',agenda_evening:'Abend',agenda_arrival:'Ankommen, Kaffee und Registrierung',agenda_keynote:'Opening Keynote',agenda_talks:'Technische Talks',agenda_lunch:'Lunch und Networking',agenda_research:'Research Talks und Applied-ML-Sessions',agenda_workshops:'Hands-on Workshops',agenda_closing:'Abschlussgespräche und Community-Austausch',agenda_note:'Ein ruhiger, fokussierter Tag für technischen Austausch rund um Machine Learning.',register_title:'Jetzt anmelden',submit:'ANMELDEN'}
+  en:{
+    kicker:'on machine learning',cta_register:'Register',cta_agenda:'Agenda',
+    invited:"you're invited",
+    about_title:'a day full of machine learning',
+    about_lead:'After three successful editions, the dida conference returns in 2026. Join us at the frizzforum in Berlin‑Kreuzberg for a day of applied and technical machine learning talks, hands‑on workshops, networking, and good food. As the number of participants is limited, we recommend early registration.',
+    annual_subtitle:'4th annual edition',
+    annual_title:'The 4th Annual dida Machine Learning Conference',
+    annual_text:'After three incredible years of insights and innovation, dida conference 2026 is officially on the horizon — deeper, broader, more focused than ever.',
+    limited_text:"This year, we're at frizzforum, Berlin Kreuzberg. Whether you're here for the deep‑tech sessions, the hands‑on workshops, or the high‑level networking, this is a day you won't want to miss.",
+    speakers_title:'the speakers',
+    speakers_lead:'The confirmed dida conference 2026 lineup — research, industry, scientific machine learning, explainability, tabular foundation models, cryptography and PDEs.',
+    agenda_title:'conference schedule',
+    agenda_day:'Conference day',agenda_morning:'Morning',agenda_afternoon:'Afternoon',agenda_evening:'Evening',
+    agenda_arrival:'Arrival, coffee and registration',
+    agenda_keynote:'Opening keynote',
+    agenda_talks:'Technical talks',
+    agenda_lunch:'Lunch and networking',
+    agenda_research:'Research talks and applied ML sessions',
+    agenda_workshops:'Hands-on workshops',
+    agenda_closing:'Closing conversations and community exchange',
+    agenda_note:'A calm, focused day for technical exchange around machine learning.',
+    agenda_date:'19 june 2026',
+    agenda_sub:'The detailed 2026 programme can follow the same rhythm as the previous dida conferences: main stage talks, coffee breaks, workshops in separate rooms, poster session, dinner and networking.',
+    agenda_full_date:'June 19, 2026',
+    slot_doors_title:'Doors are open',
+    slot_doors_text:'Arrive, get coffee and connect with others.',
+    slot_intro_title:'Introduction',
+    slot_intro_text:'Welcome to the dida conference.',
+    slot_talks_title:'Technical talks',
+    slot_talks_text:'Applied and technical machine learning sessions with the confirmed speaker lineup.',
+    slot_lunch_title:'Lunch break',
+    slot_lunch_text:'Food, coffee and time to connect.',
+    slot_workshops_title:'Talks & workshops',
+    slot_workshops_text:'Research talks, applied ML sessions and hands-on workshops.',
+    slot_closing_title:'Poster Session',
+    slot_closing_text:'Open exchange, posters and community conversations.',
+    slot_coffee_title:'Coffee break',
+    slot_coffee_title_2:'Coffee break',
+    slot_poster_title:'Poster Session',
+    slot_poster_text:'Open exchange, posters and community conversations.',
+    slot_dinner_title:'Dinner & Networking',
+    slot_dinner_text:'Food and drinks will be available for all guests.',
+    main_stage_label:'Main Stage',
+    room1_label:'Workshops: Room 1',
+    room2_label:'Workshops: Room 2',
+    register_title:'Register now',submit:'Register'
+  },
+  de:{
+    kicker:'über machine learning',cta_register:'Anmelden',cta_agenda:'Agenda',
+    invited:'du bist eingeladen',
+    about_title:'ein tag voller machine learning',
+    about_lead:'Nach drei erfolgreichen Jahren kehrt die dida conference 2026 zurück. Im frizzforum in Berlin‑Kreuzberg erwartet dich ein Tag mit technischen Talks, Hands-on-Workshops, Networking und gutem Essen. Da die Anzahl der Teilnehmenden begrenzt ist, empfehlen wir eine frühzeitige Anmeldung.',
+    annual_subtitle:'4. jährliche edition',
+    annual_title:'Die 4. jährliche dida Machine Learning Conference',
+    annual_text:'Nach drei erfolgreichen Jahren mit Insights und Innovation ist die dida conference 2026 offiziell auf dem Weg — tiefer, breiter, fokussierter als je zuvor.',
+    limited_text:'Dieses Jahr findet die Konferenz im frizzforum in Berlin‑Kreuzberg statt — mit Deep‑Tech‑Sessions, Hands‑on‑Workshops und hochwertigem Networking.',
+    speakers_title:'die speaker',
+    speakers_lead:'Das bestätigte Lineup der dida conference 2026 — Forschung, Industrie, Scientific Machine Learning, Explainability, Tabular Foundation Models, Kryptografie und PDEs.',
+    agenda_title:'konferenzprogramm',
+    agenda_day:'Konferenztag',agenda_morning:'Vormittag',agenda_afternoon:'Nachmittag',agenda_evening:'Abend',
+    agenda_arrival:'Ankommen, Kaffee und Registrierung',
+    agenda_keynote:'Opening Keynote',
+    agenda_talks:'Technische Talks',
+    agenda_lunch:'Lunch und Networking',
+    agenda_research:'Research Talks und Applied‑ML‑Sessions',
+    agenda_workshops:'Hands‑on Workshops',
+    agenda_closing:'Abschlussgespräche und Community‑Austausch',
+    agenda_note:'Ein ruhiger, fokussierter Tag für technischen Austausch rund um Machine Learning.',
+    agenda_date:'19. juni 2026',
+    agenda_sub:'Das detaillierte Programm für 2026 kann dem Rhythmus der früheren dida conferences folgen: Main-Stage-Talks, Coffee Breaks, Workshops in separaten Räumen, Poster Session, Dinner und Networking.',
+    agenda_full_date:'19. Juni 2026',
+    slot_doors_title:'Einlass',
+    slot_doors_text:'Ankommen, Kaffee holen und mit anderen ins Gespräch kommen.',
+    slot_intro_title:'Einführung',
+    slot_intro_text:'Willkommen zur dida conference.',
+    slot_talks_title:'Technische Talks',
+    slot_talks_text:'Angewandte und technische Machine-Learning-Sessions mit dem bestätigten Speaker-Lineup.',
+    slot_lunch_title:'Lunch break',
+    slot_lunch_text:'Essen, Kaffee und Zeit zum Austausch.',
+    slot_workshops_title:'Talks & Workshops',
+    slot_workshops_text:'Research Talks, Applied-ML-Sessions und Hands-on-Workshops.',
+    slot_closing_title:'Poster Session',
+    slot_closing_text:'Offener Austausch, Poster und Community-Gespräche.',
+    slot_coffee_title:'Coffee Break',
+    slot_coffee_title_2:'Coffee Break',
+    slot_poster_title:'Poster Session',
+    slot_poster_text:'Offener Austausch, Poster und Community-Gespräche.',
+    slot_dinner_title:'Dinner & Networking',
+    slot_dinner_text:'Essen und Getränke stehen für alle Gäste bereit.',
+    main_stage_label:'Main Stage',
+    room1_label:'Workshops: Room 1',
+    room2_label:'Workshops: Room 2',
+    register_title:'Jetzt anmelden',submit:'Anmelden'
+  }
 };
-const htmlKeys = new Set(['location_text']);
-function setLanguage(lang){
-  const y=window.scrollY;
-  document.documentElement.classList.add('is-language-switching');
+function setLang(lang){
+  currentLang = lang;
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k=el.dataset.i18n;
-    if(dict[lang]&&dict[lang][k]){
-      if(htmlKeys.has(k)) el.innerHTML=dict[lang][k];
-      else el.textContent=dict[lang][k];
-      delete el.dataset.splitDone;
-    }
+    if(dict[lang]&&dict[lang][k]) el.textContent=dict[lang][k];
   });
-  prepareRevealText();
-  observeReveal();
-  document.querySelectorAll('[data-set-lang]').forEach(el=>{el.classList.toggle('active',el.dataset.setLang===lang);});
+  document.querySelectorAll('[data-set-lang]').forEach(el=>{
+    el.classList.toggle('active',el.dataset.setLang===lang);
+  });
   document.documentElement.lang=lang;
-  requestAnimationFrame(()=>{window.scrollTo({top:y,left:0,behavior:'instant'});document.documentElement.classList.remove('is-language-switching');});
+  if(modal && modal.classList.contains('open')){
+    const openName = document.getElementById('modalName')?.textContent.trim();
+    if(openName && speakerDetails[openName]){
+      const detailText = speakerDetails[openName][currentLang] || 'coming soon ...';
+      document.getElementById('modalBio').innerHTML = detailText.split(/\n\s*\n/).map(p => '<p>' + p + '</p>').join('');
+    }
+  }
 }
-document.querySelectorAll('[data-set-lang]').forEach(el=>{el.addEventListener('click',()=>setLanguage(el.dataset.setLang));});
-prepareRevealText();
-observeReveal();
-setLanguage('en');
+document.querySelectorAll('[data-set-lang]').forEach(el=>{
+  el.addEventListener('click',()=>setLang(el.dataset.setLang));
+});
+setLang('en');
+
+
+/* ── SAFE SAME-PAGE BUTTONS / LINKS ── */
+document.querySelectorAll('a[href^="#"]').forEach(link=>{
+  link.addEventListener('click', e=>{
+    const id = link.getAttribute('href');
+    const target = document.querySelector(id);
+    if(!target) return;
+    e.preventDefault();
+    target.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+
+/* ── FORM ── */
+document.querySelector('.btn-submit')&&document.querySelector('.btn-submit').addEventListener('click',()=>{
+  const success=document.getElementById('formSuccess');
+  if(success){success.style.display='block';}
+});
 </script>
 </body>
 </html>
