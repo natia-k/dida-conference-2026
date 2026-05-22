@@ -259,29 +259,83 @@ nav {
   color: var(--ink-3); line-height: 1.76; max-width: 54ch;
   margin-bottom: 42px; opacity: 0;
 }
+
+/* Hero paragraph readability: soft glass veil only behind the copy */
+.hero-note {
+  position: relative;
+  z-index: 1;
+  color: rgba(9,9,9,.76);
+  padding: 22px 26px;
+  margin-left: -26px;
+  border-radius: 24px;
+  background:
+    radial-gradient(420px circle at 14% 8%, rgba(255,255,255,.78), rgba(255,255,255,.28) 62%, transparent 100%),
+    linear-gradient(115deg, rgba(251,248,243,.88), rgba(251,248,243,.58));
+  border: 1px solid rgba(255,255,255,.54);
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.76),
+    0 16px 46px rgba(10,16,22,.035);
+  backdrop-filter: blur(20px) saturate(1.08);
+  -webkit-backdrop-filter: blur(20px) saturate(1.08);
+}
+
+.hero-note br {
+  display: block;
+  content: '';
+  margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .hero-note {
+    margin-left: 0;
+    padding: 18px 20px;
+    border-radius: 20px;
+  }
+}
+
+
 .hero-act { display: flex; gap: 14px; align-items: center; opacity: 0; flex-wrap: wrap; margin-bottom: 48px; }
 
 .hero-meta {
   opacity: 0;
-  display: flex; gap: 0;
+  display: flex;
+  gap: 0;
   border: 1px solid rgba(0,0,0,.08);
-  border-radius: 16px; overflow: hidden;
-  background: rgba(255,255,255,.52);
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255,255,255,.54);
   backdrop-filter: blur(20px) saturate(1.2);
   -webkit-backdrop-filter: blur(20px) saturate(1.2);
-  box-shadow: inset 0 1px rgba(255,255,255,.9), 0 12px 48px rgba(0,0,0,.07);
+  box-shadow: inset 0 1px rgba(255,255,255,.9), 0 14px 52px rgba(0,0,0,.07);
   width: fit-content;
+  max-width: 100%;
 }
+
 .meta-item {
-  padding: 18px 28px;
+  padding: 22px 36px;
   border-right: 1px solid rgba(0,0,0,.06);
+  min-width: 178px;
 }
+
 .meta-item:last-child { border-right: 0; }
+
 .meta-item span {
-  font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--teal); display: block; margin-bottom: 5px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--teal);
+  display: block;
+  margin-bottom: 8px;
 }
-.meta-item b { font-size: 15px; font-weight: 400; letter-spacing: -0.03em; color: var(--ink); }
+
+.meta-item b {
+  font-size: 21px;
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
 
 /* Hero enter animations */
 .hero.go .hero-kicker { animation: rise .8s var(--E) .12s forwards; }
@@ -290,6 +344,20 @@ nav {
 .hero.go .hero-act    { animation: rise .8s var(--E) .44s forwards; }
 .hero.go .hero-meta   { animation: rise .8s var(--E) .54s forwards; }
 @keyframes rise { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+
+
+.hero-note,
+.hero-note p {
+  color: rgba(9,9,9,.68);
+}
+
+@media (max-width: 768px) {
+  .hero-inner > div::before {
+    inset: -14px -18px -14px -18px;
+    border-radius: 26px;
+  }
+}
+
 
 /* ── BUTTONS ── */
 .btn-primary {
@@ -681,6 +749,84 @@ section { padding: 0; }
   letter-spacing: -.042em; font-weight: 430; color: var(--ink);
 }
 
+
+/* Special track as an editorial thread inside the normal agenda.
+   This highlights individual sessions, not an entire room/day. */
+.agenda-slot.is-special-track {
+  position: relative;
+  padding-left: 28px;
+  background:
+    linear-gradient(90deg, rgba(0,146,146,.045), transparent 46%);
+}
+
+.agenda-slot.is-special-track::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 22px;
+  bottom: 22px;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(0,146,146,.16),
+    rgba(0,146,146,.76),
+    rgba(0,146,146,.16)
+  );
+}
+
+.track-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,146,146,.18);
+  background: rgba(255,255,255,.46);
+  color: var(--teal-d);
+  font-family: var(--mono);
+  font-size: 8.5px;
+  line-height: 1;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.track-pill::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--teal);
+  opacity: .78;
+}
+
+.special-track-minimal {
+  margin-top: 42px;
+}
+
+.special-track-minimal .special-track-head p {
+  max-width: 58ch;
+}
+
+@media (max-width: 768px) {
+  .agenda-slot.is-special-track {
+    padding-left: 20px;
+  }
+
+  .agenda-slot.is-special-track::before {
+    top: 18px;
+    bottom: 18px;
+  }
+
+  .track-pill {
+    font-size: 8px;
+    letter-spacing: .14em;
+  }
+}
+
+
 /* ── REGISTER ── */
 #register.ruled { border-top: 1px solid rgba(0,0,0,.055); }
 #register {
@@ -760,7 +906,7 @@ section { padding: 0; }
 .reg-note {
   font-size: clamp(16px, 1.18vw, 18px);
   font-weight: 300;
-  color: rgba(11,11,11,.62);
+  color: rgba(11,11,11,.78);
   line-height: 1.72;
   max-width: 31ch;
 }
@@ -814,7 +960,7 @@ section { padding: 0; }
   font: 300 16px/1 var(--sans); color: var(--ink); letter-spacing: -.01em;
   transition: border-color .18s, box-shadow .18s;
 }
-.field input::placeholder { color: rgba(0,0,0,.30); }
+.field input::placeholder { color: rgba(0,0,0,.44); }
 .field input:focus { border-bottom-color: rgba(0,146,146,.76); box-shadow: 0 1px 0 rgba(0,146,146,.24); }
 .f-honey { display: none; }
 
@@ -824,7 +970,7 @@ section { padding: 0; }
   background: rgba(255,255,255,.42);
   border: 1px solid rgba(0,0,0,.07); border-radius: 14px;
   margin-bottom: 22px;
-  font-size: 14px; color: rgba(11,11,11,.62);
+  font-size: 14px; color: rgba(11,11,11,.78);
   box-shadow: inset 0 1px rgba(255,255,255,.65);
 }
 .captcha-box {
@@ -913,6 +1059,27 @@ footer::before {
   color: rgba(234,228,216,.28);
 }
 
+
+.hero-note,
+.section-lead,
+.panel p,
+.slot-body p,
+.reg-note,
+.footer-desc,
+.s-talk {
+  color: rgba(12,12,12,.74);
+}
+
+.nav-links a {
+  color: rgba(9,9,9,.72);
+}
+
+.field label,
+.s-role {
+  color: rgba(9,9,9,.52);
+}
+
+
 /* ── MOUSE GLOW ── */
 #mg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .4s; }
 #mg.on { opacity: 1; }
@@ -938,8 +1105,17 @@ footer::before {
   .nav-links { display: none; }
   .hero h1 { font-size: 64px; }
   .hero-note { font-size: 16px; }
-  .hero-meta { flex-wrap: wrap; width: 100%; }
-  .meta-item { flex: 1 1 50%; padding: 14px 18px; }
+  .hero-meta {
+    flex-wrap: wrap;
+    width: 100%;
+    border-radius: 16px;
+  }
+  .meta-item {
+    flex: 1 1 50%;
+    padding: 15px 16px;
+    min-width: unset;
+  }
+  .meta-item b { font-size: 17px; }
   .hero-inner > div { padding: 32px 20px 32px 0; }
   .editorial { grid-template-areas: "info" "video" "venueinfo" "venue"; }
   .speaker-grid { grid-template-columns: repeat(2, 1fr); }
@@ -993,8 +1169,8 @@ footer::before {
   --bg: #fbf8f3;
   --ink: #090909;
   --ink-2: #222222;
-  --ink-3: #60605c;
-  --ink-4: #8b8a84;
+  --ink-3: #44423f;
+  --ink-4: #6f6d68;
   --teal: #008f8f;
   --teal-hi: #00a6a6;
   --teal-d: #007777;
@@ -1053,7 +1229,7 @@ nav {
   box-shadow: inset 0 1px rgba(255,255,255,.78), 0 14px 42px rgba(16,20,28,.042);
 }
 .logo { letter-spacing: -.035em; }
-.nav-links a { color: rgba(9,9,9,.62); }
+.nav-links a { color: rgba(9,9,9,.78); }
 .nav-links .cta, .btn-primary, .btn-submit {
   background: linear-gradient(180deg, #00a7a7 0%, #008f8f 55%, #007878 100%);
   box-shadow: inset 0 1px rgba(255,255,255,.22), 0 12px 34px rgba(0,146,146,.18);
@@ -1069,8 +1245,20 @@ nav {
 .hero-inner { max-width: 880px; }
 .hero-inner > div { padding: clamp(38px, 5vw, 58px) clamp(34px, 5vw, 70px) clamp(40px, 5vw, 58px) 0; }
 .hero-inner > div::before {
-  inset: 0 -26px 0 -54px;
-  background: linear-gradient(90deg, rgba(251,248,243,.98) 0%, rgba(251,248,243,.9) 58%, rgba(251,248,243,0) 100%);
+  inset: -18px -40px -18px -64px;
+  border-radius: 34px;
+  background:
+    radial-gradient(520px circle at 12% 20%, rgba(255,255,255,.82), rgba(255,255,255,.28) 58%, transparent 100%),
+    linear-gradient(90deg,
+      rgba(251,248,243,.985) 0%,
+      rgba(251,248,243,.96) 42%,
+      rgba(251,248,243,.84) 62%,
+      rgba(251,248,243,.22) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.72),
+    0 16px 52px rgba(10,16,22,.035);
 }
 .hero h1 {
   max-width: 7.2ch;
@@ -1081,13 +1269,13 @@ nav {
 }
 .hero h1 .thin { color: rgba(9,9,9,.48); }
 .hero h1 .accent { background: linear-gradient(92deg, #090909 0%, #101010 46%, rgba(0,143,143,.92) 124%); -webkit-background-clip: text; background-clip: text; }
-.hero-note { max-width: 58ch; color: rgba(9,9,9,.58); }
+.hero-note { max-width: 58ch; color: rgba(9,9,9,.74); }
 .hero-meta {
   border-color: rgba(12,16,20,.075);
   background: rgba(255,255,255,.46);
   box-shadow: inset 0 1px rgba(255,255,255,.82), 0 18px 58px rgba(12,16,22,.055);
 }
-.meta-item { min-width: 138px; }
+.meta-item { min-width: 178px; }
 .meta-item b { letter-spacing: -.026em; }
 
 #about .w, #speakers .w { padding-top: clamp(96px, 9vw, 150px); padding-bottom: clamp(104px, 9vw, 156px); }
@@ -1139,7 +1327,7 @@ nav {
 .s-photo img { max-width: 96%; filter: grayscale(1) contrast(1.02); }
 .s-info { padding: 21px 22px 25px; }
 .s-name { font-size: 18.5px; }
-.s-talk { color: rgba(9,9,9,.58); }
+.s-talk { color: rgba(9,9,9,.74); }
 
 #agenda {
   background:
@@ -1174,7 +1362,7 @@ nav {
 #register::before { opacity: .30; background-size: 30px 30px; }
 #register::after { background: linear-gradient(90deg, rgba(251,248,243,.98) 0%, rgba(251,248,243,.88) 40%, rgba(251,248,243,.30) 72%, rgba(251,248,243,.10) 100%); }
 .reg-h2 { letter-spacing: -.082em; }
-.reg-note { color: rgba(9,9,9,.58); }
+.reg-note { color: rgba(9,9,9,.74); }
 .form-card {
   border-radius: 32px;
   background: linear-gradient(145deg, rgba(255,255,255,.72), rgba(255,255,255,.46));
@@ -1406,6 +1594,405 @@ body.modal-lock { overflow: hidden; }
   .visual-panel:hover img, .venue-photo:hover img { transform: scale(1.015); }
 }
 
+
+/* ─────────────────────────────────────────────────────────────
+   FINAL SAFE CLEANUP + MOBILE HARDENING
+   Scope: readability, overflow prevention, mobile polish only.
+   No structural redesign.
+───────────────────────────────────────────────────────────── */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* Keep the hero paragraph readable over dots without changing layout */
+.hero-note {
+  color: rgba(9,9,9,.72);
+}
+
+/* Keep venue address softly visible before hover, crisp on hover */
+.venue-photo .venue-map-overlay {
+  opacity: .70;
+  background: linear-gradient(180deg, rgba(7,10,13,.06) 8%, rgba(7,10,13,.52) 100%);
+}
+
+.venue-photo:hover .venue-map-overlay {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(7,10,13,0) 20%, rgba(7,10,13,.72) 100%);
+}
+
+/* Smooth responsive tables/cards without layout jumps */
+.hero-meta,
+.special-track-minimal,
+.form-card,
+.panel,
+.visual-panel,
+.venue-photo,
+.speaker,
+.modal-card {
+  max-width: 100%;
+}
+
+/* Better touch targets where nav remains visible */
+.nav-lang button,
+.modal-close,
+.btn-primary,
+.btn-ghost,
+.btn-submit {
+  min-height: 44px;
+}
+
+/* Tablet polish */
+@media (max-width: 1080px) {
+  .nav-inner {
+    padding-left: clamp(16px, 3vw, 24px);
+    padding-right: clamp(16px, 3vw, 24px);
+  }
+
+  .hero-inner {
+    max-width: 100%;
+  }
+
+  .hero-inner > div::before {
+    inset: -18px -22px -18px -22px;
+  }
+
+  .agenda-inner-wide {
+    gap: clamp(34px, 6vw, 54px);
+  }
+}
+
+/* Phone polish */
+@media (max-width: 768px) {
+  :root {
+    --g: clamp(20px, 5.4vw, 26px);
+  }
+
+  body::before {
+    background-size: 44px 44px;
+    opacity: .42;
+  }
+
+  #dotWrap {
+    opacity: .72;
+  }
+
+  nav {
+    height: 70px;
+    padding: 8px var(--g);
+  }
+
+  .nav-inner {
+    height: 54px;
+    min-height: 54px;
+    border-radius: 18px;
+    padding: 0 16px;
+  }
+
+  .logo {
+    font-size: 17px;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: clamp(72px, 17vw, 104px);
+    padding-bottom: clamp(72px, 17vw, 104px);
+  }
+
+  .hero-inner > div {
+    padding: 28px 0;
+  }
+
+  .hero-inner > div::before {
+    inset: -16px -18px;
+    border-radius: 26px;
+    background:
+      radial-gradient(420px circle at 12% 8%, rgba(255,255,255,.82), rgba(255,255,255,.34) 62%, transparent 100%),
+      linear-gradient(110deg, rgba(251,248,243,.94), rgba(251,248,243,.58));
+  }
+
+  .hero h1 {
+    max-width: 7ch;
+    font-size: clamp(58px, 17vw, 82px);
+    line-height: .9;
+    letter-spacing: -.065em;
+  }
+
+  .hero-note {
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 100%;
+    color: rgba(9,9,9,.72);
+  }
+
+  .hero-act {
+    gap: 10px;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    height: 48px;
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .hero-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    border-radius: 18px;
+  }
+
+  .meta-item {
+    min-width: 0;
+    padding: 16px 16px;
+  }
+
+  .meta-item:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .meta-item b {
+    font-size: 17px;
+    line-height: 1.12;
+  }
+
+  .meta-item span {
+    font-size: 8px;
+    letter-spacing: .2em;
+  }
+
+  #about .w,
+  #speakers .w,
+  #agenda {
+    padding-top: clamp(74px, 15vw, 104px);
+    padding-bottom: clamp(78px, 15vw, 108px);
+  }
+
+  .about-head,
+  .speakers-head {
+    gap: 24px;
+  }
+
+  .section-h2,
+  #about .about-head .section-h2,
+  .agenda-h2 {
+    font-size: clamp(38px, 12vw, 58px);
+    line-height: .92;
+    letter-spacing: -.058em;
+  }
+
+  .section-lead,
+  .agenda-sub,
+  .panel p,
+  .slot-body p {
+    font-size: 15.5px;
+    line-height: 1.68;
+  }
+
+  .editorial {
+    gap: 18px;
+  }
+
+  .panel,
+  .form-card {
+    padding: 26px 22px;
+    border-radius: 24px;
+  }
+
+  .panel.large,
+  .panel.dark,
+  .visual-panel,
+  .venue-photo {
+    min-height: 330px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .speaker-grid {
+    gap: 18px;
+  }
+
+  .speaker {
+    grid-template-rows: minmax(230px, 58vw) auto;
+    border-radius: 22px;
+  }
+
+  .agenda-slot,
+  .special-track-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .slot-time,
+  .special-time {
+    font-size: 11px;
+    white-space: normal;
+  }
+
+  .special-track-minimal {
+    padding: 24px 20px;
+    border-radius: 22px;
+  }
+
+  .register-inner {
+    gap: 44px;
+  }
+
+  .reg-h2 {
+    font-size: clamp(58px, 18vw, 86px);
+    line-height: .86;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .footer-legal {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 420px) {
+  .hero h1 {
+    font-size: clamp(52px, 16vw, 68px);
+  }
+
+  .hero-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .meta-item {
+    border-right: 0;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+
+  .meta-item:last-child {
+    border-bottom: 0;
+  }
+
+  .speaker-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-act {
+    width: 100%;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   PRODUCTION HARDENING — accessibility/performance only
+───────────────────────────────────────────────────────────── */
+
+body::after,
+#dotWrap,
+#dotCanvas,
+#mg {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .text-glass::before,
+  .panel,
+  .form-card,
+  .hero-meta,
+  .nav-inner,
+  .special-track-minimal,
+  .speaker,
+  .modal-card {
+    background: rgba(255,255,255,.88) !important;
+  }
+
+  nav {
+    background: rgba(251,248,243,.94) !important;
+  }
+}
+
+.speaker[role="button"]:focus-visible {
+  outline: 2px solid rgba(0,146,146,.48);
+  outline-offset: 5px;
+}
+
+.nav-lang button[aria-pressed="true"] {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+
+/* Final production bugfix pass — no visual redesign */
+.speaker[role="button"]:focus-visible {
+  outline: 2px solid rgba(0,146,146,.52);
+  outline-offset: 5px;
+  border-radius: 22px;
+}
+
+@media (max-width: 768px) {
+  .text-glass::before,
+  .hero-inner > div::before,
+  .hero-note,
+  .panel,
+  .form-card,
+  .special-track-minimal,
+  .modal-card {
+    background-color: rgba(251,248,243,.78);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1435,6 +2022,8 @@ body.modal-lock { overflow: hidden; }
   </div>
 </nav>
 
+
+<main id="main-content">
 <!-- HERO -->
 <header class="hero">
   <div class="w">
@@ -1575,9 +2164,9 @@ body.modal-lock { overflow: hidden; }
           <div class="slot-time">10:10 – 10:50</div>
           <div class="slot-body"><span class="slot-speaker">Jonas Köhler · CuspAI</span><h3>Simulating Molecules in the Age of AI</h3></div>
         </article>
-        <article class="agenda-slot">
+        <article class="agenda-slot is-special-track">
           <div class="slot-time">10:50 – 11:45</div>
-          <div class="slot-body"><span class="slot-speaker">Gerhard Koch · Siemens Energy</span><h3>Industrial &amp; Energy AI challenges "solved" with a new structural and explainable AI approach</h3></div>
+          <div class="slot-body"><span class="track-pill">Special track · AI for Science & Engineering</span><span class="slot-speaker">Gerhard Koch · Siemens Energy</span><h3>Industrial &amp; Energy AI challenges "solved" with a new structural and explainable AI approach</h3></div>
         </article>
         <article class="agenda-slot is-break">
           <div class="slot-time">11:45 – 12:15</div>
@@ -1591,9 +2180,9 @@ body.modal-lock { overflow: hidden; }
           <div class="slot-time">13:00 – 14:00</div>
           <div class="slot-body"><h3 data-i18n="slot_lunch_title">Lunch break</h3><p data-i18n="slot_lunch_text">Food and drinks will be available for all guests.</p></div>
         </article>
-        <article class="agenda-slot">
+        <article class="agenda-slot is-special-track">
           <div class="slot-time">14:00 – 14:45</div>
-          <div class="slot-body"><span class="slot-speaker">Maria Bergmann &amp; Benjamin Ulbrich · Innomotics</span><h3>Automated Vibration Prediction for Electric Motors via PDE Approximation</h3></div>
+          <div class="slot-body"><span class="track-pill">Special track · AI for Science & Engineering</span><span class="slot-speaker">Maria Bergmann &amp; Benjamin Ulbrich · Innomotics</span><h3>Automated Vibration Prediction for Electric Motors via PDE Approximation</h3></div>
         </article>
         <article class="agenda-slot">
           <div class="slot-time">14:45 – 15:45</div>
@@ -1626,8 +2215,8 @@ body.modal-lock { overflow: hidden; }
               <span class="special-label" data-i18n="special_label">Special track</span>
               <h3 data-i18n="special_title">AI for Science &amp; Engineering</h3>
             </div>
-            <p data-i18n="special_text">A conference within the conference: four consecutive talks in the workshop room.</p>
-            <span class="special-room" data-i18n="special_room">Workshop room</span>
+            <p data-i18n="special_text">A curated thread inside the wider programme. The marked sessions belong to the AI for Science &amp; Engineering track, while the room may still host other talks before or after them.</p>
+            <span class="special-room" data-i18n="special_room">Marked sessions</span>
           </div>
           <div class="special-track-table" role="table" aria-label="AI for Science and Engineering schedule">
             <article class="special-track-row" role="row">
@@ -1712,6 +2301,8 @@ body.modal-lock { overflow: hidden; }
 </div>
 
 <!-- FOOTER -->
+</main>
+
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
@@ -1940,12 +2531,10 @@ let currentLang = 'en';
 const modal = document.getElementById('speakerModal');
 let activeSpeakerCard = null;
 
-function speakerParagraphs(text){
-  return String(text || 'coming soon ...')
-    .split(/\n\s*\n/)
-    .map(p => '<p>' + p.replace(/[&<>]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch])) + '</p>')
-    .join('');
-}
+
+
+
+
 
 function closeSpeakerModal(){
   if(!modal) return;
@@ -1966,7 +2555,7 @@ function openSpeaker(card){
   document.getElementById('modalRole').textContent = role;
   document.getElementById('modalTalk').textContent = talk;
   const detailText = (speakerDetails[name] && (speakerDetails[name][currentLang] || speakerDetails[name].en)) || 'coming soon ...';
-  document.getElementById('modalBio').innerHTML = speakerParagraphs(detailText);
+  renderSpeakerParagraphsSafe(document.getElementById('modalBio'), detailText);
   modal.classList.add('open');
   modal.setAttribute('aria-hidden','false');
   document.body.classList.add('modal-lock');
@@ -2037,8 +2626,8 @@ const dict = {
     room1_label:'Workshops: Room 1', room2_label:'Workshops: Room 2',
     special_label:'Special track',
     special_title:'AI for Science & Engineering',
-    special_text:'A conference within the conference: four consecutive talks in the workshop room.',
-    special_room:'Workshop room',
+    special_text:'A curated thread inside the wider programme. The marked sessions belong to the AI for Science & Engineering track, while the room may still host other talks before or after them.',
+    special_room:'Marked sessions',
     limited_seats:'limited seats',
     register_title:'Register<br><em style="font-style:italic;font-weight:300;color:var(--ink-3)">now</em>',
     register_note:'We recommend early registration as seats are limited. Attendance is free for this invitation-based event.',
@@ -2087,8 +2676,8 @@ const dict = {
     room1_label:'Workshops: Raum 1', room2_label:'Workshops: Raum 2',
     special_label:'Sondertrack',
     special_title:'AI for Science & Engineering',
-    special_text:'Eine Konferenz innerhalb der Konferenz: vier aufeinanderfolgende Talks im Workshop-Raum.',
-    special_room:'Workshop-Raum',
+    special_text:'Ein kuratierter roter Faden innerhalb des Gesamtprogramms. Die markierten Sessions gehören zum Track AI for Science & Engineering, während der Raum davor oder danach auch andere Talks enthalten können.',
+    special_room:'Markierte Sessions',
     limited_seats:'begrenzte plätze',
     register_title:'Jetzt<br><em style="font-style:italic;font-weight:300;color:var(--ink-3)">anmelden</em>',
     register_note:'Wir empfehlen eine frühzeitige Anmeldung, da die Plätze begrenzt sind. Die Teilnahme ist für dieses einladungsbasierte Event kostenlos.',
@@ -2160,7 +2749,7 @@ function setLang(lang){
     const openName = document.getElementById('modalName')?.textContent.trim();
     if(openName && speakerDetails[openName]){
       const detailText = speakerDetails[openName][currentLang] || speakerDetails[openName].en || 'coming soon ...';
-      document.getElementById('modalBio').innerHTML = speakerParagraphs(detailText);
+      renderSpeakerParagraphsSafe(document.getElementById('modalBio'), detailText);
     }
   }
 }
@@ -2197,6 +2786,79 @@ document.getElementById('registrationForm')?.addEventListener('submit', event=>{
     success.setAttribute('aria-live', 'polite');
   }
 });
+
+
+function renderSpeakerParagraphsSafe(target, text){
+  if(!target) return;
+  target.textContent = '';
+  String(text || '').split(/\n\s*\n/).forEach(chunk => {
+    const clean = chunk.trim();
+    if(!clean) return;
+    const p = document.createElement('p');
+    p.textContent = clean;
+    target.appendChild(p);
+  });
+}
+
+/* Compatibility fallback: prevents legacy speakerParagraphs references from crashing.
+   Returns escaped paragraph HTML, but all modal rendering below uses safe DOM nodes. */
+function speakerParagraphs(text){
+  return String(text || '')
+    .split(/\n\s*\n/)
+    .map(chunk => chunk.trim())
+    .filter(Boolean)
+    .map(chunk => '<p>' + chunk
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;') + '</p>')
+    .join('');
+}
+
 </script>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  /* Production a11y: keyboard activation for speaker cards */
+  document.querySelectorAll('.speaker[role="button"]').forEach(card => {
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        card.click();
+      }
+    });
+  });
+
+  /* Production a11y: language toggle state */
+  const syncLangPressedState = () => {
+    document.querySelectorAll('.nav-lang button').forEach(btn => {
+      btn.setAttribute('aria-pressed', btn.classList.contains('active') ? 'true' : 'false');
+    });
+  };
+
+  syncLangPressedState();
+
+  document.querySelectorAll('.nav-lang button').forEach(btn => {
+    btn.addEventListener('click', () => requestAnimationFrame(syncLangPressedState));
+  });
+
+  /* Production UX: preserve lightweight native validation without unexpected form crashes */
+  const registrationForm = document.getElementById('registrationForm');
+  if (registrationForm && !registrationForm.dataset.hardened) {
+    registrationForm.dataset.hardened = 'true';
+    registrationForm.addEventListener('submit', event => {
+      if (!registrationForm.checkValidity()) {
+        event.preventDefault();
+        registrationForm.reportValidity();
+      }
+    }, { capture: true });
+  }
+});
+</script>
+
 </body>
 </html>
