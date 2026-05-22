@@ -1993,6 +1993,60 @@ body::after,
   }
 }
 
+
+
+/* Footer newsletter link — integrated, not a separate strip */
+.footer-col a.footer-newsletter-link {
+  color: rgba(234,228,216,.62);
+}
+
+.footer-col a.footer-newsletter-link:hover {
+  color: rgba(0,190,190,.86);
+}
+
+
+.footer-newsletter-link{
+  opacity:.68;
+  transition:all .28s cubic-bezier(.16,1,.3,1);
+}
+
+.footer-newsletter-link:hover{
+  opacity:1;
+  color:#7fe5df !important;
+  transform:translateX(2px);
+}
+
+
+/* Newsletter link in footer */
+.footer-col .footer-newsletter-link {
+  display: block !important;
+  color: rgba(234,228,216,.72) !important;
+  text-decoration: none !important;
+}
+
+.footer-col .footer-newsletter-link:hover {
+  color: rgba(0,190,190,.9) !important;
+}
+
+
+/* Footer readability polish */
+.footer-col a,
+.footer-col p{
+  font-size:15px !important;
+  line-height:1.75 !important;
+}
+
+.footer-col h4{
+  font-size:11px !important;
+  letter-spacing:.18em !important;
+  margin-bottom:18px !important;
+}
+
+.footer-newsletter-link{
+  font-size:15px !important;
+  opacity:.78 !important;
+}
+
 </style>
 </head>
 <body>
@@ -2317,6 +2371,7 @@ body::after,
       <a href="#agenda" data-i18n="footer_agenda">Agenda</a>
       <a href="#register" data-i18n="footer_register">Register</a>
       <a href="https://dida.do/recorded-talks" target="_blank" rel="noopener noreferrer" data-i18n="footer_past">Past Talks</a>
+      <a class="footer-newsletter-link" href="https://dida.do/newsletter" target="_blank" rel="noopener noreferrer">Newsletter ↗</a>
     </div>
     <div class="footer-col">
       <h4 data-i18n="footer_company">Company</h4>
@@ -2331,7 +2386,8 @@ body::after,
       <p>Berlin Kreuzberg</p>
     </div>
   </div>
-  <div class="footer-legal">
+  
+<div class="footer-legal">
     <span>© 2026 dida Datenschmiede GmbH</span>
     <span data-i18n="footer_date">June 19, 2026 · Berlin</span>
   </div>
