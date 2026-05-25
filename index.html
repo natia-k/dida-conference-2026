@@ -622,13 +622,13 @@ section { padding: 0; }
 }
 .s-num { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.2em; color: rgba(0,146,146,.7); font-weight: 400; margin-bottom: 8px; display: block; }
 .s-name {
-  font-size: clamp(24px, 1.7vw, 30px);
+  font-size: clamp(20px, 1.38vw, 25px);
   font-weight: 430;
-  letter-spacing: -0.045em;
-  line-height: 1.02;
+  letter-spacing: -0.058em;
+  line-height: 0.94;
   color: #080808;
-  margin-bottom: 12px;
-  max-width: 13ch;
+  margin-bottom: 10px;
+  max-width: 11.5ch;
   text-wrap: balance;
 }
 .s-role {
@@ -649,37 +649,26 @@ section { padding: 0; }
 
 
 /* Speaker names: editorial, confident, and mobile-safe */
-@media (max-width:768px){
-
-  .speaker-grid{
-    gap:20px;
+@media (max-width: 768px) {
+  .s-info {
+    padding: 18px 20px 24px;
   }
 
-  .speaker{
-    grid-template-rows:240px auto;
+  .s-name {
+    font-size: clamp(21px, 5.4vw, 25px);
+    line-height: 0.96;
+    max-width: 12ch;
+    margin-bottom: 9px;
   }
 
-  .s-info{
-    padding:22px 22px 26px;
+  .s-role {
+    font-size: 8px;
+    letter-spacing: 0.13em;
   }
 
-  .s-name{
-    font-size:clamp(26px,7vw,32px);
-    line-height:1.04;
-    letter-spacing:-0.042em;
-    max-width:14ch;
-    margin-bottom:12px;
-  }
-
-  .s-role{
-    font-size:8.5px;
-    line-height:1.7;
-    margin-bottom:14px;
-  }
-
-  .s-talk{
-    font-size:14px;
-    line-height:1.62;
+  .s-talk {
+    font-size: 13.5px;
+    line-height: 1.58;
   }
 }
 
@@ -4817,393 +4806,29 @@ input:focus-visible,
 
 
 /* ─────────────────────────────────────────────────────────────
-   SPEAKER CARD HIERARCHY FIX — editorial, breathable, less tight
-   Keeps existing modal / card interactions intact.
+   SAFE FINAL PATCH — mobile flow + speaker hierarchy only
+   Preserves hero/about layout. No structural edits.
 ───────────────────────────────────────────────────────────── */
 
-.speaker {
-  grid-template-rows: clamp(250px, 22vw, 292px) auto;
-  border-radius: 24px;
-}
-
-.s-photo {
-  padding: 24px 20px 0;
-}
-
-.s-info {
-  padding: 28px 28px 34px;
-}
-
-.s-num {
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  margin-bottom: 13px;
-  color: rgba(0,143,143,.72);
-}
-
-.s-name {
-  font-size: clamp(30px, 2.25vw, 38px);
-  line-height: 1.01;
-  letter-spacing: -0.05em;
-  font-weight: 440;
-  max-width: 12.8ch;
-  margin-bottom: 16px;
-  color: #050505;
-}
-
-.s-role {
-  font-size: 8.7px;
-  line-height: 1.7;
-  letter-spacing: 0.18em;
-  color: rgba(0, 103, 103, .78);
-  margin-bottom: 18px;
-  max-width: 24ch;
-}
-
-.s-talk {
-  font-size: 14.2px;
-  line-height: 1.68;
-  color: rgba(12,12,12,.62);
-  max-width: 30ch;
-}
-
-/* Give the first row slightly more premium rhythm on desktop without breaking grid */
-@media (min-width: 1081px) {
-  .speaker:nth-child(1),
-  .speaker:nth-child(4) {
-    transform: translateY(-10px);
-  }
-
-  .speaker:nth-child(2),
-  .speaker:nth-child(3) {
-    transform: translateY(10px);
-  }
-
-  .speaker:hover {
-    transform: translateY(-4px);
-  }
-}
-
-@media (max-width: 1080px) {
-  .speaker {
-    grid-template-rows: 270px auto;
-  }
-
-  .s-info {
-    padding: 26px 26px 32px;
-  }
-
-  .s-name {
-    font-size: clamp(28px, 3.6vw, 36px);
-    line-height: 1.02;
-    max-width: 13.5ch;
-  }
-}
-
-@media (max-width: 768px) {
-  .speaker-grid {
-    grid-template-columns: 1fr;
-    gap: 26px;
-  }
-
-  .speaker {
-    grid-template-rows: 280px auto;
-    border-radius: 26px;
-  }
-
-  .s-photo {
-    padding: 24px 22px 0;
-  }
-
-  .s-info {
-    padding: 28px 26px 34px;
-  }
-
-  .s-num {
-    margin-bottom: 14px;
-  }
-
-  .s-name {
-    font-size: clamp(32px, 9vw, 42px);
-    line-height: 1.02;
-    letter-spacing: -0.052em;
-    max-width: 12.8ch;
-    margin-bottom: 17px;
-  }
-
-  .s-role {
-    font-size: 9px;
-    line-height: 1.72;
-    letter-spacing: .17em;
-    margin-bottom: 18px;
-    max-width: 28ch;
-  }
-
-  .s-talk {
-    font-size: 15px;
-    line-height: 1.7;
-    max-width: 34ch;
-  }
-}
-
-@media (max-width: 480px) {
-  .speaker {
-    grid-template-rows: 265px auto;
-  }
-
-  .s-info {
-    padding: 26px 24px 32px;
-  }
-
-  .s-name {
-    font-size: clamp(31px, 10vw, 39px);
-    max-width: 13ch;
-  }
-}
-
-
-/* ─────────────────────────────────────────────────────────────
-   FINAL SPEAKER CARD FIX — hierarchy + breathing room
-   - removes compressed/squeezed card feeling
-   - makes the name the clear hero element
-   - role becomes a compact meta label, not competing text
-   - talk copy gets softer and better spaced
-   - mobile becomes single-column and calm
-───────────────────────────────────────────────────────────── */
-
-.speaker-grid {
-  align-items: stretch;
-}
-
-.speaker {
-  display: flex !important;
-  flex-direction: column !important;
-  min-height: 560px;
-  border-radius: 28px;
-  overflow: hidden;
-}
-
-.s-photo {
-  height: clamp(255px, 20vw, 310px) !important;
-  min-height: clamp(255px, 20vw, 310px);
-  flex: 0 0 auto;
-  padding: 30px 24px 0 !important;
-}
-
-.s-photo img {
-  max-height: 100%;
-  width: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-}
-
-.s-info {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  padding: 30px 28px 34px !important;
-}
-
-.s-num {
-  font-size: 9px !important;
-  letter-spacing: .24em !important;
-  line-height: 1;
-  margin-bottom: 18px !important;
-  color: rgba(0,143,143,.62) !important;
-}
-
-.s-name {
-  font-size: clamp(28px, 1.95vw, 34px) !important;
-  line-height: 1.04 !important;
-  letter-spacing: -0.043em !important;
-  font-weight: 460 !important;
-  max-width: 100% !important;
-  margin-bottom: 18px !important;
-  color: #050505 !important;
-  text-wrap: balance;
-}
-
-.s-role {
-  display: inline-block;
-  width: fit-content;
-  max-width: 100% !important;
-  margin-bottom: 20px !important;
-  padding-top: 2px;
-  font-size: 8.4px !important;
-  line-height: 1.65 !important;
-  letter-spacing: .18em !important;
-  color: rgba(0, 103, 103, .78) !important;
-}
-
-.s-talk {
-  margin-top: auto;
-  max-width: 32ch !important;
-  font-size: 14.5px !important;
-  line-height: 1.68 !important;
-  color: rgba(12,12,12,.66) !important;
-}
-
-/* Remove awkward stagger from previous patch */
-@media (min-width: 1081px) {
-  .speaker:nth-child(1),
-  .speaker:nth-child(2),
-  .speaker:nth-child(3),
-  .speaker:nth-child(4) {
-    transform: none !important;
-  }
-
-  .speaker:hover {
-    transform: translateY(-6px) !important;
-  }
-}
-
-@media (max-width: 1080px) {
-  .speaker-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 26px !important;
-  }
-
-  .speaker {
-    min-height: 540px;
-  }
-
-  .s-photo {
-    height: 285px !important;
-    min-height: 285px;
-  }
-
-  .s-name {
-    font-size: clamp(30px, 3.7vw, 38px) !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .speakers-head {
-    margin-bottom: 34px !important;
-  }
-
-  .speaker-grid {
-    grid-template-columns: 1fr !important;
-    gap: 28px !important;
-  }
-
-  .speaker {
-    min-height: auto;
-    border-radius: 28px;
-  }
-
-  .s-photo {
-    height: 315px !important;
-    min-height: 315px;
-    padding: 30px 28px 0 !important;
-  }
-
-  .s-info {
-    padding: 30px 28px 36px !important;
-  }
-
-  .s-num {
-    margin-bottom: 18px !important;
-  }
-
-  .s-name {
-    font-size: clamp(36px, 9.8vw, 48px) !important;
-    line-height: 1.02 !important;
-    letter-spacing: -0.052em !important;
-    margin-bottom: 19px !important;
-  }
-
-  .s-role {
-    font-size: 9px !important;
-    line-height: 1.7 !important;
-    letter-spacing: .17em !important;
-    margin-bottom: 22px !important;
-  }
-
-  .s-talk {
-    margin-top: 0;
-    font-size: 15.5px !important;
-    line-height: 1.72 !important;
-    max-width: 36ch !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .s-photo {
-    height: 292px !important;
-    min-height: 292px;
-  }
-
-  .s-info {
-    padding: 28px 24px 34px !important;
-  }
-
-  .s-name {
-    font-size: clamp(34px, 10.5vw, 43px) !important;
-  }
-}
-
-/* Hero meta: after removing the edition item, keep remaining items clean */
-.hero-meta {
-  width: fit-content;
-}
-
-.hero-meta .meta-item {
-  min-width: 190px;
-}
-
-@media (max-width: 768px) {
-  .hero-meta .meta-item {
-    flex: 1 1 50%;
-    min-width: 0;
-  }
-}
-
-
-/* ─────────────────────────────────────────────────────────────
-   FINAL-FINAL MOBILE / SPEAKER FIX
-   Fixes:
-   1) second row card rhythm
-   2) over-tight speaker text
-   3) hidden/removed annual edition meta card even if JS translation tries to show it
-   4) smoother mobile one-column flow
-───────────────────────────────────────────────────────────── */
-
-/* Kill annual/edition hero meta card if it still exists after translation */
+/* Hide only the edition/annual meta item if translation JS still renders it */
 .meta-item:has([data-i18n*="Edition"]),
 .meta-item:has([data-i18n*="edition"]) {
   display: none !important;
 }
 
-/* In case browser has no :has support, keep hero meta compact and prevent delayed-looking wrap */
-.hero-meta {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: stretch !important;
-  width: fit-content !important;
-  max-width: 100% !important;
-}
-
-.hero-meta .meta-item {
-  min-width: 190px !important;
-}
-
-/* Speaker grid: consistent rows, no cramped second row */
+/* Speaker cards: calmer hierarchy, all rows fixed */
 .speaker-grid {
   align-items: stretch !important;
-  gap: 28px !important;
+  gap: clamp(20px, 2vw, 28px) !important;
 }
 
 .speaker {
   display: flex !important;
   flex-direction: column !important;
   height: auto !important;
-  min-height: 590px !important;
-  border-radius: 28px !important;
+  min-height: 548px !important;
+  border-radius: 26px !important;
   overflow: hidden !important;
-}
-
-.speaker:nth-child(n) {
   transform: none !important;
 }
 
@@ -5212,10 +4837,10 @@ input:focus-visible,
 }
 
 .s-photo {
-  height: 292px !important;
-  min-height: 292px !important;
-  flex: 0 0 292px !important;
-  padding: 28px 24px 0 !important;
+  height: 270px !important;
+  min-height: 270px !important;
+  flex: 0 0 270px !important;
+  padding: 26px 22px 0 !important;
   align-items: flex-end !important;
 }
 
@@ -5231,38 +4856,36 @@ input:focus-visible,
   flex: 1 1 auto !important;
   display: flex !important;
   flex-direction: column !important;
-  padding: 28px 28px 34px !important;
-  min-height: 298px !important;
+  padding: 26px 26px 32px !important;
+  min-height: 278px !important;
 }
 
 .s-num {
-  display: block !important;
   font-size: 9px !important;
   line-height: 1 !important;
   letter-spacing: .22em !important;
-  margin-bottom: 17px !important;
+  margin-bottom: 15px !important;
+  color: rgba(0,143,143,.68) !important;
 }
 
 .s-name {
-  display: block !important;
-  font-size: clamp(27px, 1.85vw, 32px) !important;
+  font-size: clamp(27px, 1.85vw, 33px) !important;
   line-height: 1.06 !important;
-  letter-spacing: -0.038em !important;
+  letter-spacing: -0.04em !important;
   font-weight: 465 !important;
   max-width: none !important;
-  margin: 0 0 17px !important;
+  margin: 0 0 15px !important;
+  color: #050505 !important;
   text-wrap: balance !important;
-  overflow-wrap: normal !important;
 }
 
 .s-role {
-  display: block !important;
   max-width: none !important;
-  width: auto !important;
   font-size: 8.2px !important;
   line-height: 1.62 !important;
   letter-spacing: .16em !important;
-  margin: 0 0 20px !important;
+  margin: 0 0 18px !important;
+  color: rgba(0, 103, 103, .78) !important;
 }
 
 .s-talk {
@@ -5273,57 +4896,41 @@ input:focus-visible,
   color: rgba(12,12,12,.66) !important;
 }
 
-/* Desktop second row: same polish as first row */
-@media (min-width: 1081px) {
-  .speaker-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  }
-
-  .speaker:nth-child(n+5) .s-photo {
-    height: 292px !important;
-    min-height: 292px !important;
-    flex-basis: 292px !important;
-  }
-
-  .speaker:nth-child(n+5) .s-info {
-    padding-top: 28px !important;
-  }
-
-  .speaker:nth-child(n+5) .s-name {
-    font-size: clamp(27px, 1.85vw, 32px) !important;
-    line-height: 1.06 !important;
-    margin-bottom: 17px !important;
-  }
-}
-
-/* Tablet: 2 columns, not squeezed */
 @media (max-width: 1080px) {
   .speaker-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 28px !important;
+    gap: 26px !important;
   }
 
   .speaker {
-    min-height: 570px !important;
+    min-height: 540px !important;
   }
 
   .s-photo {
-    height: 300px !important;
-    min-height: 300px !important;
-    flex-basis: 300px !important;
+    height: 285px !important;
+    min-height: 285px !important;
+    flex-basis: 285px !important;
   }
 
   .s-name {
     font-size: clamp(30px, 4vw, 38px) !important;
-    line-height: 1.04 !important;
   }
 }
 
-/* Mobile: one calm editorial card per row */
 @media (max-width: 768px) {
+  /* Reduce background competition on phone */
+  #dotWrap,
+  #mg {
+    opacity: .42 !important;
+  }
+
+  body::before {
+    opacity: .38 !important;
+  }
+
   .speaker-grid {
     grid-template-columns: 1fr !important;
-    gap: 30px !important;
+    gap: 28px !important;
   }
 
   .speaker {
@@ -5332,61 +4939,58 @@ input:focus-visible,
   }
 
   .s-photo {
-    height: 320px !important;
-    min-height: 320px !important;
-    flex-basis: 320px !important;
-    padding: 30px 26px 0 !important;
+    height: 305px !important;
+    min-height: 305px !important;
+    flex-basis: 305px !important;
+    padding: 28px 24px 0 !important;
   }
 
   .s-info {
     min-height: auto !important;
-    padding: 30px 26px 36px !important;
+    padding: 28px 24px 34px !important;
   }
 
   .s-name {
-    font-size: clamp(34px, 9.5vw, 46px) !important;
+    font-size: clamp(33px, 9.4vw, 44px) !important;
     line-height: 1.03 !important;
     letter-spacing: -0.048em !important;
-    margin-bottom: 18px !important;
+    margin-bottom: 17px !important;
   }
 
   .s-role {
-    font-size: 9px !important;
+    font-size: 8.8px !important;
     line-height: 1.7 !important;
     letter-spacing: .155em !important;
-    margin-bottom: 22px !important;
+    margin-bottom: 20px !important;
   }
 
   .s-talk {
     margin-top: 0 !important;
-    font-size: 15.5px !important;
+    font-size: 15.2px !important;
     line-height: 1.72 !important;
     max-width: 36ch !important;
   }
 
-  .hero-meta {
-    width: 100% !important;
-  }
-
-  .hero-meta .meta-item {
-    flex: 1 1 50% !important;
-    min-width: 0 !important;
+  .agenda-slot,
+  .special-track-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
   }
 }
 
 @media (max-width: 480px) {
   .s-photo {
-    height: 300px !important;
-    min-height: 300px !important;
-    flex-basis: 300px !important;
+    height: 288px !important;
+    min-height: 288px !important;
+    flex-basis: 288px !important;
   }
 
   .s-info {
-    padding: 28px 24px 34px !important;
+    padding: 26px 22px 32px !important;
   }
 
   .s-name {
-    font-size: clamp(32px, 10.2vw, 42px) !important;
+    font-size: clamp(31px, 10vw, 40px) !important;
   }
 }
 
