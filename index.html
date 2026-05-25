@@ -4804,6 +4804,624 @@ input:focus-visible,
   }
 }
 
+
+
+/* ─────────────────────────────────────────────────────────────
+   FINAL MOBILE FLOWLESS OVERRIDE — May 2026
+   Purpose: mobile-only flow, spacing, clipping, and tap-state polish.
+   Safe layer: CSS only. No JS, content, translation, form, modal data changed.
+───────────────────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip !important;
+  }
+
+  body::before {
+    background-size: 48px 48px;
+    opacity: .36;
+  }
+
+  #dotWrap,
+  #mg {
+    opacity: .34 !important;
+  }
+
+  .w {
+    width: 100%;
+    max-width: 100% !important;
+    padding-left: clamp(18px, 5vw, 30px) !important;
+    padding-right: clamp(18px, 5vw, 30px) !important;
+  }
+
+  .section-h2,
+  .agenda-h2,
+  .reg-h2,
+  .hero h1,
+  .panel h3,
+  .slot-body h3,
+  .special-talk h4,
+  .s-name {
+    -webkit-font-smoothing: antialiased;
+    overflow: visible !important;
+    text-wrap: balance;
+  }
+
+  .text-glass::before,
+  .text-glass-hero::before,
+  .text-glass-head::before {
+    inset: -14px -14px !important;
+    border-radius: 24px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --g: clamp(18px, 5vw, 24px);
+    --r: 24px;
+  }
+
+  nav {
+    height: 68px !important;
+    padding: 7px var(--g) !important;
+  }
+
+  .nav-inner {
+    height: 54px !important;
+    padding: 0 15px !important;
+    gap: 14px !important;
+    border-radius: 18px !important;
+  }
+
+  .logo {
+    min-width: 0;
+    font-size: clamp(15px, 4vw, 16px) !important;
+    white-space: nowrap;
+  }
+
+  .nav-lang {
+    margin-left: auto;
+    font-size: 10px !important;
+  }
+
+  .hero {
+    min-height: auto !important;
+    padding: 58px 0 70px !important;
+    align-content: start !important;
+  }
+
+  .hero-inner {
+    max-width: 100% !important;
+  }
+
+  .hero-inner > div {
+    padding: 18px 0 0 !important;
+  }
+
+  .hero-inner > div::before {
+    inset: -18px -18px -12px -18px !important;
+    border-radius: 28px !important;
+    background: linear-gradient(180deg, rgba(251,248,243,.97), rgba(251,248,243,.76) 72%, rgba(251,248,243,.36)) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+  }
+
+  .hero-kicker {
+    margin-bottom: 20px !important;
+    gap: 10px !important;
+    font-size: 8.5px !important;
+    letter-spacing: .21em !important;
+    line-height: 1.45 !important;
+  }
+
+  .hero-kicker::before {
+    width: 18px !important;
+  }
+
+  .hero h1 {
+    max-width: 100% !important;
+    margin-bottom: 24px !important;
+    padding: 0 0 .16em !important;
+    font-size: clamp(52px, 16.4vw, 72px) !important;
+    line-height: 1.04 !important;
+    letter-spacing: -.052em !important;
+  }
+
+  .hero h1 .line {
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 0 .075em !important;
+  }
+
+  .hero h1 .accent {
+    padding-right: .1em !important;
+    padding-bottom: .12em !important;
+    margin-right: -.06em !important;
+  }
+
+  .hero-note {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 26px !important;
+    padding: 17px 18px !important;
+    border-radius: 20px !important;
+    font-size: 15.5px !important;
+    line-height: 1.68 !important;
+  }
+
+  .hero-act {
+    width: 100% !important;
+    gap: 10px !important;
+    margin-bottom: 26px !important;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    min-height: 48px !important;
+    height: auto !important;
+    justify-content: center !important;
+    padding: 14px 18px !important;
+    font-size: 13px !important;
+  }
+
+  .hero-act .btn-primary,
+  .hero-act .btn-ghost {
+    flex: 1 1 100%;
+  }
+
+  .hero-meta {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .meta-item {
+    min-width: 0 !important;
+    width: 100% !important;
+    padding: 16px 18px !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(0,0,0,.06) !important;
+  }
+
+  .meta-item:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .meta-item span {
+    font-size: 8px !important;
+    letter-spacing: .2em !important;
+  }
+
+  .meta-item b {
+    display: block !important;
+    font-size: 18px !important;
+    line-height: 1.16 !important;
+  }
+
+  #about .w,
+  #speakers .w,
+  #register .w {
+    padding-top: 72px !important;
+    padding-bottom: 78px !important;
+  }
+
+  .about-head,
+  .speakers-head {
+    display: block !important;
+    margin-bottom: 34px !important;
+  }
+
+  #about .about-head .section-h2,
+  .section-h2,
+  .agenda-h2 {
+    font-size: clamp(36px, 10.5vw, 48px) !important;
+    line-height: .98 !important;
+    letter-spacing: -.055em !important;
+    margin-bottom: 16px !important;
+  }
+
+  .section-lead,
+  .agenda-sub,
+  .panel p,
+  .reg-note {
+    max-width: 100% !important;
+    font-size: 15.5px !important;
+    line-height: 1.7 !important;
+  }
+
+  .editorial {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .panel,
+  .visual-panel,
+  .venue-photo {
+    width: 100% !important;
+    min-height: auto !important;
+    border-radius: 24px !important;
+  }
+
+  .panel {
+    padding: 28px 22px !important;
+  }
+
+  .panel h3 {
+    max-width: 100% !important;
+    font-size: clamp(30px, 9vw, 40px) !important;
+    line-height: 1 !important;
+    margin: 15px 0 13px !important;
+  }
+
+  .stats {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin-top: 26px !important;
+  }
+
+  .stats > div {
+    padding: 14px 0 0 !important;
+    border-top: 1px solid rgba(0,0,0,.065) !important;
+  }
+
+  .visual-panel,
+  .venue-photo {
+    aspect-ratio: 1.08 / 1 !important;
+  }
+
+  .video-cap {
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 16px !important;
+    width: auto !important;
+    line-height: 1.45 !important;
+  }
+
+  #agenda {
+    padding: 76px 0 !important;
+  }
+
+  .agenda-title-block {
+    padding: 0 !important;
+    margin-bottom: 30px !important;
+  }
+
+  .agenda-timeline {
+    width: 100% !important;
+  }
+
+  .a-day-tag,
+  .agenda-room-label {
+    font-size: 8.5px !important;
+    letter-spacing: .21em !important;
+  }
+
+  .a-day-date {
+    font-size: clamp(32px, 9.5vw, 44px) !important;
+    line-height: 1.08 !important;
+    margin-bottom: 24px !important;
+    padding-bottom: .08em !important;
+  }
+
+  .agenda-slot,
+  .special-track-row {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 12px !important;
+    padding: 17px 16px 19px !important;
+    border: 1px solid rgba(12,16,20,.075) !important;
+    border-radius: 22px !important;
+    background: rgba(255,255,255,.52) !important;
+    box-shadow: inset 0 1px rgba(255,255,255,.78), 0 12px 36px rgba(12,16,22,.04) !important;
+    overflow: hidden !important;
+    contain: none !important;
+  }
+
+  .agenda-slot.is-special-track {
+    padding-left: 18px !important;
+  }
+
+  .agenda-slot.is-special-track::before {
+    left: 0 !important;
+    top: 12px !important;
+    bottom: 12px !important;
+  }
+
+  .slot-time,
+  .special-time {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 0 10px !important;
+    color: rgba(9,9,9,.54) !important;
+    font-size: 10.5px !important;
+    letter-spacing: .04em !important;
+    white-space: normal !important;
+  }
+
+  .slot-speaker,
+  .special-talk span,
+  .track-pill {
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .slot-body h3,
+  .special-talk h4 {
+    max-width: 100% !important;
+    font-size: clamp(20px, 5.9vw, 26px) !important;
+    line-height: 1.16 !important;
+    letter-spacing: -.042em !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .slot-body p,
+  .agenda-abstract-copy p,
+  .agenda-abstract-inline p {
+    max-width: 100% !important;
+    font-size: 14.5px !important;
+    line-height: 1.72 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .agenda-abstract-inline,
+  .agenda-abstract-inner,
+  .agenda-abstract-copy {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    overflow: visible !important;
+  }
+
+  .agenda-abstract-inner {
+    padding: 14px 0 0 !important;
+  }
+
+  .agenda-abstract-label,
+  .agenda-abstract-inline::before {
+    font-size: 8.5px !important;
+    letter-spacing: .17em !important;
+  }
+
+  .special-track-minimal {
+    margin-top: 22px !important;
+    padding: 22px 16px !important;
+    border-radius: 22px !important;
+  }
+
+  .special-track-head {
+    display: block !important;
+    margin-bottom: 20px !important;
+  }
+
+  .special-track-head h3 {
+    font-size: clamp(27px, 8vw, 36px) !important;
+    line-height: 1.02 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .special-room {
+    display: inline-flex !important;
+    margin-top: 14px !important;
+    white-space: normal !important;
+    line-height: 1.35 !important;
+  }
+
+  .speaker-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .speaker,
+  .speaker:nth-child(n) {
+    transform: none !important;
+    grid-template-rows: minmax(245px, 66vw) auto !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+  }
+
+  .speaker:hover,
+  .speaker:nth-child(n):hover {
+    transform: none !important;
+  }
+
+  .s-photo {
+    min-height: 0 !important;
+    padding: 18px 16px 0 !important;
+  }
+
+  .s-photo img {
+    max-height: 100% !important;
+    width: auto !important;
+    transform: none !important;
+  }
+
+  .s-info {
+    padding: 20px 20px 23px !important;
+  }
+
+  .s-name {
+    max-width: 100% !important;
+    font-size: clamp(25px, 7vw, 31px) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -.052em !important;
+  }
+
+  .s-role {
+    font-size: 9px !important;
+    letter-spacing: .09em !important;
+    line-height: 1.5 !important;
+  }
+
+  .s-talk {
+    font-size: 14px !important;
+    line-height: 1.62 !important;
+  }
+
+  .register-inner {
+    display: block !important;
+  }
+
+  .reg-lhs {
+    max-width: 100% !important;
+    margin-bottom: 34px !important;
+    padding: 0 !important;
+  }
+
+  .reg-h2 {
+    font-size: clamp(54px, 15.2vw, 74px) !important;
+    line-height: .96 !important;
+    letter-spacing: -.06em !important;
+    padding-bottom: .14em !important;
+    margin-bottom: 8px !important;
+  }
+
+  .form-card {
+    width: 100% !important;
+    padding: 26px 20px !important;
+    border-radius: 24px !important;
+  }
+
+  .field {
+    margin-bottom: 20px !important;
+  }
+
+  .field input {
+    height: 50px !important;
+    font-size: 16px !important;
+  }
+
+  .speaker-modal {
+    align-items: flex-end !important;
+    padding: 12px !important;
+  }
+
+  .modal-card {
+    width: 100% !important;
+    max-height: 88svh !important;
+    padding: 30px 22px 34px !important;
+    border-radius: 24px 24px 20px 20px !important;
+  }
+
+  .modal-close {
+    top: 14px !important;
+    right: 14px !important;
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .modal-title {
+    max-width: calc(100% - 44px) !important;
+    font-size: 28px !important;
+    line-height: 1.08 !important;
+  }
+
+  .modal-talk {
+    font-size: 20px !important;
+    line-height: 1.22 !important;
+  }
+
+  .modal-bio {
+    font-size: 15.5px !important;
+    line-height: 1.72 !important;
+  }
+
+  footer {
+    padding: 58px var(--g) 34px !important;
+  }
+
+  .footer-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    margin-bottom: 34px !important;
+  }
+
+  .footer-desc {
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .w,
+  #agenda .w {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(49px, 15.7vw, 62px) !important;
+    letter-spacing: -.048em !important;
+  }
+
+  .hero-note {
+    font-size: 15px !important;
+    padding: 16px !important;
+  }
+
+  .agenda-slot,
+  .special-track-row {
+    padding: 16px 14px 18px !important;
+    border-radius: 20px !important;
+  }
+
+  .slot-body h3,
+  .special-talk h4 {
+    font-size: clamp(19px, 6.1vw, 24px) !important;
+  }
+
+  .speaker,
+  .speaker:nth-child(n) {
+    grid-template-rows: minmax(230px, 78vw) auto !important;
+  }
+
+  .s-name {
+    font-size: clamp(24px, 7.4vw, 29px) !important;
+  }
+
+  .reg-h2 {
+    font-size: clamp(50px, 15vw, 66px) !important;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .speaker,
+  .panel,
+  .visual-panel img,
+  .venue-photo img,
+  .btn-primary,
+  .btn-ghost,
+  .btn-submit,
+  .agenda-slot,
+  .special-track-row {
+    transition-duration: .18s !important;
+  }
+
+  .speaker:hover,
+  .panel:hover,
+  .visual-panel:hover img,
+  .venue-photo:hover img,
+  .btn-primary:hover,
+  .btn-ghost:hover,
+  .btn-submit:hover,
+  .agenda-slot:hover,
+  .special-track-row:hover {
+    transform: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
