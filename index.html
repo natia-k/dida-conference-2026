@@ -11,6 +11,7 @@
 <meta property="og:title" content="dida conference 2026 — machine learning">
 <meta property="og:description" content="A focused conference day for applied and technical machine learning in Berlin.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://cdn.dida.do/conferences/2026/og-image.png">
 <title>dida conference 2026 — machine learning</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,27 +29,32 @@
 
 /* ── TOKENS ── */
 :root {
-  --bg:       #FAF7F2;
-  --ink:      #0b0b0b;
-  --ink-2:    #282828;
-  --ink-3:    #5a5a5a;
-  --ink-4:    #8a8a8a;
-  --teal:     #009292;
-  --teal-hi:  #00AAAA;
-  --teal-d:   #007a7a;
-  --b:        rgba(0,0,0,0.07);
-  --b2:       rgba(0,0,0,0.11);
+  /* Colors — final resolved values */
+  --bg:       #fbf8f3;
+  --ink:      #090909;
+  --ink-2:    #222222;
+  --ink-3:    #44423f;
+  --ink-4:    #6f6d68;
+  --teal:     #008f8f;
+  --teal-hi:  #00a6a6;
+  --teal-d:   #007777;
+  --b:        rgba(12,16,20,0.065);
+  --b2:       rgba(12,16,20,0.105);
   --dark:     #07090c;
   --dark-ink: #EAE4D8;
   --dark-dim: rgba(229,223,212,0.56);
+  /* Typography */
   --sans:     'Inter', -apple-system, sans-serif;
   --mono:     'JetBrains Mono', monospace;
+  /* Easing */
   --E:        cubic-bezier(0.2, 0.9, 0.3, 1);
   --E-out:    cubic-bezier(0.33, 1, 0.68, 1);
   --E-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-soft: cubic-bezier(.16, 1, .3, 1);
+  /* Layout */
   --w:        1180px;
   --g:        clamp(24px, 4vw, 56px);
-  --r:        28px;
+  --r:        30px;
 }
 
 *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -563,18 +569,30 @@ section { padding: 0; }
   display: grid; grid-template-columns: .4fr 1fr; gap: clamp(40px, 5vw, 72px);
   align-items: end; margin-bottom: clamp(48px, 5vw, 64px);
 }
-.speaker-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; }
+.speaker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: clamp(20px, 2vw, 28px);
+  align-items: stretch;
+}
 
 .speaker {
-  border-radius: 18px; overflow: hidden;
+  /* Layout: flex column — single source of truth */
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 548px;
+  /* Visual */
+  border-radius: 26px;
+  overflow: hidden;
   border: 1px solid rgba(255,255,255,.72);
   background: rgba(255,255,255,.5);
   backdrop-filter: blur(24px) saturate(1.22);
   -webkit-backdrop-filter: blur(24px) saturate(1.22);
   box-shadow: inset 0 1px rgba(255,255,255,.9), 0 14px 52px rgba(0,0,0,.06);
   transition: transform .42s var(--E-out), box-shadow .42s var(--E-out), background .24s;
-  position: relative; will-change: transform;
-  display: grid; grid-template-rows: 220px auto;
+  position: relative;
+  will-change: transform;
   cursor: pointer;
 }
 .speaker::before {
@@ -600,51 +618,78 @@ section { padding: 0; }
 }
 
 .s-photo {
-  display: flex; align-items: flex-end; justify-content: center;
-  padding: 18px 14px 0;
+  /* Fixed height photo zone — final resolved value */
+  height: 270px;
+  min-height: 270px;
+  flex: 0 0 270px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 26px 22px 0;
   background: radial-gradient(circle at 65% 10%, rgba(0,146,146,.07), transparent 44%),
               linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.07));
   border-bottom: 1px solid rgba(0,0,0,.055);
-  overflow: hidden; position: relative; z-index: 1;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 .s-photo img {
-  max-width: 100%; max-height: 100%; object-fit: contain;
-  filter: grayscale(1) contrast(1.03); mix-blend-mode: multiply;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: grayscale(1) contrast(1.03);
+  mix-blend-mode: multiply;
   transition: filter .4s, transform .5s var(--E-out);
 }
 .speaker:hover .s-photo img {
   filter: grayscale(.2) contrast(1.03);
 }
 .s-info {
-  padding: 19px 22px 25px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 26px 32px;
+  min-height: 278px;
   position: relative;
   z-index: 4;
 }
-.s-num { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.2em; color: rgba(0,146,146,.7); font-weight: 400; margin-bottom: 8px; display: block; }
+.s-num {
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: .22em;
+  margin-bottom: 15px;
+  color: rgba(0,143,143,.68);
+  font-weight: 400;
+  display: block;
+}
 .s-name {
-  font-size: clamp(20px, 1.38vw, 25px);
-  font-weight: 430;
-  letter-spacing: -0.058em;
-  line-height: 0.94;
-  color: #080808;
-  margin-bottom: 10px;
-  max-width: 11.5ch;
+  font-size: clamp(27px, 1.85vw, 33px);
+  font-weight: 465;
+  letter-spacing: -0.04em;
+  line-height: 1.06;
+  color: #050505;
+  margin: 0 0 15px;
   text-wrap: balance;
 }
 .s-role {
   font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: 0.15em;
-  color: rgba(0, 104, 104, .68);
+  font-size: 8.2px;
+  letter-spacing: .16em;
+  color: rgba(0,103,103,.78);
   font-weight: 400;
-  margin-bottom: 12px;
-  line-height: 1.55;
+  margin: 0 0 18px;
+  line-height: 1.62;
   text-transform: uppercase;
 }
 .s-talk {
-  font-size: 13px;
-  line-height: 1.56;
-  color: rgba(12,12,12,.68);
+  margin-top: auto;
+  max-width: 34ch;
+  font-size: 14.25px;
+  line-height: 1.67;
+  color: rgba(12,12,12,.66);
 }
 
 
@@ -1023,34 +1068,30 @@ section { padding: 0; }
 }
 .field input::placeholder { color: rgba(0,0,0,.44); }
 .field input:focus { border-bottom-color: rgba(0,146,146,.76); box-shadow: 0 1px 0 rgba(0,146,146,.24); }
-.f-honey { display: none; }
-
-.captcha-row {
-  display: flex; align-items: center; gap: 12px;
-  min-height: 64px; padding: 0 16px;
-  background: rgba(255,255,255,.42);
-  border: 1px solid rgba(0,0,0,.07); border-radius: 14px;
-  margin-bottom: 22px;
-  font-size: 14px; color: rgba(11,11,11,.78);
-  box-shadow: inset 0 1px rgba(255,255,255,.65);
-}
-.captcha-box {
-  width: 22px; height: 22px; border: 1.5px solid rgba(0,0,0,.18);
-  border-radius: 5px; flex-shrink: 0; background: rgba(255,255,255,.35);
-}
+/* Honeypot — hidden from all users and assistive tech */
+.f-honey { display: none !important; position: absolute; left: -9999px; }
 .form-success {
   text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
   color: var(--teal-d); margin-top: 18px; line-height: 1.7; display: none;
 }
 
-/* ── SPEAKER MODAL ── */
+/* ── SPEAKER MODAL — native <dialog> ── */
 .speaker-modal {
+  /* Reset browser <dialog> defaults */
+  border: none; padding: 28px;
   position: fixed; inset: 0; z-index: 9000;
-  display: none; align-items: center; justify-content: center; padding: 28px;
+  display: none; align-items: center; justify-content: center;
+  width: 100%; max-width: 100%; max-height: 100%;
+  overflow: visible;
+  background: transparent;
+}
+/* <dialog> backdrop pseudo-element replaces the old overlay div */
+.speaker-modal::backdrop {
   background: rgba(8,14,15,.44);
   backdrop-filter: blur(18px) saturate(.9);
   -webkit-backdrop-filter: blur(18px) saturate(.9);
 }
+.speaker-modal[open],
 .speaker-modal.open { display: flex; }
 
 .modal-card {
@@ -1226,19 +1267,7 @@ footer::before {
    Purpose: optical refinement only. No content, layout architecture,
    i18n keys, or interaction contracts are changed.
 ───────────────────────────────────────────────────────────── */
-:root {
-  --bg: #fbf8f3;
-  --ink: #090909;
-  --ink-2: #222222;
-  --ink-3: #44423f;
-  --ink-4: #6f6d68;
-  --teal: #008f8f;
-  --teal-hi: #00a6a6;
-  --teal-d: #007777;
-  --b: rgba(12, 16, 20, 0.065);
-  --b2: rgba(12, 16, 20, 0.105);
-  --r: 30px;
-}
+/* Token overrides merged into primary :root above — these are the resolved final values. */
 
 html { text-rendering: optimizeLegibility; }
 body {
@@ -1377,7 +1406,6 @@ nav {
 .speaker-grid { gap: clamp(16px, 1.7vw, 22px); }
 .speaker {
   border-radius: 22px;
-  grid-template-rows: clamp(220px, 20vw, 258px) auto;
   background: rgba(255,255,255,.46);
   border-color: rgba(255,255,255,.66);
   box-shadow: inset 0 1px rgba(255,255,255,.84), 0 16px 54px rgba(12,16,22,.045);
@@ -1434,7 +1462,7 @@ nav {
   box-shadow: inset 0 1px rgba(255,255,255,.9), 0 28px 90px rgba(12,16,22,.085);
 }
 .field input { border-bottom-color: rgba(12,16,20,.115); }
-.captcha-row { background: rgba(255,255,255,.36); }
+/* .captcha-row removed */
 
 footer {
   background:
@@ -1531,12 +1559,11 @@ footer {
 
   .speaker-grid { grid-template-columns: 1fr; gap: 16px; }
   .speaker {
-    grid-template-rows: minmax(238px, 58vw) auto;
     border-radius: 22px;
     box-shadow: inset 0 1px rgba(255,255,255,.86), 0 12px 42px rgba(0,0,0,.052);
   }
   .speaker:hover { transform: none; }
-  .s-photo { padding-top: 22px; }
+  .s-photo { height: clamp(238px, 58vw, 340px); min-height: clamp(238px, 58vw, 340px); flex-basis: clamp(238px, 58vw, 340px); padding-top: 22px; }
 
   #agenda { padding: clamp(80px, 18vw, 112px) 0; background: linear-gradient(180deg, #fbf8f3 0%, #f7f2eb 100%); }
   .agenda-inner-wide { gap: 36px; }
@@ -1559,7 +1586,7 @@ footer {
   .form-card { border-radius: 26px; padding: 30px 22px; backdrop-filter: blur(16px) saturate(1.06); -webkit-backdrop-filter: blur(16px) saturate(1.06); box-shadow: inset 0 1px rgba(255,255,255,.9), 0 16px 54px rgba(10,16,22,.078); }
   .field { margin-bottom: 22px; }
   .field input, .btn-submit { min-height: 54px; }
-  .captcha-row { min-height: 60px; }
+  /* .captcha-row removed */
 
   footer { padding-top: 58px; padding-bottom: 34px; }
   .footer-grid { gap: 30px; margin-bottom: 38px; }
@@ -1599,7 +1626,7 @@ footer {
   .about-head, .speakers-head { margin-bottom: 44px; }
   .panel { padding: 30px 24px; }
   .stats { grid-template-columns: 1fr; }
-  .speaker { grid-template-rows: 245px auto; }
+  .s-photo { height: 245px; min-height: 245px; flex-basis: 245px; }
   .s-photo img { max-width: min(92%, 230px); }
   .special-track-minimal { margin-top: 42px; }
   .reg-lhs { padding: 0; }
@@ -1612,7 +1639,7 @@ footer {
   .meta-item:last-child { border-bottom: 0; }
   .section-h2 { font-size: clamp(38px, 13vw, 52px); }
   .panel.large, .panel.dark, .visual-panel, .venue-photo { min-height: 320px; }
-  .speaker { grid-template-rows: 260px auto; }
+  .s-photo { height: 260px; min-height: 260px; flex-basis: 260px; }
   .special-track-head h3 { font-size: clamp(30px, 10vw, 38px); }
 }
 
@@ -1904,10 +1931,8 @@ select {
     gap: 18px;
   }
 
-  .speaker {
-    grid-template-rows: minmax(230px, 58vw) auto;
-    border-radius: 22px;
-  }
+  .speaker { border-radius: 22px; }
+  .s-photo { height: clamp(230px, 58vw, 340px); min-height: clamp(230px, 58vw, 340px); flex-basis: clamp(230px, 58vw, 340px); }
 
   .agenda-slot,
   .special-track-row {
@@ -2114,7 +2139,6 @@ body::after,
 .nav-links a,
 .footer-col a,
 .footer-col p,
-.captcha-row,
 .slot-body p,
 .special-track-head p {
   font-size: 15.5px !important;
@@ -2435,13 +2459,7 @@ body::after,
   letter-spacing: .16em !important;
 }
 
-/* Cinematic modal entrance */
-.speaker-modal {
-  transition:
-    backdrop-filter .42s ease,
-    background .42s ease;
-}
-
+/* Cinematic modal entrance — backdrop-filter transition is on ::backdrop above */
 .modal-card {
   transform: translateY(16px) scale(.985);
   opacity: 0;
@@ -3014,9 +3032,7 @@ body::after,
 ───────────────────────────────────────────────────────────── */
 
 /* 1) Editorial typography and layout contrast */
-:root {
-  --motion-soft: cubic-bezier(.16, 1, .3, 1);
-}
+/* --motion-soft merged into primary :root tokens */
 
 .section-h2,
 .agenda-h2,
@@ -3861,28 +3877,24 @@ body::after,
    Keeps the visual system intact while hardening modal, form,
    and dynamic copy states.
 ───────────────────────────────────────────────────────────── */
+/* speaker-modal overlay: animate opacity on the modal-card; backdrop handles the blur */
 .speaker-modal {
-  display: flex;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  background: rgba(7, 10, 12, 0);
-  backdrop-filter: blur(0px) saturate(1);
-  -webkit-backdrop-filter: blur(0px) saturate(1);
-  transition:
-    opacity .34s var(--E),
-    visibility .34s var(--E),
-    background .34s var(--E),
-    backdrop-filter .34s var(--E);
+  display: none;
 }
-
+.speaker-modal[open],
 .speaker-modal.open {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
+  display: flex;
+  animation: none;
+}
+.speaker-modal::backdrop {
   background: rgba(7, 10, 12, .46);
   backdrop-filter: blur(8px) saturate(.96);
   -webkit-backdrop-filter: blur(8px) saturate(.96);
+  animation: backdropFadeIn .3s var(--E) both;
+}
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .modal-copy p,
@@ -4291,9 +4303,7 @@ body::before { opacity: .42; }
   background: rgba(255,255,255,.18);
   border-bottom-color: rgba(12,16,20,.16);
 }
-.captcha-row {
-  background: rgba(255,255,255,.58);
-}
+/* .captcha-row removed */
 
 /* Footer: slightly better contrast for real-world reading */
 .footer-col a,
@@ -4364,9 +4374,7 @@ input:focus-visible,
     line-height: 1;
   }
 
-  .speaker {
-    grid-template-rows: 230px auto;
-  }
+  /* .speaker s-photo height for this breakpoint already handled above */
 
   .s-name {
     letter-spacing: -.046em;
@@ -4454,9 +4462,7 @@ input:focus-visible,
     gap: 18px;
   }
 
-  .speaker {
-    grid-template-rows: 240px auto;
-  }
+  .s-photo { height: 240px; min-height: 240px; flex-basis: 240px; }
 
   .modal-card {
     width: calc(100vw - 28px);
@@ -4504,65 +4510,15 @@ input:focus-visible,
    CSS-only: no JS, i18n, form, modal, or data logic changed.
 ───────────────────────────────────────────────────────────── */
 
-/* Speaker cards: less uniform, stronger editorial hierarchy */
-.speaker-grid {
-  align-items: stretch;
-}
-
+/* Speaker cards: hover and nth-child accent styles */
 .speaker {
-  overflow: hidden;
-  border-color: rgba(255,255,255,.86) !important;
-  background:
-    linear-gradient(160deg, rgba(255,255,255,.78), rgba(255,255,255,.42)) !important;
-  box-shadow:
-    inset 0 1px rgba(255,255,255,.94),
-    0 20px 62px rgba(12,16,22,.075) !important;
+  border-color: rgba(255,255,255,.86);
+  background: linear-gradient(160deg, rgba(255,255,255,.78), rgba(255,255,255,.42));
+  box-shadow: inset 0 1px rgba(255,255,255,.94), 0 20px 62px rgba(12,16,22,.075);
 }
-
-.speaker:nth-child(1),
-.speaker:nth-child(6) {
-  transform: translateY(-10px);
-  grid-template-rows: clamp(252px, 23vw, 306px) auto;
-  background:
-    radial-gradient(520px circle at 18% 0%, rgba(0,146,146,.09), transparent 58%),
-    linear-gradient(155deg, rgba(255,255,255,.88), rgba(255,255,255,.48)) !important;
-  box-shadow:
-    inset 0 1px rgba(255,255,255,.96),
-    0 30px 92px rgba(12,16,22,.105) !important;
-}
-
-.speaker:nth-child(3),
-.speaker:nth-child(8) {
-  transform: translateY(14px);
-}
-
-.speaker:nth-child(2n) .s-photo {
-  padding-top: 24px;
-}
-
-.speaker:nth-child(3n) .s-photo img {
-  transform: scale(1.045) translateY(4px);
-}
-
 .speaker:hover {
-  transform: translateY(-8px) !important;
-  box-shadow:
-    inset 0 1px rgba(255,255,255,.98),
-    0 34px 104px rgba(12,16,22,.13) !important;
-}
-
-.speaker:nth-child(1):hover,
-.speaker:nth-child(6):hover {
-  transform: translateY(-16px) !important;
-}
-
-.s-name {
-  font-weight: 520 !important;
-  letter-spacing: -.062em !important;
-}
-
-.s-talk {
-  color: rgba(10,10,10,.76) !important;
+  transform: translateY(-5px);
+  box-shadow: inset 0 1px rgba(255,255,255,.98), 0 34px 104px rgba(12,16,22,.13);
 }
 
 /* Agenda: desktop/tablet expansion should never escape its row */
@@ -4738,8 +4694,12 @@ input:focus-visible,
   .speaker:nth-child(6),
   .speaker:nth-child(8) {
     transform: none !important;
-    grid-template-rows: clamp(250px, 74vw, 330px) auto !important;
     border-radius: 24px !important;
+  }
+  .s-photo {
+    height: clamp(250px, 74vw, 330px) !important;
+    min-height: clamp(250px, 74vw, 330px) !important;
+    flex-basis: clamp(250px, 74vw, 330px) !important;
   }
 
   .speaker:nth-child(1),
@@ -4797,200 +4757,84 @@ input:focus-visible,
     font-size: clamp(19px, 6.3vw, 24px) !important;
   }
 
-  .speaker,
-  .speaker:nth-child(1),
-  .speaker:nth-child(6) {
-    grid-template-rows: clamp(236px, 80vw, 310px) auto !important;
+  .s-photo {
+    height: clamp(236px, 80vw, 310px) !important;
+    min-height: clamp(236px, 80vw, 310px) !important;
+    flex-basis: clamp(236px, 80vw, 310px) !important;
   }
 }
 
 
 /* ─────────────────────────────────────────────────────────────
-   SAFE FINAL PATCH — mobile flow + speaker hierarchy only
-   Preserves hero/about layout. No structural edits.
+   Speaker responsive breakpoints — base values set in Speakers block above.
 ───────────────────────────────────────────────────────────── */
 
-/* Hide only the edition/annual meta item if translation JS still renders it */
+/* Hide edition/annual meta item if translation JS renders it */
 .meta-item:has([data-i18n*="Edition"]),
 .meta-item:has([data-i18n*="edition"]) {
-  display: none !important;
-}
-
-/* Speaker cards: calmer hierarchy, all rows fixed */
-.speaker-grid {
-  align-items: stretch !important;
-  gap: clamp(20px, 2vw, 28px) !important;
-}
-
-.speaker {
-  display: flex !important;
-  flex-direction: column !important;
-  height: auto !important;
-  min-height: 548px !important;
-  border-radius: 26px !important;
-  overflow: hidden !important;
-  transform: none !important;
-}
-
-.speaker:hover {
-  transform: translateY(-5px) !important;
-}
-
-.s-photo {
-  height: 270px !important;
-  min-height: 270px !important;
-  flex: 0 0 270px !important;
-  padding: 26px 22px 0 !important;
-  align-items: flex-end !important;
-}
-
-.s-photo img {
-  width: 100% !important;
-  height: 100% !important;
-  max-height: none !important;
-  object-fit: contain !important;
-  object-position: center bottom !important;
-}
-
-.s-info {
-  flex: 1 1 auto !important;
-  display: flex !important;
-  flex-direction: column !important;
-  padding: 26px 26px 32px !important;
-  min-height: 278px !important;
-}
-
-.s-num {
-  font-size: 9px !important;
-  line-height: 1 !important;
-  letter-spacing: .22em !important;
-  margin-bottom: 15px !important;
-  color: rgba(0,143,143,.68) !important;
-}
-
-.s-name {
-  font-size: clamp(27px, 1.85vw, 33px) !important;
-  line-height: 1.06 !important;
-  letter-spacing: -0.04em !important;
-  font-weight: 465 !important;
-  max-width: none !important;
-  margin: 0 0 15px !important;
-  color: #050505 !important;
-  text-wrap: balance !important;
-}
-
-.s-role {
-  max-width: none !important;
-  font-size: 8.2px !important;
-  line-height: 1.62 !important;
-  letter-spacing: .16em !important;
-  margin: 0 0 18px !important;
-  color: rgba(0, 103, 103, .78) !important;
-}
-
-.s-talk {
-  margin-top: auto !important;
-  max-width: 34ch !important;
-  font-size: 14.25px !important;
-  line-height: 1.67 !important;
-  color: rgba(12,12,12,.66) !important;
+  display: none;
 }
 
 @media (max-width: 1080px) {
   .speaker-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 26px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px;
   }
-
-  .speaker {
-    min-height: 540px !important;
-  }
-
-  .s-photo {
-    height: 285px !important;
-    min-height: 285px !important;
-    flex-basis: 285px !important;
-  }
-
-  .s-name {
-    font-size: clamp(30px, 4vw, 38px) !important;
-  }
+  .speaker { min-height: 540px; }
+  .s-photo { height: 285px; min-height: 285px; flex-basis: 285px; }
+  .s-name { font-size: clamp(30px, 4vw, 38px); }
 }
 
 @media (max-width: 768px) {
   /* Reduce background competition on phone */
-  #dotWrap,
-  #mg {
-    opacity: .42 !important;
-  }
+  #dotWrap, #mg { opacity: .42; }
+  body::before { opacity: .38; }
 
-  body::before {
-    opacity: .38 !important;
-  }
-
-  .speaker-grid {
-    grid-template-columns: 1fr !important;
-    gap: 28px !important;
-  }
-
-  .speaker {
-    min-height: auto !important;
-    border-radius: 28px !important;
-  }
-
-  .s-photo {
-    height: 305px !important;
-    min-height: 305px !important;
-    flex-basis: 305px !important;
-    padding: 28px 24px 0 !important;
-  }
-
-  .s-info {
-    min-height: auto !important;
-    padding: 28px 24px 34px !important;
-  }
-
-  .s-name {
-    font-size: clamp(33px, 9.4vw, 44px) !important;
-    line-height: 1.03 !important;
-    letter-spacing: -0.048em !important;
-    margin-bottom: 17px !important;
-  }
-
-  .s-role {
-    font-size: 8.8px !important;
-    line-height: 1.7 !important;
-    letter-spacing: .155em !important;
-    margin-bottom: 20px !important;
-  }
-
-  .s-talk {
-    margin-top: 0 !important;
-    font-size: 15.2px !important;
-    line-height: 1.72 !important;
-    max-width: 36ch !important;
-  }
-
-  .agenda-slot,
-  .special-track-row {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-  }
+  .speaker-grid { grid-template-columns: 1fr; gap: 28px; }
+  .speaker { min-height: auto; border-radius: 28px; }
+  .s-photo { height: 305px; min-height: 305px; flex-basis: 305px; padding: 28px 24px 0; }
+  .s-info { min-height: auto; padding: 28px 24px 34px; }
+  .s-name { font-size: clamp(33px, 9.4vw, 44px); line-height: 1.03; letter-spacing: -0.048em; margin-bottom: 17px; }
+  .s-role { font-size: 8.8px; line-height: 1.7; letter-spacing: .155em; margin-bottom: 20px; }
+  .s-talk { margin-top: 0; font-size: 15.2px; line-height: 1.72; max-width: 36ch; }
+  .agenda-slot, .special-track-row { grid-template-columns: 1fr; gap: 10px; }
 }
 
 @media (max-width: 480px) {
-  .s-photo {
-    height: 288px !important;
-    min-height: 288px !important;
-    flex-basis: 288px !important;
-  }
+  .s-photo { height: 288px; min-height: 288px; flex-basis: 288px; }
+  .s-info { padding: 26px 22px 32px; }
+  .s-name { font-size: clamp(31px, 10vw, 40px); }
+}
 
-  .s-info {
-    padding: 26px 22px 32px !important;
-  }
 
-  .s-name {
-    font-size: clamp(31px, 10vw, 40px) !important;
+
+/* FINAL CONTENT INTEGRITY PATCH
+   Do not invent speaker abstracts or research tags before dida provides final copy.
+   Also removes the circular portrait orbit/halo from the speaker modal. */
+.modal-orbit { display: none !important; }
+.modal-portrait {
+  background:
+    radial-gradient(420px circle at 54% 14%, rgba(0,146,146,.075), transparent 54%),
+    linear-gradient(180deg, rgba(255,255,255,.46), rgba(255,255,255,.12)) !important;
+}
+.modal-portrait img { transform: translateY(8px) scale(1.02) !important; }
+.modal-signature-tags { display: none !important; }
+.modal-section-label-context,
+.modal-section-label-focus,
+.modal-context,
+.modal-focus { display: none !important; }
+
+
+
+/* Final handoff hardening: stable native-dialog fallback and motion/accessibility polish. */
+.speaker-modal[open] { display: flex; }
+.modal-card:focus { outline: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
   }
 }
 
@@ -5118,22 +4962,22 @@ input:focus-visible,
       <p class="section-lead sr sr-delay-1" data-i18n="speakers_lead">The confirmed dida conference 2026 lineup — research, industry, scientific machine learning, explainability, tabular foundation models, cryptography and PDEs.</p>
     </div>
     <div class="speaker-grid">
-      <article data-speaker-id="jonas-kohler" class="speaker sr" data-speaker-context-en="Jonas Köhler contributes a technical perspective on molecular modelling and AI-assisted simulation for high-dimensional scientific search spaces." data-speaker-context-de="Jonas Köhler bringt eine technische Perspektive auf molekulare Modellierung und KI-gestützte Simulation in hochdimensionalen wissenschaftlichen Suchräumen ein." data-focus-en="Molecular simulation|Generative modelling|Geometric priors|Scientific AI" data-focus-de="Molecular simulation|Generative modelling|Geometric priors|Scientific AI"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image1.png" alt="Jonas Köhler"></div><div class="s-info"><span class="s-num">01</span><p class="s-name">Jonas Köhler</p><p class="s-role">Member of Technical Staff · CuspAI</p><p class="s-talk">Simulating Molecules in the Age of AI</p></div></article>
-      <article data-speaker-id="gerhard-koch" class="speaker sr sr-delay-1" data-speaker-context-en="Gerhard Koch connects industrial software leadership with the reliability requirements of AI systems deployed in energy infrastructure." data-speaker-context-de="Gerhard Koch verbindet industrielle Softwareführung mit den Zuverlässigkeitsanforderungen von KI-Systemen in Energieinfrastrukturen." data-focus-en="Industrial AI|Energy systems|Explainability|Signal stability" data-focus-de="Industrial AI|Energy systems|Explainability|Signal stability"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%2810%29.png" alt="Gerhard Koch"></div><div class="s-info"><span class="s-num">02</span><p class="s-name">Gerhard Koch</p><p class="s-role">Chief Software &amp; Product Officer · Siemens Energy</p><p class="s-talk">Industrial &amp; Energy AI challenges "solved" with a new structural and explainable AI approach</p></div></article>
-      <article data-speaker-id="noah-hollmann" class="speaker sr sr-delay-2" data-speaker-context-en="Noah Hollmann works at the intersection of tabular foundation models, AutoML and production-ready data-science workflows." data-speaker-context-de="Noah Hollmann arbeitet an der Schnittstelle von Tabular Foundation Models, AutoML und produktionsreifen Data-Science-Workflows." data-focus-en="Tabular ML|Foundation models|AutoML|Agentic data science" data-focus-de="Tabular ML|Foundation models|AutoML|Agentic data science"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image2.png" alt="Noah Hollmann"></div><div class="s-info"><span class="s-num">03</span><p class="s-name">Noah Hollmann</p><p class="s-role">Co-Founder &amp; CTO · Prior Labs</p><p class="s-talk">The Revolution in Tabular Data Prediction</p></div></article>
-      <article data-speaker-id="maria-bergmann" class="speaker sr sr-delay-3" data-speaker-context-en="Maria Bergmann brings an engineering perspective on simulation automation for large electric machines and vibration-sensitive design processes." data-speaker-context-de="Maria Bergmann bringt eine Engineering-Perspektive auf Simulationsautomatisierung für große elektrische Maschinen und schwingungssensible Designprozesse ein." data-focus-en="Finite elements|PDE approximation|Electric motors|Simulation automation" data-focus-de="Finite elements|PDE approximation|Electric motors|Simulation automation"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image5.png" alt="Maria Bergmann"></div><div class="s-info"><span class="s-num">04</span><p class="s-name">Maria Bergmann</p><p class="s-role">Development Engineer · Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
-      <article data-speaker-id="gabriel-nobis" class="speaker sr" data-speaker-context-en="Gabriel Nobis focuses on generative modelling, stochastic processes and diffusion systems with richer temporal dependence structures." data-speaker-context-de="Gabriel Nobis fokussiert generative Modellierung, stochastische Prozesse und Diffusionssysteme mit reicheren zeitlichen Abhängigkeitsstrukturen." data-focus-en="Diffusion models|Fractional Brownian motion|Generative AI|Protein modelling" data-focus-de="Diffusion models|Fractional Brownian motion|Generative AI|Protein modelling"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%286%29.png" alt="Gabriel Nobis"></div><div class="s-info"><span class="s-num">05</span><p class="s-name">Gabriel Nobis</p><p class="s-role">Research Associate · Fraunhofer HHI</p><p class="s-talk">Fractional Noise in Diffusion-Based Generative Models</p></div></article>
-      <article data-speaker-id="markus-duttmann" class="speaker sr sr-delay-1" data-speaker-context-en="Markus Düttmann brings a leadership perspective on how applied machine learning is scoped, engineered and delivered in real client environments." data-speaker-context-de="Markus Düttmann bringt eine Führungsperspektive darauf ein, wie angewandtes Machine Learning in realen Kundenumgebungen abgegrenzt, entwickelt und geliefert wird." data-focus-en="AI engineering|Production ML|Delivery systems|Model governance" data-focus-de="AI engineering|Production ML|Delivery systems|Model governance"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image3-1776949837.png" alt="Markus Düttmann"></div><div class="s-info"><span class="s-num">06</span><p class="s-name">Markus Düttmann</p><p class="s-role">Managing Director · dida</p><p class="s-talk">Engineering Reliable AI Systems Beyond the Demo</p></div></article>
-      <article data-speaker-id="annette-rudolph" class="speaker sr sr-delay-2" data-speaker-context-en="Annette Rudolph contributes a statistical and geometric view on how constrained measurement spaces should inform ML modelling choices." data-speaker-context-de="Annette Rudolph bringt eine statistische und geometrische Sicht darauf ein, wie eingeschränkte Messräume ML-Modellierungsentscheidungen prägen sollten." data-focus-en="Constrained data|Metrics|Compositional data|Statistical geometry" data-focus-de="Constrained data|Metrics|Compositional data|Statistical geometry"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/annette-rudolph.png" alt="Annette Rudolph"></div><div class="s-info"><span class="s-num">07</span><p class="s-name">Annette Rudolph</p><p class="s-role">Professorin · TU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
-      <article data-speaker-id="peter-kirstel" class="speaker sr sr-delay-3" data-speaker-context-en="Peter Kirstel connects cryptographic security questions with AI-assisted exploration of symmetric primitives and statistical distinguishers." data-speaker-context-de="Peter Kirstel verbindet kryptografische Sicherheitsfragen mit KI-gestützter Exploration symmetrischer Primitive und statistischer Distinguisher." data-focus-en="Symmetric cryptography|Block ciphers|AI-assisted search|Security analysis" data-focus-de="Symmetric cryptography|Block ciphers|AI-assisted search|Security analysis"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image4.png" alt="Peter Kirstel"></div><div class="s-info"><span class="s-num">08</span><p class="s-name">Peter Kirstel</p><p class="s-role">Forschungsreferenz Schlüsseltechnologie · Cyberagentur</p><p class="s-talk">AI-Methods in Symmetric Cryptography</p></div></article>
-      <article data-speaker-id="leonard-schenk" class="speaker sr" data-speaker-context-en="Leonard Schenk brings a strategic engineering perspective on European AI capacity, sovereignty and frontier-model infrastructure." data-speaker-context-de="Leonard Schenk bringt eine strategisch-technische Perspektive auf europäische KI-Fähigkeit, Souveränität und Frontier-Model-Infrastruktur ein." data-focus-en="Sovereign AI|Frontier models|European AI strategy|AI infrastructure" data-focus-de="Sovereign AI|Frontier models|European AI strategy|AI infrastructure"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/leonard-schenk.png" alt="Leonard Schenk"></div><div class="s-info"><span class="s-num">09</span><p class="s-name">Leonard Schenk</p><p class="s-role">Senior Analyst &amp; Engineer · SPRIND</p><p class="s-talk">The European AI Playbook - Why, What and How</p></div></article>
-      <article data-speaker-id="benjamin-ulbrich" class="speaker sr sr-delay-1" data-speaker-context-en="Benjamin Ulbrich adds an industrial process perspective on how simulation automation becomes repeatable, governed engineering practice." data-speaker-context-de="Benjamin Ulbrich ergänzt eine industrielle Prozessperspektive darauf, wie Simulationsautomatisierung zu wiederholbarer, gesteuerter Engineering-Praxis wird." data-focus-en="Industrial simulation|Digital processes|Surrogate modelling|Engineering workflows" data-focus-de="Industrial simulation|Digital processes|Surrogate modelling|Engineering workflows"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image6.png" alt="Benjamin Ulbrich"></div><div class="s-info"><span class="s-num">10</span><p class="s-name">Benjamin Ulbrich</p><p class="s-role">Director Global Digital Processes · Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
-      <article data-speaker-id="ma-li" class="speaker sr sr-delay-2" data-speaker-context-en="Ma Li gives insight into dida&#x27;s internal research culture and how ML scientists evaluate papers before ideas enter applied projects." data-speaker-context-de="Ma Li gibt Einblick in didas interne Forschungskultur und darin, wie ML Scientists Paper bewerten, bevor Ideen in angewandte Projekte übergehen." data-focus-en="Research reading|Applied ML|Paper evaluation|Team learning" data-focus-de="Research reading|Applied ML|Paper evaluation|Team learning"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/ma-li.png" alt="Ma Li"></div><div class="s-info"><span class="s-num">11</span><p class="s-name">Ma Li</p><p class="s-role">ML Scientist · dida</p><p class="s-talk">dida Reading Group</p></div></article>
-      <article data-speaker-id="tom-freudenberg" class="speaker sr sr-delay-3" data-speaker-context-en="Tom Freudenberg works on making PDE-oriented deep learning workflows easier to express, test and extend for scientific users." data-speaker-context-de="Tom Freudenberg arbeitet daran, PDE-orientierte Deep-Learning-Workflows für wissenschaftliche Nutzer leichter ausdrückbar, testbar und erweiterbar zu machen." data-focus-en="TorchPhysics|PINNs|PDEs|Scientific ML" data-focus-de="TorchPhysics|PINNs|PDEs|Scientific ML"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/tom-freudenberg.png" alt="Tom Freudenberg"></div><div class="s-info"><span class="s-num">12</span><p class="s-name">Tom Freudenberg</p><p class="s-role">Postdoctoral Researcher · Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
-      <article data-speaker-id="nick-heilenkotter" class="speaker sr" data-speaker-context-en="Nick Heilenkötter contributes implementation patterns for accessible scientific machine learning tooling around PDEs and neural solvers." data-speaker-context-de="Nick Heilenkötter bringt Implementierungsmuster für zugängliche Scientific-Machine-Learning-Werkzeuge rund um PDEs und neuronale Solver ein." data-focus-en="Scientific tooling|PINNs|Boundary conditions|Surrogate models" data-focus-de="Scientific tooling|PINNs|Boundary conditions|Surrogate models"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/nick-heilkotter.png" alt="Nick Heilenkötter"></div><div class="s-info"><span class="s-num">13</span><p class="s-name">Nick Heilenkötter</p><p class="s-role">Research Associate · Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
-      <article data-speaker-id="kai-hartmann" class="speaker sr sr-delay-1" data-speaker-context-en="Kai Hartmann focuses on metric choice, constrained data spaces and the statistical consequences of ignoring measurement geometry." data-speaker-context-de="Kai Hartmann fokussiert Metrikwahl, eingeschränkte Datenräume und die statistischen Folgen ignorierter Messgeometrie." data-focus-en="Proper metrics|Constrained variables|Compositional data|Model diagnostics" data-focus-de="Proper metrics|Constrained variables|Compositional data|Model diagnostics"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%289%29.png" alt="Kai Hartmann"></div><div class="s-info"><span class="s-num">14</span><p class="s-name">Kai Hartmann</p><p class="s-role">Postdoctoral Researcher · FU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
-      <article data-speaker-id="lorenz-richter" class="speaker sr sr-delay-2" data-speaker-context-en="Lorenz Richter guides the programme as moderator and connects the technical sessions into one coherent conference narrative." data-speaker-context-de="Lorenz Richter führt als Moderator durch das Programm und verbindet die technischen Sessions zu einer kohärenten Konferenzerzählung." data-focus-en="Moderation|Scientific ML|Applied AI|Programme framing" data-focus-de="Moderation|Scientific ML|Applied AI|Programme framing"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/lorenz-richter.png" alt="Lorenz Richter"></div><div class="s-info"><span class="s-num">15</span><p class="s-name">Lorenz Richter</p><p class="s-role">Managing Director &amp; CTO · dida</p><p class="s-talk">Moderation</p></div></article>
-      <article data-speaker-id="johannes-muller" class="speaker sr sr-delay-3" data-speaker-context-en="Johannes Müller contributes a mathematical perspective on conditioning, optimization and neural-network discretization in scientific ML." data-speaker-context-de="Johannes Müller bringt eine mathematische Perspektive auf Konditionierung, Optimierung und neuronale Diskretisierung im Scientific Machine Learning ein." data-focus-en="Ill-conditioning|Optimize-then-project|PINNs|Quantum many-body systems" data-focus-de="Ill-conditioning|Optimize-then-project|PINNs|Quantum many-body systems"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%2811%29.png" alt="Johannes Müller"></div><div class="s-info"><span class="s-num">16</span><p class="s-name">Johannes Müller</p><p class="s-role">Postdoctoral Researcher · TU Berlin</p><p class="s-talk">Resolving Ill-Conditioning in Scientific Machine Learning</p></div></article>
+      <article data-speaker-id="jonas-kohler" class="speaker sr" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image1.png" alt="Jonas Köhler"></div><div class="s-info"><span class="s-num">01</span><p class="s-name">Jonas Köhler</p><p class="s-role">Member of Technical Staff CuspAI</p><p class="s-talk">Simulating Molecules in the Age of AI</p></div></article>
+      <article data-speaker-id="gerhard-koch" class="speaker sr sr-delay-1" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%2810%29.png" alt="Gerhard Koch"></div><div class="s-info"><span class="s-num">02</span><p class="s-name">Gerhard Koch</p><p class="s-role">Chief Software &amp; Product Officer Siemens Energy</p><p class="s-talk">Industrial &amp; Energy AI challenges &quot;solved&quot; with a new structural and explainable AI approach</p></div></article>
+      <article data-speaker-id="noah-hollmann" class="speaker sr sr-delay-2" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image2.png" alt="Noah Hollmann"></div><div class="s-info"><span class="s-num">03</span><p class="s-name">Noah Hollmann</p><p class="s-role">Co-Founder &amp; CTO Prior Labs</p><p class="s-talk">The Revolution in Tabular Data Prediction</p></div></article>
+      <article data-speaker-id="maria-bergmann" class="speaker sr sr-delay-3" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image5.png" alt="Maria Bergmann"></div><div class="s-info"><span class="s-num">04</span><p class="s-name">Maria Bergmann</p><p class="s-role">Development Engineer Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
+      <article data-speaker-id="gabriel-nobis" class="speaker sr" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%286%29.png" alt="Gabriel Nobis"></div><div class="s-info"><span class="s-num">05</span><p class="s-name">Gabriel Nobis</p><p class="s-role">Research Associate Fraunhofer HHI</p><p class="s-talk">Fractional Noise in Diffusion-Based Generative Models</p></div></article>
+      <article data-speaker-id="markus-duttmann" class="speaker sr sr-delay-1" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image3-1776949837.png" alt="Markus Düttmann"></div><div class="s-info"><span class="s-num">06</span><p class="s-name">Markus Düttmann</p><p class="s-role">Managing Director dida</p><p class="s-talk">coming soon ...</p></div></article>
+      <article data-speaker-id="annette-rudolph" class="speaker sr sr-delay-2" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/annette-rudolph.png" alt="Annette Rudolph"></div><div class="s-info"><span class="s-num">07</span><p class="s-name">Annette Rudolph</p><p class="s-role">Professor TU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
+      <article data-speaker-id="peter-kirstel" class="speaker sr sr-delay-3" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image4.png" alt="Peter Kirstel"></div><div class="s-info"><span class="s-num">08</span><p class="s-name">Peter Kirstel</p><p class="s-role">Forschungsreferenz Schlüsseltechnologie Cyberagentur</p><p class="s-talk">AI-Methods in Symmetric Cryptography</p></div></article>
+      <article data-speaker-id="leonard-schenk" class="speaker sr" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/leonard-schenk.png" alt="Leonard Schenk"></div><div class="s-info"><span class="s-num">09</span><p class="s-name">Leonard Schenk</p><p class="s-role">Senior Analyst &amp; Engineer SPRIND</p><p class="s-talk">The European AI Playbook - Why, What and How</p></div></article>
+      <article data-speaker-id="benjamin-ulbrich" class="speaker sr sr-delay-1" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image6.png" alt="Benjamin Ulbrich"></div><div class="s-info"><span class="s-num">10</span><p class="s-name">Benjamin Ulbrich</p><p class="s-role">Director Global Digital Processes Innomotics</p><p class="s-talk">Automated Vibration Prediction for Electric Motors via PDE Approximation</p></div></article>
+      <article data-speaker-id="ma-li" class="speaker sr sr-delay-2" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/ma-li.png" alt="Ma Li"></div><div class="s-info"><span class="s-num">11</span><p class="s-name">Ma Li</p><p class="s-role">ML Scientist dida</p><p class="s-talk">dida Reading Group</p></div></article>
+      <article data-speaker-id="tom-freudenberg" class="speaker sr sr-delay-3" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/tom-freudenberg.png" alt="Tom Freudenberg"></div><div class="s-info"><span class="s-num">12</span><p class="s-name">Tom Freudenberg</p><p class="s-role">Postdoctoral Researcher Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
+      <article data-speaker-id="nick-heilenkotter" class="speaker sr" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/nick-heilkotter.png" alt="Nick Heilenkötter"></div><div class="s-info"><span class="s-num">13</span><p class="s-name">Nick Heilenkötter</p><p class="s-role">Research Associate Uni Bremen</p><p class="s-talk">TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible</p></div></article>
+      <article data-speaker-id="kai-hartmann" class="speaker sr sr-delay-1" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%289%29.png" alt="Kai Hartmann"></div><div class="s-info"><span class="s-num">14</span><p class="s-name">Kai Hartmann</p><p class="s-role">Senior Lecturer FU Berlin</p><p class="s-talk">How to feed Machine Learning algorithms with proper metrics?</p></div></article>
+      <article data-speaker-id="lorenz-richter" class="speaker sr sr-delay-2" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/lorenz-richter.png" alt="Lorenz Richter"></div><div class="s-info"><span class="s-num">15</span><p class="s-name">Lorenz Richter</p><p class="s-role">Managing Director &amp; CTO dida</p><p class="s-talk">Moderation</p></div></article>
+      <article data-speaker-id="johannes-muller" class="speaker sr sr-delay-3" role="button" tabindex="0"><div class="s-photo"><img loading="lazy" decoding="async" src="https://cdn.dida.do/conferences/2026/image-%2811%29.png" alt="Johannes Müller"></div><div class="s-info"><span class="s-num">16</span><p class="s-name">Johannes Müller</p><p class="s-role">Postdoctoral Researcher TU Berlin</p><p class="s-talk">Resolving Ill-Conditioning in Scientific Machine Learning</p></div></article>
     </div>
   </div>
 </section>
@@ -5281,10 +5125,6 @@ input:focus-visible,
           <label data-i18n="field_company">Company</label>
           <input id="fCompany" name="company" data-i18n-placeholder="ph_company" placeholder="Company name" autocomplete="organization">
         </div>
-        <div class="captcha-row">
-          <div class="captcha-box"></div>
-          <span data-i18n="captcha">Please check the CAPTCHA box.</span>
-        </div>
         <button class="btn-submit" type="submit" data-i18n="submit">Register</button>
         <p class="form-success" id="formSuccess" data-i18n="success">You've successfully registered! A confirmation email is on its way.</p>
       </form>
@@ -5292,9 +5132,9 @@ input:focus-visible,
   </div>
 </section>
 
-<!-- SPEAKER MODAL: custom overlay kept for visual compatibility. Future native upgrade path: <dialog>. -->
-<div class="speaker-modal" id="speakerModal" aria-hidden="true">
-  <div class="modal-card modal" role="dialog" aria-modal="true" aria-labelledby="modalName" aria-describedby="modalTalk modalBio" tabindex="-1">
+<!-- SPEAKER MODAL: native <dialog> for built-in focus trapping and backdrop. -->
+<dialog class="speaker-modal" id="speakerModal" aria-labelledby="modalName" aria-describedby="modalTalk modalBio">
+  <div class="modal-card">
     <button class="modal-close" type="button" aria-label="Close">×</button>
     <div class="modal-kicker" id="modalNum"></div>
     <h3 class="modal-title" id="modalName"></h3>
@@ -5311,7 +5151,7 @@ input:focus-visible,
     <div class="modal-section-label modal-section-label-focus" data-i18n="modal_focus_label">[ Research focus ]</div>
     <div class="modal-focus" id="modalResearchFocus"></div>
   </div>
-</div>
+</dialog>
 
 <!-- FOOTER -->
 </main>
@@ -5560,68 +5400,64 @@ document.querySelectorAll('.panel').forEach(p => {
 /* ── SPEAKER MODALS ── */
 const speakerDetails = {
   "Jonas Köhler": {
-    "en": "Molecular simulation is entering a new regime in which learned representations no longer merely accelerate individual force-field evaluations, but begin to reshape how candidate molecules are searched, filtered and validated. This talk examines how AI systems can combine geometric priors, uncertainty-aware scoring and simulation feedback loops to support the discovery of molecular structures with application-relevant properties.\n\nThe session focuses on the engineering boundary between generative modelling and physical plausibility: how to encode symmetries, how to avoid chemically invalid shortcuts, and how to design evaluation pipelines that remain useful when the model is asked to operate outside the clean distribution of benchmark datasets.",
-    "de": "Molekulare Simulation erreicht eine neue Phase: Gelernte Repräsentationen beschleunigen nicht mehr nur einzelne Force-Field-Auswertungen, sondern verändern zunehmend, wie Kandidatenmoleküle gesucht, gefiltert und validiert werden. Der Talk untersucht, wie KI-Systeme geometrische Priors, unsicherheitsbewusste Bewertung und Simulations-Feedbackschleifen verbinden können, um Molekülstrukturen mit anwendungsrelevanten Eigenschaften zu identifizieren.\n\nIm Mittelpunkt steht die technische Schnittstelle zwischen generativer Modellierung und physikalischer Plausibilität: Wie lassen sich Symmetrien kodieren, wie verhindert man chemisch ungültige Abkürzungen, und wie baut man Evaluationspipelines, die auch dann belastbar bleiben, wenn Modelle außerhalb sauberer Benchmark-Verteilungen arbeiten?"
+    "en": "coming soon....",
+    "de": "coming soon...."
   },
   "Gerhard Koch": {
-    "en": "The energy transition demands precise control, yet many AI systems fail in operational grid environments because noisy signals, rare states and unstable decision boundaries interact under tight safety constraints. This talk introduces a structural approach for explainable AI in industrial and energy systems, focusing on signal stability, adaptive classification logic and traceable model behaviour rather than raw model size.\n\nThe session shows how situational awareness, transparent error modes and reliability-first modelling can make AI useful in sensitive infrastructure. The goal is not only higher prediction accuracy, but a system design that operators can audit, maintain and trust under extreme real-world conditions.",
-    "de": "Die Energiewende verlangt präzise Steuerung, doch viele KI-Systeme scheitern in operativen Netzumgebungen, weil verrauschte Signale, seltene Zustände und instabile Entscheidungsgrenzen unter strengen Sicherheitsanforderungen zusammenwirken. Der Talk stellt einen strukturellen Ansatz für erklärbare KI in Industrie- und Energiesystemen vor — mit Fokus auf Signalstabilität, adaptive Klassifikationslogik und nachvollziehbares Modellverhalten statt bloßer Modellgröße.\n\nDie Session zeigt, wie Situationsbewusstsein, transparente Fehlermodi und reliability-first Modellierung KI in sensibler Infrastruktur tatsächlich nutzbar machen. Ziel ist nicht nur höhere Vorhersagegenauigkeit, sondern ein Systemdesign, das Betreiber prüfen, warten und unter extremen Realbedingungen vertrauen können."
+    "en": "The energy transition demands precise control, yet in practice, many AI solutions fail due to unpredictable signal noise and a lack of reliability. This presentation introduces an innovative structural approach that overcomes these instabilities through a new principle of signal stability and adaptive classification logic. Instead of relying on raw computing power, we focus on the efficiency, transparency, and traceability of AI models to prevent critical errors in sensitive grid environments.\n\nWe demonstrate how AI for the energy sector becomes truly reliable, sustainable, and explainable through situational awareness. Discover a solution designed to guarantee security of supply even under extreme real-world conditions.",
+    "de": "The energy transition demands precise control, yet in practice, many AI solutions fail due to unpredictable signal noise and a lack of reliability. This presentation introduces an innovative structural approach that overcomes these instabilities through a new principle of signal stability and adaptive classification logic. Instead of relying on raw computing power, we focus on the efficiency, transparency, and traceability of AI models to prevent critical errors in sensitive grid environments.\n\nWe demonstrate how AI for the energy sector becomes truly reliable, sustainable, and explainable through situational awareness. Discover a solution designed to guarantee security of supply even under extreme real-world conditions."
   },
   "Noah Hollmann": {
-    "en": "Foundation models have transformed NLP and computer vision, but tabular prediction still often follows the older loop of algorithm choice, feature engineering and repeated hyperparameter tuning. This talk presents TabPFN as a foundation-model approach to tabular learning: a transformer trained on large families of synthetic prediction problems and applied to new datasets in context.\n\nThe session explains how this changes the workflow for structured data: predictions can be produced in seconds, benchmark behaviour can be compared against gradient-boosted trees and classical AutoML pipelines, and heterogeneous tabular problems can be approached through a more homogeneous inference interface. It also looks ahead to time-series foundation models, agentic data science and the practical lessons learned when moving the paradigm from research into production.",
-    "de": "Foundation Models haben NLP und Computer Vision verändert, doch tabellarische Vorhersage folgt oft noch dem älteren Zyklus aus Algorithmuswahl, Feature Engineering und wiederholtem Hyperparameter-Tuning. Dieser Talk stellt TabPFN als Foundation-Model-Ansatz für tabellarisches Lernen vor: einen Transformer, der auf großen Familien synthetischer Vorhersageprobleme trainiert wurde und neue Datensätze in context verarbeitet.\n\nDie Session zeigt, wie sich dadurch der Workflow für strukturierte Daten verändert: Vorhersagen entstehen in Sekunden, Benchmark-Verhalten lässt sich mit Gradient-Boosted Trees und klassischen AutoML-Pipelines vergleichen, und heterogene tabellarische Probleme werden über eine einheitlichere Inferenzschnittstelle zugänglich. Außerdem geht es um Time-Series Foundation Models, agentische Data-Science-Workflows und praktische Erfahrungen beim Transfer des Paradigmas aus der Forschung in Produktion."
+    "en": "Foundation models have transformed NLP and computer vision - but tabular data prediction still largely works the way it did ten years ago: pick an algorithm, engineer features, tune hyperparameters, repeat for every new dataset. In this talk, I present TabPFN, a foundation model that brings the same paradigm shift to tabular data.\n\nTabPFN is a transformer trained on billions of synthetic prediction problems that can be applied to new datasets in-context - replacing what used to be hours of pipeline work with a single API call that returns predictions in seconds. I will show how this works under the hood, how it compares to gradient-boosted trees and other baselines across hundreds of benchmarks, and what it means in practice: a simpler, faster, and more homogeneous workflow for tabular prediction.\n\nI will also discuss where we are headed next - from time series foundation models to agentic data science - and what we have learned bringing this from research into production.",
+    "de": "Foundation models have transformed NLP and computer vision - but tabular data prediction still largely works the way it did ten years ago: pick an algorithm, engineer features, tune hyperparameters, repeat for every new dataset. In this talk, I present TabPFN, a foundation model that brings the same paradigm shift to tabular data.\n\nTabPFN is a transformer trained on billions of synthetic prediction problems that can be applied to new datasets in-context - replacing what used to be hours of pipeline work with a single API call that returns predictions in seconds. I will show how this works under the hood, how it compares to gradient-boosted trees and other baselines across hundreds of benchmarks, and what it means in practice: a simpler, faster, and more homogeneous workflow for tabular prediction.\n\nI will also discuss where we are headed next - from time series foundation models to agentic data science - and what we have learned bringing this from research into production."
   },
   "Maria Bergmann": {
-    "en": "Predicting the vibration behaviour of large electric motors requires finite-element simulations that capture structural sensitivities under operational excitation. These simulations inform design decisions, identify critical modes and help select variants with low vibration levels and reliable long-term operation.\n\nThe talk demonstrates how such FE-based workflows can be automated for a product line of large electrical machines using open-source tooling. It also makes the limitations explicit: meshing effort, parameter variation, runtime cost and the difficulty of building robust surrogate models. The session closes by discussing where AI can help — not as a replacement for physics, but as a layer for acceleration, approximation and decision support.",
-    "de": "Die Vorhersage des Schwingungsverhaltens großer Elektromotoren erfordert Finite-Elemente-Simulationen, die strukturelle Empfindlichkeiten unter betrieblichen Anregungen abbilden. Solche Simulationen unterstützen Designentscheidungen, identifizieren kritische Moden und helfen, Varianten mit niedrigen Schwingungsniveaus und zuverlässigem Langzeitbetrieb auszuwählen.\n\nDer Talk zeigt, wie FE-basierte Workflows für eine Produktlinie großer elektrischer Maschinen mit Open-Source-Werkzeugen automatisiert werden können. Gleichzeitig werden die Grenzen klar benannt: Meshing-Aufwand, Parametervariation, Laufzeitkosten und die Schwierigkeit, robuste Surrogatmodelle aufzubauen. Abschließend wird diskutiert, wo KI sinnvoll helfen kann — nicht als Ersatz für Physik, sondern als Ebene für Beschleunigung, Approximation und Entscheidungsunterstützung."
+    "en": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process.",
+    "de": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process."
   },
   "Gabriel Nobis": {
-    "en": "Most continuous-time diffusion models use Brownian motion as the source of randomness in the noising process. This choice is mathematically convenient, but it enforces memoryless dynamics with independent increments and limits the temporal structure that the generative process can express.\n\nThis talk studies diffusion-based generative models driven by approximations of fractional Brownian motion, a non-Markovian process with long-range temporal dependence. After a concise review of continuous-time diffusion models, the session examines how fractional noise changes sampling, representation and modelling capacity, with applications ranging from image generation to protein conformation prediction.",
-    "de": "Die meisten kontinuierlichen Diffusionsmodelle nutzen Brownsche Bewegung als Zufallsquelle im Noising-Prozess. Diese Wahl ist mathematisch gut handhabbar, erzwingt jedoch gedächtnislose Dynamiken mit unabhängigen Inkrementen und begrenzt die zeitliche Struktur, die der generative Prozess ausdrücken kann.\n\nDer Talk untersucht diffusionsbasierte generative Modelle, die durch Approximationen fraktionaler Brownscher Bewegung angetrieben werden — also durch einen nicht-Markovschen Prozess mit langfristiger zeitlicher Abhängigkeit. Nach einem kompakten Überblick über kontinuierliche Diffusionsmodelle wird gezeigt, wie fraktionales Rauschen Sampling, Repräsentation und Modellierungskapazität verändert, mit Anwendungen von Bildgenerierung bis zur Vorhersage von Proteinkonformationen."
+    "en": "Most continuous-time diffusion models rely on Brownian motion as the source of randomness in the noising process, a memoryless mechanism characterized by independent increments. While this choice offers mathematical tractability, it constrains the expressivity of the noising dynamics, limits the richness of their temporal structure, and excludes noise processes with long-range temporal dependencies.\n\nAfter reviewing continuous-time diffusion models, this talk explores diffusion-based generative models driven by an approximation of fractional Brownian motion, a non-Markovian process with long-range temporal dependence. We further present applications of this novel generative paradigm to image generation, sampling, and the prediction of protein conformations.",
+    "de": "Most continuous-time diffusion models rely on Brownian motion as the source of randomness in the noising process, a memoryless mechanism characterized by independent increments. While this choice offers mathematical tractability, it constrains the expressivity of the noising dynamics, limits the richness of their temporal structure, and excludes noise processes with long-range temporal dependencies.\n\nAfter reviewing continuous-time diffusion models, this talk explores diffusion-based generative models driven by an approximation of fractional Brownian motion, a non-Markovian process with long-range temporal dependence. We further present applications of this novel generative paradigm to image generation, sampling, and the prediction of protein conformations."
   },
   "Markus Düttmann": {
-    "en": "Production machine learning is rarely limited by model architecture alone. In real projects, progress depends on translating scientific ambition into reliable data contracts, maintainable inference systems and workflows that domain experts can use without losing technical precision.\n\nThis session reflects on the engineering patterns behind robust applied ML: how to decide when a foundation model is appropriate, when a constrained specialist model is safer, and how to build delivery structures that keep uncertainty, evaluation and operational ownership visible. The talk frames AI engineering as a discipline of containment: making advanced models useful without letting complexity leak into every part of the product.",
-    "de": "Produktives Machine Learning scheitert selten allein an der Modellarchitektur. In realen Projekten entsteht Fortschritt dort, wo wissenschaftlicher Anspruch in verlässliche Datenverträge, wartbare Inferenzsysteme und Workflows übersetzt wird, die Fachexpertinnen und Fachexperten nutzen können, ohne technische Präzision zu verlieren.\n\nDie Session reflektiert Engineering-Muster für robustes angewandtes ML: Wann ist ein Foundation Model angemessen, wann ist ein eingeschränktes Spezialmodell sicherer, und wie baut man Lieferstrukturen, in denen Unsicherheit, Evaluation und operative Verantwortung sichtbar bleiben? Der Talk versteht AI Engineering als Disziplin der Begrenzung: fortgeschrittene Modelle nutzbar machen, ohne dass ihre Komplexität in jeden Teil des Produkts ausläuft."
-  },
-  "Annette Rudolph": {
-    "en": "Many multivariate statistics and machine-learning algorithms assume Euclidean metrics on unconstrained data spaces. Real scientific and engineering variables, however, are often strictly positive, bounded or compositional, which makes ordinary arithmetic distances misleading and can produce spurious correlations or meaningless quality metrics.\n\nThis talk presents practical recipes for modelling constrained and compositional data spaces without violating the geometry of the problem. Through hands-on examples, the session shows how metric choice affects learning, how transformations can preserve interpretability, and why respecting physical constraints is often the difference between a plausible model and a numerically convenient artefact.",
-    "de": "Viele Verfahren der multivariaten Statistik und des Machine Learning setzen euklidische Metriken auf uneingeschränkten Datenräumen voraus. Reale wissenschaftliche und technische Variablen sind jedoch häufig strikt positiv, beschränkt oder kompositionell — wodurch gewöhnliche arithmetische Distanzen irreführend werden und Scheinkorrelationen oder sinnlose Qualitätsmaße entstehen können.\n\nDer Talk präsentiert praktische Rezepte für eingeschränkte und kompositionelle Datenräume, ohne die Geometrie des Problems zu verletzen. Anhand von Hands-on-Beispielen zeigt die Session, wie die Wahl der Metrik das Lernen beeinflusst, wie Transformationen Interpretierbarkeit erhalten können und warum physikalische Randbedingungen oft den Unterschied zwischen einem plausiblen Modell und einem numerisch bequemen Artefakt ausmachen."
+    "en": "coming soon ...",
+    "de": "coming soon ..."
   },
   "Peter Kirstel": {
-    "en": "Block ciphers are central cryptographic primitives: a key and a fixed-length message are transformed into ciphertext, with security depending on the practical infeasibility of recovering the message or key. Shannon's classical result shows why perfect secrecy is impractical for most settings, making resistance to statistical analysis the operational goal of real cipher design.\n\nThis talk examines how AI methods can support the analysis of symmetric cryptography. Rather than replacing cryptanalytic reasoning, machine learning can help explore large design spaces, detect structural weaknesses and prioritise candidates for deeper mathematical inspection. The session connects cryptographic primitives, statistical distinguishers and model-assisted search under strict security constraints.",
-    "de": "Blockchiffren sind zentrale kryptografische Primitive: Ein Schlüssel und eine Nachricht fester Länge werden in einen Chiffretext transformiert; Sicherheit bedeutet praktisch, dass Nachricht oder Schlüssel nicht rekonstruierbar sind. Shannons klassisches Resultat zeigt, warum perfekte Geheimhaltung in den meisten Szenarien unpraktikabel ist — deshalb wird Widerstand gegen statistische Analyse zum operativen Ziel realer Chiffren.\n\nDer Talk untersucht, wie KI-Methoden die Analyse symmetrischer Kryptografie unterstützen können. Machine Learning ersetzt dabei keine kryptanalytische Argumentation, kann aber große Designräume explorieren, strukturelle Schwächen aufdecken und Kandidaten für tiefere mathematische Prüfung priorisieren. Die Session verbindet kryptografische Primitive, statistische Distinguisher und modellgestützte Suche unter strengen Sicherheitsanforderungen."
+    "en": "A block cipher is a cryptographic primitive that takes a key and a message, both of a fixed length, and turns it into a ciphertext. Ideally, one can only recover the message from the ciphertext by using the key. However, a theorem from Shannon from 1948 says that perfect secrecy can only be achieved if the key is of the same length as the ciphertext, which is a completely impractical constraint. In practice, the key is much shorter than the ciphertext.\n\nThis means that statistical analysis of the ciphertext reveals some information about the message (or even the key). Thus, when developing a block cipher, the goal is to make this statistical analysis computationally infeasible. While there are design principles for block ciphers, the proof is in the pudding, and the only way to determine if a cipher is secure is to try to break it.\n\nI will explain some basics of block cipher design, and then review some recent work applying Machine Learning to the analysis of block ciphers. After this overview, I would encourage the participants to brainstorm and discuss what kind of AI-methods could be promising for future research.",
+    "de": "A block cipher is a cryptographic primitive that takes a key and a message, both of a fixed length, and turns it into a ciphertext. Ideally, one can only recover the message from the ciphertext by using the key. However, a theorem from Shannon from 1948 says that perfect secrecy can only be achieved if the key is of the same length as the ciphertext, which is a completely impractical constraint. In practice, the key is much shorter than the ciphertext.\n\nThis means that statistical analysis of the ciphertext reveals some information about the message (or even the key). Thus, when developing a block cipher, the goal is to make this statistical analysis computationally infeasible. While there are design principles for block ciphers, the proof is in the pudding, and the only way to determine if a cipher is secure is to try to break it.\n\nI will explain some basics of block cipher design, and then review some recent work applying Machine Learning to the analysis of block ciphers. After this overview, I would encourage the participants to brainstorm and discuss what kind of AI-methods could be promising for future research."
   },
-  "Leonard Schenk": {
-    "en": "Europe's reliance on US and Chinese frontier AI models creates strategic dependency at the level of infrastructure, security and industrial competitiveness. This talk frames sovereign AI not as branding, but as a systems problem: compute access, model capability, evaluation, deployment channels and institutional coordination must be aligned if Europe wants credible autonomy.\n\nThe session proposes a practical European AI playbook: where public agencies, startups, research labs and industrial users need to collaborate; which layers of the stack require sovereignty; and how to distinguish symbolic initiatives from capacity that can actually survive frontier-model competition.",
-    "de": "Europas Abhängigkeit von US-amerikanischen und chinesischen Frontier-AI-Modellen erzeugt strategische Abhängigkeit auf Ebene von Infrastruktur, Sicherheit und industrieller Wettbewerbsfähigkeit. Der Talk versteht souveräne KI nicht als Label, sondern als Systemproblem: Compute-Zugang, Modellfähigkeit, Evaluation, Deployment-Kanäle und institutionelle Koordination müssen zusammenpassen, wenn Europa glaubwürdige Autonomie erreichen will.\n\nDie Session skizziert ein praktisches europäisches AI-Playbook: Wo öffentliche Institutionen, Startups, Forschungslabore und industrielle Nutzer zusammenarbeiten müssen, welche Ebenen des Stacks Souveränität benötigen und wie sich symbolische Initiativen von Fähigkeiten unterscheiden lassen, die im Wettbewerb mit Frontier Models tatsächlich bestehen können."
+  "Annette Rudolph": {
+    "en": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples.",
+    "de": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples."
   },
   "Benjamin Ulbrich": {
-    "en": "Industrial simulation programmes only create value when they become repeatable engineering processes. In the context of large electric motors, automated vibration prediction connects finite-element modelling, product-line variation and digital process design into a workflow that can support real design decisions.\n\nThis talk complements the technical simulation perspective with a process view: how to make automated PDE-based analysis maintainable across teams, how to integrate open-source components into industrial quality systems, and how surrogate modelling or physics-informed neural networks may reduce turnaround time while preserving accountability for engineering decisions.",
-    "de": "Industrielle Simulationsprogramme schaffen nur dann Wert, wenn sie zu wiederholbaren Engineering-Prozessen werden. Bei großen Elektromotoren verbindet automatisierte Schwingungsvorhersage Finite-Elemente-Modellierung, Produktlinienvariation und digitales Prozessdesign zu einem Workflow, der reale Designentscheidungen unterstützen kann.\n\nDer Talk ergänzt die technische Simulationsperspektive um eine Prozesssicht: Wie bleibt automatisierte PDE-basierte Analyse über Teams hinweg wartbar, wie lassen sich Open-Source-Komponenten in industrielle Qualitätssysteme integrieren, und wie können Surrogatmodelle oder Physics-Informed Neural Networks Durchlaufzeiten reduzieren, ohne Verantwortung für Engineering-Entscheidungen zu verwischen?"
+    "en": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process.",
+    "de": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process."
+  },
+  "Leonard Schenk": {
+    "en": "Europe’s reliance on US and Chinese AI models creates systemic strategic vulnerabilities. This workshop outlines a playbook for establishing sovereign Frontier AI within Europe. Rather than replicating US-centric LLM scaling, we prioritize AI that aligns with European industrial strengths.\n\nThe session details the strategic imperative (“Why”), specific focus domains like robotics or energy-efficient architectures that fit the local landscape (“What”), and implementation via distributed training and semiconductor sovereignty (“How”). The outcome is a roadmap for deployable, \"continent-aligned\" models for long-term competitiveness.",
+    "de": "Europe’s reliance on US and Chinese AI models creates systemic strategic vulnerabilities. This workshop outlines a playbook for establishing sovereign Frontier AI within Europe. Rather than replicating US-centric LLM scaling, we prioritize AI that aligns with European industrial strengths.\n\nThe session details the strategic imperative (“Why”), specific focus domains like robotics or energy-efficient architectures that fit the local landscape (“What”), and implementation via distributed training and semiconductor sovereignty (“How”). The outcome is a roadmap for deployable, \"continent-aligned\" models for long-term competitiveness."
   },
   "Ma Li": {
-    "en": "The dida reading group is a weekly format in which ML scientists discuss recent papers, connect theoretical advances to client projects and test which research ideas are mature enough for applied work. This session opens that internal format to the conference audience.\n\nInstead of presenting one finished product, the talk shows how a technical team builds shared judgement: reading beyond abstracts, comparing assumptions across papers, identifying implementation risks and translating promising ideas into experiments. The focus is on the craft of staying current without turning every new model into a production recommendation.",
-    "de": "Die dida Reading Group ist ein wöchentliches Format, in dem ML Scientists aktuelle Paper diskutieren, theoretische Fortschritte mit Kundenprojekten verbinden und prüfen, welche Forschungsideen reif genug für angewandte Arbeit sind. Diese Session öffnet das interne Format für das Konferenzpublikum.\n\nStatt ein fertiges Produkt zu präsentieren, zeigt der Talk, wie ein technisches Team gemeinsame Urteilskraft aufbaut: über Abstracts hinaus lesen, Annahmen verschiedener Paper vergleichen, Implementierungsrisiken erkennen und vielversprechende Ideen in Experimente übersetzen. Im Mittelpunkt steht die Kunst, fachlich aktuell zu bleiben, ohne jedes neue Modell sofort zur Produktionsentscheidung zu machen."
+    "en": "dida has a weekly internal reading group where our ML scientists discuss recent papers and how they can help with our projects.\n\nPapers presented will be announced soon.",
+    "de": "dida has a weekly internal reading group where our ML scientists discuss recent papers and how they can help with our projects.\n\nPapers presented will be announced soon."
   },
   "Tom Freudenberg": {
-    "en": "Deep learning is increasingly used as a surrogate-modelling tool for partial differential equations, but many teams still face a steep barrier when moving from mathematical formulations to reliable implementations. TorchPhysics lowers this barrier by offering building blocks for physics-informed neural networks, boundary conditions, domains and training routines.\n\nThe talk explains how accessible tooling changes scientific machine learning practice: researchers can iterate on PDE problems faster, compare modelling assumptions more transparently and prototype neural solvers without rewriting the same infrastructure for every experiment. It also discusses where abstraction helps — and where numerical care remains essential.",
-    "de": "Deep Learning wird zunehmend als Werkzeug für Surrogatmodellierung partieller Differentialgleichungen eingesetzt, doch der Weg von mathematischer Formulierung zu verlässlicher Implementierung bleibt für viele Teams steil. TorchPhysics senkt diese Hürde durch Bausteine für Physics-Informed Neural Networks, Randbedingungen, Domänen und Trainingsroutinen.\n\nDer Talk erklärt, wie zugängliche Werkzeuge die Praxis des Scientific Machine Learning verändern: Forschende können PDE-Probleme schneller iterieren, Modellannahmen transparenter vergleichen und neuronale Solver prototypisieren, ohne für jedes Experiment dieselbe Infrastruktur neu aufzubauen. Gleichzeitig wird diskutiert, wo Abstraktion hilft — und wo numerische Sorgfalt unverzichtbar bleibt."
+    "en": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices.",
+    "de": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices."
   },
   "Nick Heilenkötter": {
-    "en": "Scientific machine learning needs tools that respect both neural-network flexibility and the structure of differential-equation problems. This session presents the design philosophy behind TorchPhysics and related tooling: how to express domains, constraints and residual losses in a way that is readable for researchers and extensible for complex simulation settings.\n\nThe talk highlights practical implementation patterns for PINNs and surrogate models, including data management, boundary handling and diagnostics for failure modes. The emphasis is on making deep learning for PDEs more accessible without hiding the numerical assumptions that determine whether a model is scientifically meaningful.",
-    "de": "Scientific Machine Learning benötigt Werkzeuge, die sowohl die Flexibilität neuronaler Netze als auch die Struktur von Differentialgleichungsproblemen respektieren. Diese Session stellt die Designphilosophie hinter TorchPhysics und verwandten Werkzeugen vor: Wie lassen sich Domänen, Nebenbedingungen und Residualverluste so ausdrücken, dass sie für Forschende lesbar und für komplexe Simulationsszenarien erweiterbar bleiben?\n\nDer Talk beleuchtet praktische Implementierungsmuster für PINNs und Surrogatmodelle, darunter Datenmanagement, Randbehandlung und Diagnostik typischer Fehlermodi. Im Zentrum steht, Deep Learning für PDEs zugänglicher zu machen, ohne die numerischen Annahmen zu verstecken, die darüber entscheiden, ob ein Modell wissenschaftlich sinnvoll ist."
+    "en": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices.",
+    "de": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices."
   },
   "Kai Hartmann": {
-    "en": "Many machine-learning pipelines silently assume that variables live in Euclidean space and can be compared with ordinary arithmetic distances. In scientific data, that assumption is often wrong: measurements may be positive, bounded, directional or compositional, and the wrong metric can dominate the learning signal.\n\nThis talk explains how proper metrics change the way data should be prepared, visualised and modelled. It shows why respecting the geometry of the measurement space leads to better diagnostics, more meaningful model-quality measures and fewer artefacts when ML algorithms are applied to constrained physical or compositional variables.",
-    "de": "Viele Machine-Learning-Pipelines nehmen stillschweigend an, dass Variablen in einem euklidischen Raum liegen und mit gewöhnlichen arithmetischen Distanzen verglichen werden können. In wissenschaftlichen Daten ist diese Annahme häufig falsch: Messgrößen können positiv, beschränkt, gerichtet oder kompositionell sein, und die falsche Metrik kann das Lernsignal dominieren.\n\nDer Talk erklärt, wie geeignete Metriken verändern, wie Daten vorbereitet, visualisiert und modelliert werden sollten. Er zeigt, warum die Geometrie des Messraums zu besseren Diagnosen, sinnvolleren Qualitätsmaßen und weniger Artefakten führt, wenn ML-Algorithmen auf eingeschränkte physikalische oder kompositionelle Variablen angewendet werden."
-  },
-  "Lorenz Richter": {
-    "en": "Moderation shapes the technical arc of the conference: connecting the mathematical talks, industrial case studies and scientific machine-learning sessions into one coherent day. The moderation will frame each block, surface the questions that matter for practitioners and keep the programme moving with enough space for discussion.\n\nThe focus is on continuity: why these topics belong together, how applied ML and research-grade modelling inform each other, and where the most useful questions emerge when theory meets production constraints.",
-    "de": "Die Moderation formt den technischen Bogen der Konferenz: Sie verbindet mathematische Talks, industrielle Fallstudien und Scientific-Machine-Learning-Sessions zu einem zusammenhängenden Tag. Die Moderation rahmt die einzelnen Blöcke, macht die für Praktiker relevanten Fragen sichtbar und hält das Programm mit ausreichend Raum für Diskussion in Bewegung.\n\nIm Mittelpunkt steht Kontinuität: Warum diese Themen zusammengehören, wie angewandtes ML und forschungsnahe Modellierung einander informieren und wo die nützlichsten Fragen entstehen, wenn Theorie auf Produktionsbedingungen trifft."
+    "en": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples.",
+    "de": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples."
   },
   "Johannes Müller": {
-    "en": "Scientific machine learning often couples neural networks with optimization problems that are ill-conditioned, constrained or defined in infinite-dimensional function spaces. Naively discretizing these problems can produce unstable gradients, slow convergence and misleading confidence in the resulting solution.\n\nThis talk introduces an optimize-then-project framework: first formulate optimization algorithms in a continuous setting, then discretize them within the tangent space of the chosen neural-network model. The approach is demonstrated for physics-informed neural networks and variational Monte Carlo methods for quantum many-body systems, with attention to scaling, conditioning and the practical demands of real scientific workloads.",
-    "de": "Scientific Machine Learning koppelt neuronale Netze häufig mit Optimierungsproblemen, die schlecht konditioniert, eingeschränkt oder in unendlichdimensionalen Funktionsräumen definiert sind. Eine naive Diskretisierung kann instabile Gradienten, langsame Konvergenz und irreführendes Vertrauen in die resultierende Lösung erzeugen.\n\nDer Talk stellt ein Optimize-then-Project-Framework vor: Optimierungsalgorithmen werden zunächst in einem kontinuierlichen Setting formuliert und anschließend im Tangentialraum des gewählten neuronalen Netzmodells diskretisiert. Demonstriert wird der Ansatz für Physics-Informed Neural Networks und Variational-Monte-Carlo-Methoden für Quanten-Vielteilchensysteme — mit Blick auf Skalierung, Konditionierung und die praktischen Anforderungen realer wissenschaftlicher Workloads."
+    "en": "We introduce an “optimize-then-project” framework for scientific machine learning that addresses numerical instability caused by differential operators in training objectives. The core concept is to first formulate optimization algorithms in a continuous (infinite-dimensional) setting, and then discretize them within the tangent space of the chosen neural network model.\n\nWe demonstrate how this approach can be applied to practical settings, including physics-informed neural networks and variational Monte Carlo methods for quantum many-body systems - areas where neural network-based models are increasingly gaining traction. We also discuss key considerations for scaling these methods to larger, real-world problems.",
+    "de": "We introduce an “optimize-then-project” framework for scientific machine learning that addresses numerical instability caused by differential operators in training objectives. The core concept is to first formulate optimization algorithms in a continuous (infinite-dimensional) setting, and then discretize them within the tangent space of the chosen neural network model.\n\nWe demonstrate how this approach can be applied to practical settings, including physics-informed neural networks and variational Monte Carlo methods for quantum many-body systems - areas where neural network-based models are increasingly gaining traction. We also discuss key considerations for scaling these methods to larger, real-world problems."
   }
 };
 
@@ -5787,7 +5623,7 @@ function ensureModalSignatureLayer(){
   signature.className = 'modal-signature';
   signature.setAttribute('aria-hidden', 'true');
   signature.innerHTML = `
-    <div class="modal-portrait"><span class="modal-orbit"></span><img alt=""></div>
+    <div class="modal-portrait"><img alt=""></div>
     <div class="modal-signature-copy">
       <div class="modal-signature-label"></div>
       <div class="modal-signature-thesis"></div>
@@ -5936,7 +5772,7 @@ function unlockPageFromModal(){
   window.scrollTo({ top: modalScrollY, left: 0, behavior: 'instant' in document.documentElement.style ? 'instant' : 'auto' });
 }
 
-const getModalFocusContainer = () => modal?.querySelector('.modal') || modal;
+const getModalFocusContainer = () => modal?.querySelector('.modal-card') || modal;
 const getModalFocusable = () => {
   const container = getModalFocusContainer();
   if(!container) return [];
@@ -5946,28 +5782,50 @@ const getModalFocusable = () => {
 
 function closeSpeakerModal(){
   if(!modal) return;
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden','true');
-  unlockPageFromModal();
   const returnTarget = activeSpeakerCard;
+
+  modal.classList.remove('open');
+
+  // Native <dialog>.close() throws if the dialog is not currently open.
+  // Guarding it keeps repeated clicks / Escape presses from breaking the UI.
+  if(typeof modal.close === 'function' && modal.open){
+    try { modal.close(); } catch (_) {}
+  }
+
+  unlockPageFromModal();
   activeSpeakerCard = null;
+
   if(returnTarget && typeof returnTarget.focus === 'function'){
-    returnTarget.focus({preventScroll:true});
+    window.requestAnimationFrame(() => returnTarget.focus({preventScroll:true}));
   }
 }
 
 function openSpeakerModal(card){
   if(!modal || !card) return;
+
   activeSpeakerCard = card;
   updateOpenSpeakerModal(card);
 
+  // If another card is triggered while the dialog is already open, update content only.
+  if(modal.open || modal.classList.contains('open')){
+    const closeControl = modal.querySelector('.modal-close');
+    closeControl?.focus({preventScroll:true});
+    return;
+  }
+
   lockPageForModal();
   modal.classList.add('open');
-  modal.setAttribute('aria-hidden','false');
+
+  if(typeof modal.showModal === 'function'){
+    try { modal.showModal(); }
+    catch (_) { modal.setAttribute('open', ''); }
+  } else {
+    modal.setAttribute('open', '');
+  }
 
   const closeControl = modal.querySelector('.modal-close');
   window.requestAnimationFrame(() => {
-    (closeControl || getModalFocusContainer())?.focus({preventScroll:true});
+    (closeControl || modal)?.focus({preventScroll:true});
   });
 }
 
@@ -5978,42 +5836,13 @@ function openSpeaker(card){
 
 function trapSpeakerModalFocus(event){
   if(!modal?.classList.contains('open')) return;
-
   if(event.key === 'Escape'){
     event.preventDefault();
     closeSpeakerModal();
-    return;
-  }
-
-  if(event.key !== 'Tab') return;
-
-  const focusable = getModalFocusable();
-  const container = getModalFocusContainer();
-  if(!focusable.length){
-    event.preventDefault();
-    container?.focus({preventScroll:true});
-    return;
-  }
-
-  const first = focusable[0];
-  const last = focusable[focusable.length - 1];
-
-  if(!container?.contains(document.activeElement)){
-    event.preventDefault();
-    first.focus({preventScroll:true});
-    return;
-  }
-
-  if(event.shiftKey && document.activeElement === first){
-    event.preventDefault();
-    last.focus({preventScroll:true});
-  } else if(!event.shiftKey && document.activeElement === last){
-    event.preventDefault();
-    first.focus({preventScroll:true});
   }
 }
 
-document.querySelectorAll('.speaker').forEach(card=>{
+function prepareSpeakerCard(card){
   const name = card.querySelector('.s-name')?.textContent.trim() || 'speaker';
   const talk = card.querySelector('.s-talk')?.textContent.trim() || 'talk details';
   card.tabIndex = 0;
@@ -6021,18 +5850,32 @@ document.querySelectorAll('.speaker').forEach(card=>{
   card.setAttribute('aria-controls','speakerModal');
   card.setAttribute('aria-haspopup','dialog');
   card.setAttribute('aria-label', `Open details for ${name}: ${talk}`);
-  card.addEventListener('click', ()=>openSpeakerModal(card), { passive: true });
-  card.addEventListener('keydown', e=>{
-    if(e.key==='Enter' || e.key===' '){
-      e.preventDefault();
-      openSpeakerModal(card);
-    }
-  });
+}
+
+document.querySelectorAll('.speaker').forEach(prepareSpeakerCard);
+
+// Event delegation keeps speaker cards resilient if cards are reordered or injected later.
+document.addEventListener('click', event => {
+  const card = event.target.closest?.('.speaker');
+  if(card) openSpeakerModal(card);
 });
-modal?.addEventListener('click', e=>{
-  if(e.target===modal || e.target.classList.contains('modal-close')) closeSpeakerModal();
-}, { passive: true });
-document.addEventListener('keydown', trapSpeakerModalFocus);
+
+document.addEventListener('keydown', event => {
+  const card = event.target.closest?.('.speaker');
+  if(card && (event.key === 'Enter' || event.key === ' ')){
+    event.preventDefault();
+    openSpeakerModal(card);
+    return;
+  }
+  trapSpeakerModalFocus(event);
+});
+
+modal?.addEventListener('click', event => {
+  if(event.target === modal || event.target.closest?.('.modal-close')) closeSpeakerModal();
+});
+
+// Intercept native dialog cancel (Escape key) so our close logic runs cleanly.
+modal?.addEventListener('cancel', event => { event.preventDefault(); closeSpeakerModal(); });
 
 
 /* ── INLINE AGENDA ABSTRACTS ── */
@@ -6252,7 +6095,8 @@ const dict = {
     "ph_name": "Your name",
     "ph_email": "your.email@company.com",
     "ph_company": "Company, university or research group",
-    "captcha": "Registration request preview — final confirmation is sent by email.",
+    // TODO: remove "captcha" key — CAPTCHA replaced with honeypot
+    "captcha": "",
     "submit": "Request registration",
     "submit_loading": "Sending request",
     "success": "Thank you for registering. We sent a confirmation email to your inbox.",
@@ -6341,7 +6185,8 @@ const dict = {
     "ph_name": "Ihr Name",
     "ph_email": "ihre.email@unternehmen.de",
     "ph_company": "Unternehmen, Universität oder Forschungsgruppe",
-    "captcha": "Anfrage zur Anmeldung — die finale Bestätigung wird per E-Mail gesendet.",
+    // TODO: "captcha"-Schlüssel entfernen — durch Honeypot ersetzt
+    "captcha": "",
     "submit": "Anmeldung anfragen",
     "submit_loading": "Anfrage wird gesendet",
     "success": "Vielen Dank für Ihre Anmeldung. Wir haben eine Bestätigung per E-Mail gesendet.",
@@ -6435,7 +6280,7 @@ function setLang(lang){
     submitButton.textContent = resolveDictValue(activeDict, fallbackDict, 'submit') || 'Register';
   }
 
-  if(modal && modal.classList.contains('open') && activeSpeakerCard){
+  if(modal && (modal.classList.contains('open') || modal.open) && activeSpeakerCard){
     updateOpenSpeakerModal(activeSpeakerCard);
   }
 }
@@ -6550,6 +6395,186 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
     target.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
   });
 });
+
+
+/* REAL DIDA CONTENT SYNC PATCH
+   Uses speaker card / modal text from dida.do/conference.
+   No invented abstracts, fake research tags, or generated speaker context. */
+(function(){
+  const realSpeakerData = {
+  "jonas-kohler": {
+    "name": "Jonas Köhler",
+    "role": "Member of Technical Staff CuspAI",
+    "talk": "Simulating Molecules in the Age of AI",
+    "abstract": "coming soon...."
+  },
+  "gerhard-koch": {
+    "name": "Gerhard Koch",
+    "role": "Chief Software & Product Officer Siemens Energy",
+    "talk": "Industrial & Energy AI challenges \"solved\" with a new structural and explainable AI approach",
+    "abstract": "The energy transition demands precise control, yet in practice, many AI solutions fail due to unpredictable signal noise and a lack of reliability. This presentation introduces an innovative structural approach that overcomes these instabilities through a new principle of signal stability and adaptive classification logic. Instead of relying on raw computing power, we focus on the efficiency, transparency, and traceability of AI models to prevent critical errors in sensitive grid environments.\n\nWe demonstrate how AI for the energy sector becomes truly reliable, sustainable, and explainable through situational awareness. Discover a solution designed to guarantee security of supply even under extreme real-world conditions."
+  },
+  "noah-hollmann": {
+    "name": "Noah Hollmann",
+    "role": "Co-Founder & CTO Prior Labs",
+    "talk": "The Revolution in Tabular Data Prediction",
+    "abstract": "Foundation models have transformed NLP and computer vision - but tabular data prediction still largely works the way it did ten years ago: pick an algorithm, engineer features, tune hyperparameters, repeat for every new dataset. In this talk, I present TabPFN, a foundation model that brings the same paradigm shift to tabular data.\n\nTabPFN is a transformer trained on billions of synthetic prediction problems that can be applied to new datasets in-context - replacing what used to be hours of pipeline work with a single API call that returns predictions in seconds. I will show how this works under the hood, how it compares to gradient-boosted trees and other baselines across hundreds of benchmarks, and what it means in practice: a simpler, faster, and more homogeneous workflow for tabular prediction.\n\nI will also discuss where we are headed next - from time series foundation models to agentic data science - and what we have learned bringing this from research into production."
+  },
+  "maria-bergmann": {
+    "name": "Maria Bergmann",
+    "role": "Development Engineer Innomotics",
+    "talk": "Automated Vibration Prediction for Electric Motors via PDE Approximation",
+    "abstract": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process."
+  },
+  "gabriel-nobis": {
+    "name": "Gabriel Nobis",
+    "role": "Research Associate Fraunhofer HHI",
+    "talk": "Fractional Noise in Diffusion-Based Generative Models",
+    "abstract": "Most continuous-time diffusion models rely on Brownian motion as the source of randomness in the noising process, a memoryless mechanism characterized by independent increments. While this choice offers mathematical tractability, it constrains the expressivity of the noising dynamics, limits the richness of their temporal structure, and excludes noise processes with long-range temporal dependencies.\n\nAfter reviewing continuous-time diffusion models, this talk explores diffusion-based generative models driven by an approximation of fractional Brownian motion, a non-Markovian process with long-range temporal dependence. We further present applications of this novel generative paradigm to image generation, sampling, and the prediction of protein conformations."
+  },
+  "markus-duttmann": {
+    "name": "Markus Düttmann",
+    "role": "Managing Director dida",
+    "talk": "coming soon ...",
+    "abstract": "coming soon ..."
+  },
+  "peter-kirstel": {
+    "name": "Peter Kirstel",
+    "role": "Forschungsreferenz Schlüsseltechnologie Cyberagentur",
+    "talk": "AI-Methods in Symmetric Cryptography",
+    "abstract": "A block cipher is a cryptographic primitive that takes a key and a message, both of a fixed length, and turns it into a ciphertext. Ideally, one can only recover the message from the ciphertext by using the key. However, a theorem from Shannon from 1948 says that perfect secrecy can only be achieved if the key is of the same length as the ciphertext, which is a completely impractical constraint. In practice, the key is much shorter than the ciphertext.\n\nThis means that statistical analysis of the ciphertext reveals some information about the message (or even the key). Thus, when developing a block cipher, the goal is to make this statistical analysis computationally infeasible. While there are design principles for block ciphers, the proof is in the pudding, and the only way to determine if a cipher is secure is to try to break it.\n\nI will explain some basics of block cipher design, and then review some recent work applying Machine Learning to the analysis of block ciphers. After this overview, I would encourage the participants to brainstorm and discuss what kind of AI-methods could be promising for future research."
+  },
+  "annette-rudolph": {
+    "name": "Annette Rudolph",
+    "role": "Professor TU Berlin",
+    "talk": "How to feed Machine Learning algorithms with proper metrics?",
+    "abstract": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples."
+  },
+  "benjamin-ulbrich": {
+    "name": "Benjamin Ulbrich",
+    "role": "Director Global Digital Processes Innomotics",
+    "talk": "Automated Vibration Prediction for Electric Motors via PDE Approximation",
+    "abstract": "To computationally predict the vibration behavior of an electric motor, finite element (FE) simulations are used. They provide information about how sensitive the structure is to the excitation mechanisms that occur and thus enable the prediction of the expected vibrations during the operation of the motor. Design variants are tested and ultimately a design is selected that ensures reliable operation with low vibration levels.\n\nIt is demonstrated how these simulations can be automated for a product line of large electrical motors using open-source software. This automation significantly speeds up the design process but also reaches certain limits. At this use case the limits and difficulties are demonstrated, that occur with conventional FE calculations. Looking ahead, it is discussed whether AI could be used to improve the process."
+  },
+  "leonard-schenk": {
+    "name": "Leonard Schenk",
+    "role": "Senior Analyst & Engineer SPRIND",
+    "talk": "The European AI Playbook - Why, What and How",
+    "abstract": "Europe’s reliance on US and Chinese AI models creates systemic strategic vulnerabilities. This workshop outlines a playbook for establishing sovereign Frontier AI within Europe. Rather than replicating US-centric LLM scaling, we prioritize AI that aligns with European industrial strengths.\n\nThe session details the strategic imperative (“Why”), specific focus domains like robotics or energy-efficient architectures that fit the local landscape (“What”), and implementation via distributed training and semiconductor sovereignty (“How”). The outcome is a roadmap for deployable, \"continent-aligned\" models for long-term competitiveness."
+  },
+  "ma-li": {
+    "name": "Ma Li",
+    "role": "ML Scientist dida",
+    "talk": "dida Reading Group",
+    "abstract": "dida has a weekly internal reading group where our ML scientists discuss recent papers and how they can help with our projects.\n\nPapers presented will be announced soon."
+  },
+  "tom-freudenberg": {
+    "name": "Tom Freudenberg",
+    "role": "Postdoctoral Researcher Uni Bremen",
+    "talk": "TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible",
+    "abstract": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices."
+  },
+  "nick-heilenkotter": {
+    "name": "Nick Heilenkötter",
+    "role": "Research Associate Uni Bremen",
+    "talk": "TorchPhysics and Beyond: Making Deep Learning for PDEs Accessible",
+    "abstract": "Deep learning has become a promising tool in surrogate modelling, offering flexible alternatives to classical numerical methods for PDEs. However, practical application remains challenging due to the complexity of incorporating physical constraints, selecting suitable architectures, and designing effective training strategies. In this talk, we first give an introduction to physics-informed and operator learning, discussing advantages and challenges based on our experience in industrial applications.\n\nWe then present our work on developing software tools to simplify and structure this process. This includes a modular framework designed to support experimentation with physics-informed models, as well as ongoing work on automated guidance through algorithm suggestions and structured design choices."
+  },
+  "kai-hartmann": {
+    "name": "Kai Hartmann",
+    "role": "Senior Lecturer FU Berlin",
+    "talk": "How to feed Machine Learning algorithms with proper metrics?",
+    "abstract": "The majority of multivariate statistics and machine learning algorithms expect Euclidean metrics on unconstrained data spaces. On the other hand, most variables are strictly positive and capped by physical constraints, which leads to pointless arithmetic measures. Disobeying these constraints may obscure meaningful patterns, produce spurious correlations, or senseless measures of model quality.\n\nUseful recipes to overcome common pitfalls in multivariate statistics and machine learning for (a) common physically constrained and (b) compositional data spaces will be presented with hands-on examples."
+  },
+  "lorenz-richter": {
+    "name": "Lorenz Richter",
+    "role": "Managing Director & CTO dida",
+    "talk": "Moderation",
+    "abstract": ""
+  },
+  "johannes-muller": {
+    "name": "Johannes Müller",
+    "role": "Postdoctoral Researcher TU Berlin",
+    "talk": "Resolving Ill-Conditioning in Scientific Machine Learning",
+    "abstract": "We introduce an “optimize-then-project” framework for scientific machine learning that addresses numerical instability caused by differential operators in training objectives. The core concept is to first formulate optimization algorithms in a continuous (infinite-dimensional) setting, and then discretize them within the tangent space of the chosen neural network model.\n\nWe demonstrate how this approach can be applied to practical settings, including physics-informed neural networks and variational Monte Carlo methods for quantum many-body systems - areas where neural network-based models are increasingly gaining traction. We also discuss key considerations for scaling these methods to larger, real-world problems."
+  }
+};
+
+  function realCopyFor(card){
+    const id = getSpeakerIdFromCard(card);
+    return realSpeakerData[id] || null;
+  }
+
+  document.querySelectorAll('.speaker').forEach(card => {
+    const data = realCopyFor(card);
+    if(!data) return;
+    const name = card.querySelector('.s-name');
+    const role = card.querySelector('.s-role');
+    const talk = card.querySelector('.s-talk');
+    const img = card.querySelector('.s-photo img');
+    if(name) name.textContent = data.name;
+    if(role) role.textContent = data.role;
+    if(talk) talk.textContent = data.talk;
+    if(img) img.alt = data.name;
+    card.setAttribute('aria-label', `Open details for ${data.name}: ${data.talk}`);
+  });
+
+  window.getSessionStream = function(card){
+    const meta = getSpeakerMeta(card);
+    const data = realCopyFor(card);
+    const talk = normalizeInlineText(data?.talk || meta.talkTitle || 'coming soon ...');
+    const abstract = normalizeText(data?.abstract || '');
+    return {
+      ...meta,
+      name: data?.name || meta.name,
+      role: data?.role || meta.role,
+      talkTitle: talk,
+      teaser: talk,
+      abstract: abstract || (talk.toLowerCase().includes('coming soon') ? 'coming soon ...' : ''),
+      speakerContext: '',
+      researchFocus: []
+    };
+  };
+
+  window.buildModalThesis = function(stream){
+    return normalizeInlineText(stream?.talkTitle || stream?.teaser || 'coming soon ...');
+  };
+
+  window.updateModalSignature = function(card, stream){
+    const signature = ensureModalSignatureLayer();
+    if(!signature || !card || !stream) return;
+    const sourceImage = card.querySelector('.s-photo img');
+    const portrait = signature.querySelector('.modal-portrait img');
+    const orbit = signature.querySelector('.modal-orbit');
+    const label = signature.querySelector('.modal-signature-label');
+    const thesis = signature.querySelector('.modal-signature-thesis');
+    const tags = signature.querySelector('.modal-signature-tags');
+    if(orbit) orbit.remove();
+    if(portrait && sourceImage){
+      portrait.src = sourceImage.currentSrc || sourceImage.src;
+      portrait.alt = '';
+    }
+    if(label) label.textContent = currentLang === 'de' ? 'Sprecherprofil' : 'Speaker profile';
+    if(thesis) thesis.textContent = buildModalThesis(stream);
+    if(tags) tags.replaceChildren();
+  };
+
+  window.renderSpeakerModalStreams = function(stream){
+    const modalTalk = document.getElementById('modalTalk');
+    const modalBio = document.getElementById('modalBio');
+    const modalSpeakerContext = document.getElementById('modalSpeakerContext');
+    const modalResearchFocus = document.getElementById('modalResearchFocus');
+
+    if(modalTalk) modalTalk.textContent = normalizeInlineText(stream.teaser || stream.talkTitle || 'coming soon ...');
+    const abstractCount = renderParagraphsSafe(modalBio, stream.abstract || '');
+    if(modalSpeakerContext) modalSpeakerContext.replaceChildren();
+    if(modalResearchFocus) modalResearchFocus.replaceChildren();
+
+    toggleSection(document.querySelector('[data-i18n="modal_about_label"]'), modalBio, abstractCount > 0);
+    toggleSection(document.querySelector('[data-i18n="modal_context_label"]'), modalSpeakerContext, false);
+    toggleSection(document.querySelector('[data-i18n="modal_focus_label"]'), modalResearchFocus, false);
+  };
+})();
 
 </script>
 
