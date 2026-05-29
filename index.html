@@ -1175,7 +1175,25 @@ nav[aria-label="Primary navigation"],nav[aria-label="Primary navigation"] .nav-i
   }
 }
 
-    </style>
+    
+/* === HOTFIX: speaker portrait sizing restored after safe cleanup === */
+.speaker[data-speaker-id="jonas-kohler"] .s-photo img{transform:scale(1.14)!important;transform-origin:center bottom!important}
+.speaker[data-speaker-id="markus-duttmann"] .s-photo img{transform:scale(1.16)!important;transform-origin:center bottom!important}
+@media (hover:hover) and (pointer:fine){
+  .speaker[data-speaker-id="jonas-kohler"]:hover .s-photo img{transform:translate3d(var(--imgx,0px),var(--imgy,-3px),0) scale(1.18)!important}
+  .speaker[data-speaker-id="markus-duttmann"]:hover .s-photo img{transform:translate3d(var(--imgx,0px),var(--imgy,-3px),0) scale(1.20)!important}
+}
+@media (hover:none),(pointer:coarse){
+  .speaker[data-speaker-id="jonas-kohler"] .s-photo img,
+  .speaker[data-speaker-id="jonas-kohler"]:hover .s-photo img,
+  .speaker[data-speaker-id="jonas-kohler"]:active .s-photo img,
+  .speaker[data-speaker-id="jonas-kohler"]:focus .s-photo img{transform:scale(1.14)!important;transform-origin:center bottom!important;filter:grayscale(1) contrast(1.03)!important}
+  .speaker[data-speaker-id="markus-duttmann"] .s-photo img,
+  .speaker[data-speaker-id="markus-duttmann"]:hover .s-photo img,
+  .speaker[data-speaker-id="markus-duttmann"]:active .s-photo img,
+  .speaker[data-speaker-id="markus-duttmann"]:focus .s-photo img{transform:scale(1.16)!important;transform-origin:center bottom!important;filter:grayscale(1) contrast(1.03)!important}
+}
+</style>
   </head>
   <body>
     <a class="skip-link" href="#about">Skip to content</a>
