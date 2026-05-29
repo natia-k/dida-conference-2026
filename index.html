@@ -1193,6 +1193,24 @@ nav[aria-label="Primary navigation"],nav[aria-label="Primary navigation"] .nav-i
   .speaker[data-speaker-id="markus-duttmann"]:active .s-photo img,
   .speaker[data-speaker-id="markus-duttmann"]:focus .s-photo img{transform:scale(1.16)!important;transform-origin:center bottom!important;filter:grayscale(1) contrast(1.03)!important}
 }
+
+
+/* ── FINAL MOBILE MENU HOTFIX: keep overlay inside full-screen nav on iOS/Safari ── */
+@media (max-width:768px){
+  .mobile-menu-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;position:relative!important;z-index:10003!important;flex:0 0 44px!important}
+  body.nav-open{overflow:hidden!important;touch-action:none}
+  body.nav-open nav[aria-label="Primary navigation"]{position:fixed!important;inset:0!important;width:100vw!important;height:100svh!important;height:100dvh!important;z-index:10000!important;padding:8px var(--g) 0!important;overflow:hidden!important;background:radial-gradient(740px circle at 72% 10%,rgba(0,146,146,0.13),transparent 54%),linear-gradient(180deg,rgba(251,248,243,0.96),rgba(247,243,236,0.92))!important;backdrop-filter:blur(28px) saturate(1.14)!important;-webkit-backdrop-filter:blur(28px) saturate(1.14)!important;border-bottom:0!important}
+  body.nav-open nav[aria-label="Primary navigation"] .nav-inner{position:relative!important;z-index:10002!important;width:100%!important;max-width:none!important;height:58px!important;min-height:58px!important;margin:0!important;padding:0 16px!important;border-radius:20px!important;background:linear-gradient(180deg,rgba(255,255,255,0.78),rgba(255,255,255,0.44))!important;border:1px solid rgba(255,255,255,0.7)!important;box-shadow:inset 0 1px rgba(255,255,255,0.82),0 12px 40px rgba(12,16,22,0.06)!important}
+  body.nav-open .nav-links{display:flex!important;position:absolute!important;z-index:10001!important;top:82px!important;left:var(--g)!important;right:var(--g)!important;bottom:max(24px,env(safe-area-inset-bottom))!important;width:auto!important;height:auto!important;min-height:0!important;margin:0!important;padding:8px 0 18px!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;list-style:none!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important;background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  body.nav-open .nav-links li{display:block!important;width:100%!important;border-bottom:1px solid rgba(12,16,20,0.08)!important}
+  body.nav-open .nav-links li:first-child{border-top:1px solid rgba(12,16,20,0.08)!important}
+  body.nav-open .nav-links a{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;min-height:76px!important;padding:0 4px!important;text-align:left!important;font-size:clamp(28px,8.2vw,42px)!important;line-height:1!important;letter-spacing:-0.055em!important;color:rgba(9,9,9,0.86)!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;white-space:normal!important}
+  body.nav-open .nav-links a::after{content:"→";font-size:0.7em;opacity:0.28;transform:translateY(2px)}
+  body.nav-open .nav-links .cta{justify-content:center!important;min-height:64px!important;margin-top:22px!important;padding:0 24px!important;border-radius:999px!important;font-size:20px!important;letter-spacing:-0.035em!important;color:#fff!important;background:linear-gradient(180deg,#00a7a7 0%,#008f8f 55%,#007878 100%)!important;box-shadow:inset 0 1px rgba(255,255,255,0.22),0 16px 42px rgba(0,146,146,0.22)!important}
+  body.nav-open .nav-links .cta::after{content:""}
+  body:not(.nav-open) .nav-links{pointer-events:none}
+}
+
 </style>
   </head>
   <body>
@@ -3519,5 +3537,58 @@ nav[aria-label="Primary navigation"],nav[aria-label="Primary navigation"] .nav-i
         syncMode();
       })();
     </script>
+  
+    <script>
+      /* Final isolated fallback for the mobile menu. Runs even if earlier scripts fail. */
+      (function () {
+        function initFinalMobileMenu() {
+          const nav = document.querySelector('nav[aria-label="Primary navigation"]');
+          const toggle = document.querySelector('.mobile-menu-toggle');
+          const links = document.getElementById('mobileNavLinks') || document.querySelector('.nav-links');
+          if (!nav || !toggle || !links || toggle.dataset.finalMenuReady === 'true') return;
+          toggle.dataset.finalMenuReady = 'true';
+
+          const mq = window.matchMedia('(max-width: 768px)');
+          const closeMenu = () => {
+            document.body.classList.remove('nav-open');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.setAttribute('aria-label', 'Open navigation menu');
+            if (mq.matches) links.setAttribute('aria-hidden', 'true');
+          };
+          const openMenu = () => {
+            document.body.classList.add('nav-open');
+            toggle.setAttribute('aria-expanded', 'true');
+            toggle.setAttribute('aria-label', 'Close navigation menu');
+            links.setAttribute('aria-hidden', 'false');
+          };
+
+          closeMenu();
+          toggle.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.body.classList.contains('nav-open') ? closeMenu() : openMenu();
+          }, true);
+
+          links.addEventListener('click', function (event) {
+            if (mq.matches && event.target.closest('a')) closeMenu();
+          });
+
+          document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') closeMenu();
+          });
+
+          mq.addEventListener?.('change', function () {
+            if (!mq.matches) closeMenu();
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initFinalMobileMenu);
+        } else {
+          initFinalMobileMenu();
+        }
+      })();
+    </script>
+
   </body>
 </html>
